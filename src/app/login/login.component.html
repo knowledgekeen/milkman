@@ -1,0 +1,21 @@
+<div class="container py-5">
+    <form class="form-signin my-5">
+        <h1 class="h3 mb-3 font-weight-normal"><i class="fa fa-user"></i> Please sign in</h1>
+        <p class="text-danger m-0" *ngIf="errormsg"> <i class="fa fa-exclamation-triangle"></i> {{errormsg}}</p>
+        <label for="inputEmail" class="sr-only">Username</label>
+        <input type="text" id="inputEmail" class="form-control" placeholder="Username" name="username"
+            [(ngModel)]="username" required autofocus />
+        <label for="inputPassword" class="sr-only">Password</label>
+        <input type="password" id="inputPassword" class="form-control" placeholder="Password" name="password"
+            [(ngModel)]="password" required (keyup)="Login($event)" />
+        <div class="checkbox mb-3">
+            <label>
+                <input type="checkbox" value="remember-me"> Remember me
+            </label>
+        </div>
+        <button class="btn btn-lg btn-primary btn-block" type="button" (click)="Login($event)"
+            [disabled]="!username || !password">
+            Login
+        </button>
+    </form>
+</div>

@@ -1,0 +1,14 @@
+<div class="alert w-50" role="alert" [ngClass]="'alert-'+msgclass">
+    <span *ngIf="msgclass=='primary' || msgclass=='warning'">
+        <i class="fa fa-info mx-2"></i>
+    </span>
+    <span *ngIf="msgclass=='success'">
+        <i class="fa fa-check mx-2"></i>
+    </span>
+    <span *ngIf="msgclass=='danger'">
+        <i class="fa fa-times mx-2"></i>
+    </span>
+    {{msgtext}}
+</div>
+
+<div class="overlay"></div>
