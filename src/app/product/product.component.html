@@ -1,0 +1,53 @@
+<div class="container">
+    <h5 class="my-3">Product</h5>
+    <app-message msgtext="{{msgtext}}" msgclass="{{msgclass}}" *ngIf="msgtext"></app-message>
+    <div class="card">
+        <div class="card-body">
+            <div class="row">
+                <div class="col-sm-12 col-md-6 text-muted">
+                    <label for="prodnm" class="label">Enter Product Name</label>
+                    <input type="text" id="prodnm" class="form-control" [(ngModel)]="prodnm"
+                        placeholder="Enter Product Name" />
+                </div>
+                <div class="col-sm-12 col-md-6 ">
+                    <label class="w-100">&nbsp;</label>
+                    <button class="btn btn-primary" [disabled]="!prodnm" (click)="addProduct()" title="Add Product."
+                        *ngIf="!isEditClientId">
+                        Add Product
+                    </button>
+                    <button class="btn btn-warning" [disabled]="!prodnm" (click)="updateProduct()"
+                        title="Update Product." *ngIf="isEditClientId">
+                        Update Product
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="card my-1" *ngIf="allprods">
+        <div class="card-body table-responsive">
+            <h6 class="text-primary">All Products</h6>
+            <table class="table">
+                <thead>
+                    <tr>
+                        <th scope="col">#</th>
+                        <th scope="col">Product Name</th>
+                        <th scope="col">Edit</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr *ngFor="let prod of allprods;let i=index">
+                        <th scope="row">{{i+1}}</th>
+                        <td>{{prod.prodname}}</td>
+                        <td>
+                            <a href="javascript:void(0);" class="text-danger"
+                                (click)="editProduct(prod.prodid, prod.prodname)">
+                                <i class="fa fa-pencil mx-1"></i> Edit
+                            </a>
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>

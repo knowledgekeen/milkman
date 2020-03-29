@@ -11,6 +11,7 @@ import { NavbarComponent } from './navbar/navbar.component';
 import { AddclientComponent } from './addclient/addclient.component';
 import { ViewclientComponent } from './viewclient/viewclient.component';
 import { MessageComponent } from './message/message.component';
+import { ProductComponent } from './product/product.component';
 
 @NgModule({
   declarations: [
@@ -20,7 +21,8 @@ import { MessageComponent } from './message/message.component';
     NavbarComponent,
     AddclientComponent,
     ViewclientComponent,
-    MessageComponent
+    MessageComponent,
+    ProductComponent
   ],
   imports: [
     BrowserModule,
