@@ -47,3 +47,4 @@ Thumbs.db
 src/assets/db/conn.php
 *.log
 *.sql
+*.zip
