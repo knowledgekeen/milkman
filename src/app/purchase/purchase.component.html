@@ -1,0 +1,101 @@
+<div class="container">
+    <h5 class="my-3">Purchase</h5>
+    <app-message msgtext="{{msgtext}}" msgclass="{{msgclass}}" *ngIf="msgtext"></app-message>
+    <div class="card">
+        <div class="card-body">
+            <div class="row">
+                <div class="col-sm-12 col-md-4 text-muted">
+                    <label for="supplierName" class="label m-0">Supplier Name</label>
+                    <input type="text" id="supplierName" class="form-control" [(ngModel)]="supplierName"
+                        placeholder="Enter Supplier Name" list="suppliers"/>
+                        <datalist id="suppliers">
+                            <option value="{{supp.name}}" *ngFor="let supp of suppdata">
+                        </datalist>
+                </div>
+                <div class="col-sm-12 col-md-4 text-muted">
+                    <label for="purDate" class="label m-0">Purchase Date</label>
+                    <input type="date" id="purDate" class="form-control" [(ngModel)]="purDate"
+                        placeholder="Enter Purchase Date" />
+                </div>
+                <div class="col-sm-12 col-md-4 text-muted">
+                    <label for="purTime" class="label m-0">Purchase Time</label>
+                    <input type="time" id="purTime" class="form-control" [(ngModel)]="purTime"
+                        placeholder="Enter Purchase Time" />
+                </div>
+            </div>
+            <div class="row my-3">
+                <div class="col-sm-12 col-md-4 text-muted">
+                    <label for="product" class="label m-0">Product</label>
+                    <!-- <input type="text" id="product" class="form-control" [(ngModel)]="product"
+                        placeholder="Enter Product" /> -->
+                        <select class="form-control" [(ngModel)]="product" id="product" [disabled]="isEdit">
+                            <option value="{{prod.prodid}}" *ngFor="let prod of proddata">{{prod.prodname}}</option>
+                        </select>
+                </div>
+                <div class="col-sm-12 col-md-4 text-muted">
+                    <label for="quantity" class="label m-0">Quantity (Lt)</label>
+                    <input type="text" id="quantity" class="form-control" [(ngModel)]="quantity"
+                        placeholder="Enter quantity" />
+                </div> 
+                
+                <div class="col-sm-12 col-md-4 text-muted">
+                    <label for="rate" class="label m-0">Rate (INR)</label>
+                    <input type="text" id="rate" class="form-control" [(ngModel)]="rate"
+                        placeholder="Enter Rate" />
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-sm-12 col-md-6 ">
+                    <button class="btn btn-primary" (click)="addPurchase()" title="Add Purchase."
+                        *ngIf="!isEdit" [disabled]="!purDate || !purTime || !supplierName || !quantity || !rate">
+                         Purchase
+                    </button>
+                    <button class="btn btn-warning" (click)="updatePurchase()" title="Update Purchase."
+                        *ngIf="isEdit"  [disabled]="!purDate || !purTime || !supplierName || !quantity || !rate">
+                        Update Purchase
+                    </button>
+                    <button class="btn btn-secondary mx-2" (click)="cancelPurchase()" title="Cancel Purchase."
+                        *ngIf="isEdit">
+                        Cancel
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="card my-1" *ngIf="allpurchase">
+        <div class="card-body table-responsive">
+            <h6 class="text-primary">All Purchase</h6>
+            <table class="table">
+                <thead>
+                    <tr>
+                        <th scope="col">#</th>
+                        <th scope="col">Supplier Name</th>
+                        <th scope="col">Product</th>
+                        <th scope="col">Purchase Date</th>
+                        <th scope="col">Quantity</th>
+                        <th scope="col">Rate</th>
+                        <th scope="col">Edit</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr *ngFor="let purch of allpurchase;let i=index">
+                        <th scope="row">{{i+1}}</th>
+                        <td>{{purch.name}}</td>
+                        <td>{{purch.prodname}}</td>
+                        <td>{{purch.purchdate | date :"dd-MM-yyyy hh:mm a"}}</td>
+                        <td>{{purch.quantity}}</td>
+                        <td>{{purch.rate}}</td>
+
+                        <td>
+                            <a href="javascript:void(0);" class="text-danger"
+                                (click)="editPurchase(purch)">
+                                <i class="fa fa-pencil mx-1"></i> Edit
+                            </a>
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>

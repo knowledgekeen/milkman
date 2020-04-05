@@ -158,4 +158,47 @@ if($action == "updateClient"){
 
 	echo json_encode($data1);
 }
+
+if($action == "getAllClientsByType"){
+	$headers = apache_request_headers();
+	authenticate($headers);
+	$ctype=$_GET["ctype"];
+	$sql = "SELECT * FROM `client_master` WHERE `ctype`=$ctype ORDER BY `name`";
+	$result = $conn->query($sql);
+	while($row = $result->fetch_array())
+	{
+		$rows[] = $row;
+	}
+
+	$tmp = array();
+	$data = array();
+	$i = 0;
+
+	if(count($rows)>0){
+		foreach($rows as $row)
+		{
+			$tmp[$i]['clientid'] = $row['clientid'];
+			$tmp[$i]['name'] = $row['name'];
+			$tmp[$i]['address'] = $row['address'];
+			$tmp[$i]['cno'] = $row['cno'];
+			$tmp[$i]['cperson'] = $row['cperson'];
+			$tmp[$i]['cno1'] = $row['cno1'];
+			$tmp[$i]['addinfo'] = $row['addinfo'];
+			$tmp[$i]['ctype'] = $row['ctype'];
+			$i++;
+		}
+		$data["status"] = 200;
+		$data["data"] = $tmp;
+		header(' ', true, 200);
+	}
+	else{
+		$log  = "File: client.php - Method: getAllClients".PHP_EOL.
+		"Error message: ".$conn->error.PHP_EOL;
+		write_log($log, "error", $conn->error);
+		$data["status"] = 204;
+		header(' ', true, 204);
+	}
+	echo json_encode($data);
+}
+
 ?>
