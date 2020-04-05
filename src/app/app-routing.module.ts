@@ -5,6 +5,7 @@ import { HomeComponent } from './home/home.component';
 import { AddclientComponent } from './addclient/addclient.component';
 import { ViewclientComponent } from './viewclient/viewclient.component';
 import { ProductComponent } from './product/product.component';
+import { PurchaseComponent } from './purchase/purchase.component';
 
 
 const routes: Routes = [
@@ -13,6 +14,7 @@ const routes: Routes = [
   { path: 'addclient/:clientid', component: AddclientComponent },
   { path: 'viewclients', component: ViewclientComponent },
   { path: 'product', component: ProductComponent },
+  { path: 'purchase', component: PurchaseComponent },
   { path: '', redirectTo: '/home', pathMatch: 'full' }
 ];
 
