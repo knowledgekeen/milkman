@@ -23,9 +23,9 @@ export class AddclientComponent implements OnInit {
 
   ngOnInit(): void {
     this._route.params.subscribe(parm => {
+      this.clientid = parm.clientid;
       if (parm.clientid.toString() != '0') {
         //Fetch Client Details
-        this.clientid = parm.clientid;
         this.fetchClientDetails();
       }
     });

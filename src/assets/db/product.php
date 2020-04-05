@@ -16,8 +16,10 @@ if($action == "addProduct"){
     if($_SERVER['REQUEST_METHOD']=='POST'){
         //Status: 1 == 'active'
 		$sql = "INSERT INTO `product_master`(`prodname`) VALUES ('$prodnm')";
-        $result = $conn->query($sql);
-        $prodid = $conn->insert_id;
+		$result = $conn->query($sql);
+		$prodid = $conn->insert_id;
+		$sqlstock = "INSERT INTO `stock_master`(`prodid`, `quantity`) VALUES ($prodid, '0')";
+		$resultstk = $conn->query($sqlstock);
 	}
     $data1= array();
     if($result){

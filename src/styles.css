@@ -17,3 +17,7 @@ body {
 button[disabled]{
     cursor: no-drop !important;
 }
+
+button{
+    border-radius: 0px !important;
+}

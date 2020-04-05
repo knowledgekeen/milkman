@@ -54,7 +54,7 @@
                     </button>
                     <button type="button" class="btn btn-sm btn-warning" (click)="updateClient()"
                         [disabled]="!fname || !cno || !usertype" *ngIf="clientid !='0'">
-                        Update
+                        Update - {{clientid}}
                     </button>
                 </div>
             </div>
