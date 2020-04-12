@@ -13,6 +13,8 @@ import { ViewclientComponent } from './viewclient/viewclient.component';
 import { MessageComponent } from './message/message.component';
 import { ProductComponent } from './product/product.component';
 import { PurchaseComponent } from './purchase/purchase.component';
+import { ViewpurchasesComponent } from './viewpurchases/viewpurchases.component';
+import { NeworderComponent } from './neworder/neworder.component';
 
 @NgModule({
   declarations: [
@@ -24,7 +26,9 @@ import { PurchaseComponent } from './purchase/purchase.component';
     ViewclientComponent,
     MessageComponent,
     ProductComponent,
-    PurchaseComponent
+    PurchaseComponent,
+    ViewpurchasesComponent,
+    NeworderComponent
   ],
   imports: [
     BrowserModule,

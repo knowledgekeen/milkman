@@ -6,6 +6,8 @@ import { AddclientComponent } from './addclient/addclient.component';
 import { ViewclientComponent } from './viewclient/viewclient.component';
 import { ProductComponent } from './product/product.component';
 import { PurchaseComponent } from './purchase/purchase.component';
+import { ViewpurchasesComponent } from './viewpurchases/viewpurchases.component';
+import { NeworderComponent } from './neworder/neworder.component';
 
 
 const routes: Routes = [
@@ -13,8 +15,10 @@ const routes: Routes = [
   { path: 'home', component: HomeComponent },
   { path: 'addclient/:clientid', component: AddclientComponent },
   { path: 'viewclients', component: ViewclientComponent },
+  { path: 'viewpurchases', component: ViewpurchasesComponent },
   { path: 'product', component: ProductComponent },
   { path: 'purchase', component: PurchaseComponent },
+  { path: 'neworder', component: NeworderComponent },
   { path: '', redirectTo: '/home', pathMatch: 'full' }
 ];
 

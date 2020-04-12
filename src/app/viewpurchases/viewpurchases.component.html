@@ -1,0 +1,67 @@
+<div class="container">
+  <h5 class="my-3">View Purchases</h5>
+  <app-message
+    msgtext="{{ msgtext }}"
+    msgclass="{{ msgclass }}"
+    *ngIf="msgtext"
+  ></app-message>
+  <div class="card my-1" *ngIf="allpurchase">
+    <div class="card-body table-responsive">
+      <h6 class="text-primary">All Purchase</h6>
+      <table class="table">
+        <thead>
+          <tr>
+            <th scope="col">#</th>
+            <th scope="col">Supplier Name</th>
+            <th scope="col">Product</th>
+            <th scope="col">Purchase Date</th>
+            <th scope="col">Quantity</th>
+            <th scope="col">Rate</th>
+            <th scope="col">Edit</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr *ngFor="let purch of allpurchase; let i = index">
+            <th scope="row">{{ i + 1 }}</th>
+            <td>{{ purch.name }}</td>
+            <td>{{ purch.prodname }}</td>
+            <td>{{ purch.purchdate | date: "dd-MM-yyyy hh:mm a" }}</td>
+            <td>{{ purch.quantity }}</td>
+            <td>{{ purch.rate }}</td>
+
+            <td>
+              <a
+                href="javascript:void(0);"
+                class="text-danger"
+                (click)="editPurchase(purch)"
+              >
+                <i class="fa fa-pencil mx-1"></i> Edit
+              </a>
+            </td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+</div>
+
+<div class="overlay" *ngIf="editdataobj">
+  <div class="modal" tabindex="-1" role="dialog">
+    <div class="modal-dialog modal-xl" role="document">
+      <div class="modal-content">
+        <div class="modal-body">
+          <button
+            type="button"
+            class="close"
+            data-dismiss="modal"
+            aria-label="Close"
+            (click)="closeModal()"
+          >
+            <span aria-hidden="true">&times;</span>
+          </button>
+          <app-purchase editobj="{{ editdataobj }}"></app-purchase>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

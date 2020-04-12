@@ -97,7 +97,6 @@ if($action == "getAllPurchases"){
 	echo json_encode($data);
 }
 
-
 if($action == "updatePurchase"){
 	$headers = apache_request_headers();
 	authenticate($headers);

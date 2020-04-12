@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, Input } from '@angular/core';
 import * as moment from "moment";
 import { RestService } from '../rest.service';
 
@@ -8,7 +8,6 @@ import { RestService } from '../rest.service';
   styleUrls: ['./purchase.component.css']
 })
 export class PurchaseComponent implements OnInit {
-
   msgtext: string = null;
   msgclass: string = null;
   supplierName: string = null;
@@ -19,33 +18,34 @@ export class PurchaseComponent implements OnInit {
   rate: string = null;
   isEdit: any = false;
   editId: string = null;
-  tmpdata: any  =null;
-  allpurchase: any = null;
+  tmpdata: any = null;
   suppdata: any = null;
   proddata: any = null;
+  @Input() editobj;
 
   constructor(private _rest: RestService) { }
 
   ngOnInit(): void {
     this.resetForm();
-    this.getAllPurchases();
     this.getSuppliers();
     this.getAllProducts();
+    if (this.editobj) {
+      this.editPurchase(JSON.parse(this.editobj));
+    }
   }
 
-  getSuppliers(){
-    let geturl = "ctype=1"; 
-    this._rest.getData("client.php", "getAllClientsByType", geturl).subscribe(Response=>{
-      console.log(Response)
-      if(Response && Response["data"]){
-        this.suppdata=Response["data"];
+  getSuppliers() {
+    let geturl = "ctype=1";
+    this._rest.getData("client.php", "getAllClientsByType", geturl).subscribe(Response => {
+      if (Response && Response["data"]) {
+        this.suppdata = Response["data"];
       }
     })
   }
-  
-  getAllProducts(){
-    this._rest.getData("product.php", "getAllProducts").subscribe(Response=>{
-      if(Response && Response["data"]){
+
+  getAllProducts() {
+    this._rest.getData("product.php", "getAllProducts").subscribe(Response => {
+      if (Response && Response["data"]) {
         this.proddata = Response["data"];
         this.product = this.proddata[0].prodid;
       }
@@ -54,8 +54,8 @@ export class PurchaseComponent implements OnInit {
 
   addPurchase() {
     let clientid = null;
-    for(let i in this.suppdata){
-      if(this.supplierName == this.suppdata[i].name){
+    for (let i in this.suppdata) {
+      if (this.supplierName == this.suppdata[i].name) {
         clientid = this.suppdata[i].clientid;
         break;
       }
@@ -75,22 +75,12 @@ export class PurchaseComponent implements OnInit {
     this._rest.postData("purchase.php", "addPurchase", obj).subscribe(Response => {
       this.msgtext = "Purchase successful.";
       this.msgclass = "success";
-      this.getAllPurchases();
       this.timer();
       this.resetForm();
     }, err => {
       this.msgtext = "Purchase Failed.";
       this.msgclass = "danger";
       this.timer();
-    });
-  }
-
-  getAllPurchases() {
-    this.allpurchase = null;
-    this._rest.getData("purchase.php", "getAllPurchases").subscribe(Response=>{
-      if(Response && Response["data"]){
-        this.allpurchase = Response["data"];
-      }
     });
   }
 
@@ -110,8 +100,8 @@ export class PurchaseComponent implements OnInit {
 
   updatePurchase() {
     let clientid = null;
-    for(let i in this.suppdata){
-      if(this.supplierName == this.suppdata[i].name){
+    for (let i in this.suppdata) {
+      if (this.supplierName == this.suppdata[i].name) {
         clientid = this.suppdata[i].clientid;
         break;
       }
@@ -129,12 +119,11 @@ export class PurchaseComponent implements OnInit {
       rate: this.rate,
       prevqty: this.tmpdata.quantity
     };
-    
+
     this._rest.postData("purchase.php", "updatePurchase", obj).subscribe(Response => {
       this.msgtext = "Purchase updated successfully.";
       this.msgclass = "success";
-      this.resetForm();
-      this.getAllPurchases();
+      // this.resetForm();
       this.timer();
     }, err => {
       this.msgtext = "Purchase updation failed.";
@@ -151,11 +140,7 @@ export class PurchaseComponent implements OnInit {
     }, 2000);
   }
 
-  cancelPurchase(){
-    this.resetForm();
-  }
-
-  resetForm(){
+  resetForm() {
     let dt = moment(new Date(), "YYYY-MM-DD");
     this.purDate = dt.format("YYYY-MM-DD");
     this.purTime = dt.format("HH:mm");
@@ -165,6 +150,6 @@ export class PurchaseComponent implements OnInit {
     this.supplierName = "";
     this.product = "";
     this.quantity = "";
-    this.rate = ""; 
+    this.rate = "";
   }
 }

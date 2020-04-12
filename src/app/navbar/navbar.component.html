@@ -1,86 +1,130 @@
 <header class="shadow-sm" [hidden]="!display_navbar">
-    <div class="container">
-        <nav class="navbar navbar-expand-lg navbar-light row">
-            <a class="navbar-brand" [routerLink]="['/home']">
-                <img src="assets/images/logo.png" width="40" alt="Green Top Organics" />
-                Green Top Organics
+  <div class="container">
+    <nav class="navbar navbar-expand-lg navbar-light row">
+      <a class="navbar-brand" [routerLink]="['/home']">
+        <img src="assets/images/logo.png" width="40" alt="Green Top Organics" />
+        Green Top Organics
+      </a>
+      <button
+        class="navbar-toggler"
+        type="button"
+        data-toggle="collapse"
+        data-target="#navbarSupportedContent"
+        aria-controls="navbarSupportedContent"
+        aria-expanded="false"
+        aria-label="Toggle navigation"
+      >
+        <span class="navbar-toggler-icon"></span>
+      </button>
+      <div
+        class="collapse navbar-collapse justify-content-end"
+        id="navbarSupportedContent"
+      >
+        <ul class="navbar-nav">
+          <li class="nav-item dropdown position-static">
+            <a class="nav-link active" [routerLink]="['/index']">Home</a>
+          </li>
+          <li class="nav-item dropdown position-static">
+            <a class="nav-link active" [routerLink]="['/dashboard']">
+              Dashboard
             </a>
-            <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent"
-                aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
-                <span class="navbar-toggler-icon"></span>
-            </button>
-            <div class="collapse navbar-collapse justify-content-end" id="navbarSupportedContent">
-                <ul class="navbar-nav">
-                    <li class="nav-item dropdown position-static">
-                        <a class="nav-link active" [routerLink]="['/index']">Home</a>
-                    </li>
-                    <li class="nav-item dropdown position-static">
-                        <a class="nav-link active" [routerLink]="['/dashboard']">
-                            Dashboard
-                        </a>
-                    </li>
-                    <!-- If user is logged in then below menu -->
-                    <li class="nav-item dropdown position-static">
-                        <a class="nav-link dropdown-toggle text-primary" id="navbarDropdown" role="button"
-                            data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                            Wasim
-                        </a>
-                        <div class="w-100 dropdown-menu dropdown-menu-right p-0" aria-labelledby="navbarDropdown">
-                            <div class="row">
-                                <div class="col-sm-12">
-                                    <span class="dropdown-item pt-3 font-weight-bold text-danger"
-                                        href="javascript:void(0)">
-                                        <span class="text-uppercase">Wasim</span>
+          </li>
+          <!-- If user is logged in then below menu -->
+          <li class="nav-item dropdown position-static">
+            <a
+              class="nav-link dropdown-toggle text-primary"
+              id="navbarDropdown"
+              role="button"
+              data-toggle="dropdown"
+              aria-haspopup="true"
+              aria-expanded="false"
+            >
+              Wasim
+            </a>
+            <div
+              class="w-100 dropdown-menu dropdown-menu-right p-0"
+              aria-labelledby="navbarDropdown"
+            >
+              <div class="row">
+                <div class="col-sm-12">
+                  <span
+                    class="dropdown-item pt-3 font-weight-bold text-danger"
+                    href="javascript:void(0)"
+                  >
+                    <span class="text-uppercase">Wasim</span>
 
-                                        <div class="float-right">
-                                            <a href="javascript:void(0)" (click)="logout()" class="text-danger">
-                                                <i class="fa fa-power-off" aria-hidden="true"></i>
-                                                Logout</a>
-                                        </div>
-                                        <div class="float-right mr-3">
-                                            <a href="javascript:void(0)" [routerLink]="['/changepwd']"
-                                                class="text-secondary">
-                                                <i class="fa fa-unlock-alt" aria-hidden="true"></i>
-                                                Change Password</a>
-                                        </div>
-                                        <div class="float-right mr-3">
-                                            <a href="javascript:void(0)" [routerLink]="['/updatecompadd']"
-                                                class="text-secondary">
-                                                <i class="fa fa-map-marker" aria-hidden="true"></i>
-                                                Change Address</a>
-                                        </div>
-                                    </span>
-                                    <div class="dropdown-divider"></div>
-                                </div>
-                                <div class="col-sm-3">
-                                    <ul class="py-2 px-4 my-2 list-unstyled menus">
-                                        <li>Customer /
-                                            Supplier</li>
-                                        <li><a [routerLink]="['/addclient',0]">Add Client</a></li>
-                                        <li><a [routerLink]="['/viewclients']">View Client</a></li>
-                                    </ul>
-                                    <div class="dropdown-divider"></div>
-                                </div>
-                                <div class="col-sm-3">
-                                    <ul class="py-2 px-4 my-2 list-unstyled menus">
-                                        <li>Product</li>
-                                        <li><a [routerLink]="['/product']">Add/Edit Product</a></li>
-                                    </ul>
-                                    <div class="dropdown-divider"></div>
-                                </div>
-                                <div class="col-sm-3">
-                                    <ul class="py-2 px-4 my-2 list-unstyled menus">
-                                        <li>Purchase</li>
-                                        <li><a [routerLink]="['/purchase']">Add/Edit Purchase</a></li>
-                                    </ul>
-                                    <div class="dropdown-divider"></div>
-                                </div>
-                                <div class="clearfix"></div>
-                            </div>
-                        </div>
+                    <div class="float-right">
+                      <a
+                        href="javascript:void(0)"
+                        (click)="logout()"
+                        class="text-danger"
+                      >
+                        <i class="fa fa-power-off" aria-hidden="true"></i>
+                        Logout</a
+                      >
+                    </div>
+                    <div class="float-right mr-3">
+                      <a
+                        href="javascript:void(0)"
+                        [routerLink]="['/changepwd']"
+                        class="text-secondary"
+                      >
+                        <i class="fa fa-unlock-alt" aria-hidden="true"></i>
+                        Change Password</a
+                      >
+                    </div>
+                    <div class="float-right mr-3">
+                      <a
+                        href="javascript:void(0)"
+                        [routerLink]="['/updatecompadd']"
+                        class="text-secondary"
+                      >
+                        <i class="fa fa-map-marker" aria-hidden="true"></i>
+                        Change Address</a
+                      >
+                    </div>
+                  </span>
+                  <div class="dropdown-divider"></div>
+                </div>
+                <div class="col-sm-3">
+                  <ul class="py-2 px-4 my-2 list-unstyled menus">
+                    <li>Customer / Supplier</li>
+                    <li><a [routerLink]="['/addclient', 0]">Add Client</a></li>
+                    <li><a [routerLink]="['/viewclients']">View Client</a></li>
+                  </ul>
+                  <div class="dropdown-divider"></div>
+                </div>
+                <div class="col-sm-3">
+                  <ul class="py-2 px-4 my-2 list-unstyled menus">
+                    <li>Product</li>
+                    <li><a [routerLink]="['/product']">Add/Edit Product</a></li>
+                  </ul>
+                  <div class="dropdown-divider"></div>
+                  <ul class="py-2 px-4 my-2 list-unstyled menus">
+                    <li>Purchase</li>
+                    <li>
+                      <a [routerLink]="['/purchase']">Add Purchase</a>
                     </li>
-                </ul>
+                    <li>
+                      <a [routerLink]="['/viewpurchases']">View Purchases</a>
+                    </li>
+                  </ul>
+                </div>
+                <div class="col-sm-3">
+                  <div class="dropdown-divider"></div>
+                  <ul class="py-2 px-4 my-2 list-unstyled menus">
+                    <li>Orders</li>
+                    <li>
+                      <a [routerLink]="['/neworder']">New Order</a>
+                    </li>
+                  </ul>
+                </div>
+                <div class="clearfix"></div>
+              </div>
             </div>
-        </nav>
-    </div>
+          </li>
+        </ul>
+      </div>
+    </nav>
+  </div>
 </header>

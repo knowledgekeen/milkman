@@ -1,0 +1,138 @@
+<div class="container">
+  <h5 class="my-3">New Order</h5>
+  <app-message
+    msgtext="{{ msgtext }}"
+    msgclass="{{ msgclass }}"
+    *ngIf="msgtext"
+  ></app-message>
+
+  <div class="card">
+    <div class="card-body">
+      <div class="row">
+        <div class="col-sm-12 col-md-5 text-muted">
+          <label for="custName" class="label m-0">Customer Name</label>
+          <input
+            type="text"
+            id="custName"
+            class="form-control"
+            [(ngModel)]="custname"
+            placeholder="Enter Customer Name"
+            list="customers"
+            (change)="getCustomerDetails()"
+          />
+          <datalist id="customers">
+            <option value="{{ cust.name }}" *ngFor="let cust of custdata">
+            </option>
+          </datalist>
+        </div>
+        <div class="col-sm-12 col-md-3 text-muted">
+          <label for="orderdate" class="label m-0">Order Date</label>
+          <input
+            type="date"
+            id="orderdate"
+            class="form-control"
+            [(ngModel)]="orderdate"
+            placeholder="Enter Order Date"
+          />
+        </div>
+        <div
+          class="col-sm-12 col-md-2 text-muted"
+          *ngIf="milkdata && milkdata.length > 0"
+        >
+          <label for="buffalomilk" class="label m-0">{{
+            milkdata[0].prodname
+          }}</label>
+          <input
+            type="text"
+            id="buffalomilk"
+            class="form-control"
+            [(ngModel)]="buffalomilk"
+            placeholder="Enter Milk in Lts"
+          />
+        </div>
+        <div
+          class="col-sm-12 col-md-2 text-muted"
+          *ngIf="milkdata && milkdata.length > 0"
+        >
+          <label for="cowmilk" class="label m-0">{{
+            milkdata[1].prodname
+          }}</label>
+          <input
+            type="text"
+            id="cowmilk"
+            class="form-control"
+            [(ngModel)]="cowmilk"
+            placeholder="Enter Milk in Lts"
+          />
+        </div>
+        <div class="col-sm-12 col-md-8 mt-3 text-muted">
+          <label for="deliveryplace" class="label m-0">Place of delivery</label>
+          <input
+            type="text"
+            id="deliveryplace"
+            class="form-control"
+            [(ngModel)]="deliveryplace"
+            placeholder="Enter place of delivery"
+          />
+        </div>
+        <div class="col-sm-12 col-md-4 mt-3 text-muted">
+          <label for="route" class="label m-0">Route</label>
+          <input
+            type="text"
+            id="route"
+            class="form-control"
+            [(ngModel)]="route"
+            placeholder="Enter route of delivery"
+          />
+        </div>
+        <div class="col-sm-12 col-md-3 mt-3 text-muted">
+          <label for="deliverydate" class="label m-0">Delivery Date</label>
+          <input
+            type="date"
+            id="deliverydate"
+            class="form-control"
+            [(ngModel)]="deliverydate"
+            placeholder="Delivery Date"
+          />
+        </div>
+        <div class="col-sm-12 col-md-3 mt-3 text-muted">
+          <label for="deliverytime" class="label m-0">Delivery Time</label>
+          <input
+            type="time"
+            id="deliverytime"
+            class="form-control"
+            [(ngModel)]="deliverytime"
+            placeholder="Delivery Time"
+          />
+        </div>
+        <div class="col-sm-12 col-md-3 mt-3 text-muted">
+          <label for="buffalomilkrate" class="label m-0">
+            Buffalo Milk Rate (INR)
+          </label>
+          <input
+            type="text"
+            id="buffalomilkrate"
+            class="form-control"
+            [(ngModel)]="buffalomilkrate"
+            placeholder="Buffalo Milk Rate"
+          />
+        </div>
+        <div class="col-sm-12 col-md-3 mt-3 text-muted">
+          <label for="cowmilkrate" class="label m-0">Cow Milk Rate (INR)</label>
+          <input
+            type="text"
+            id="cowmilkrate"
+            class="form-control"
+            [(ngModel)]="cowmilkrate"
+            placeholder="Cow Milk Rate"
+          />
+        </div>
+        <div class="col-sm-12 col-md-12 mt-3 text-muted">
+          <button class="btn btn-primary" (click)="placeOrder()">
+            Place Order
+          </button>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
