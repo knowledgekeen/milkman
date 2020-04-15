@@ -74,6 +74,6 @@ export class ProductComponent implements OnInit {
       if (Response && Response["data"]) {
         this.allprods = Response["data"];
       }
-    })
+    });
   }
 }

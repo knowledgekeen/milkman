@@ -36,7 +36,12 @@ export class NavbarComponent implements OnInit {
     })
   }
 
-  logout() { }
+  logout() {
+    this._storage.clearStorage().then(resp => {
+      this.display_navbar = false;
+      this._router.navigate(["/login"]);
+    })
+  }
 
 
   ngOnDestroy() {

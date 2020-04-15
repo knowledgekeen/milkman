@@ -9,6 +9,7 @@ import { PurchaseComponent } from './purchase/purchase.component';
 import { ViewpurchasesComponent } from './viewpurchases/viewpurchases.component';
 import { NeworderComponent } from './neworder/neworder.component';
 import { MilkroutesComponent } from './milkroutes/milkroutes.component';
+import { InhouseprodComponent } from './inhouseprod/inhouseprod.component';
 
 
 const routes: Routes = [
@@ -21,6 +22,7 @@ const routes: Routes = [
   { path: 'purchase', component: PurchaseComponent },
   { path: 'neworder', component: NeworderComponent },
   { path: 'routes', component: MilkroutesComponent },
+  { path: 'inhouseprod', component: InhouseprodComponent },
   { path: '', redirectTo: '/home', pathMatch: 'full' }
 ];
 

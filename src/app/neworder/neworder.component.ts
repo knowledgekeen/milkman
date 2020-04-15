@@ -102,7 +102,7 @@ export class NeworderComponent implements OnInit {
         cowinr: this.cowmilkrate,
         milkstkobj: milkstkobj
       }
-      console.log(custobj);
+      // console.log(custobj);
       this._rest.postData("order.php", "placeOrder", custobj).subscribe(Response => {
         this.msgtext = "Order Placed Successfully";
         this.msgclass = "success";
