@@ -166,6 +166,6 @@ export class NeworderComponent implements OnInit {
         this.buffalomilkrate = data.buffaloinr;
         this.cowmilkrate = data.cowinr;
       }
-    })
+    });
   }
 }
