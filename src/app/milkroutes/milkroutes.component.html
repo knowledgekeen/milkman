@@ -1,0 +1,84 @@
+<div class="container">
+  <h5 class="my-3">Routes</h5>
+  <app-message
+    msgtext="{{ msgtext }}"
+    msgclass="{{ msgclass }}"
+    *ngIf="msgtext"
+  ></app-message>
+
+  <div class="card">
+    <div class="card-body">
+      <div class="row">
+        <div class="col-sm-12 col-md-3 text-muted">
+          <label for="deldate" class="label m-0">Delivery Date</label>
+          <input
+            type="date"
+            class="form-control"
+            [(ngModel)]="deldate"
+            id="deldate"
+            (change)="getAllDistinctRoutes()"
+          />
+        </div>
+        <div class="col-sm-12 col-md-3 text-muted">
+          <label for="routeno" class="label m-0">Route No.</label>
+          <select
+            name="routeno"
+            id="routeno"
+            class="form-control"
+            [(ngModel)]="routeno"
+            (change)="routeChange()"
+            [disabled]="!routesdata"
+          >
+            <option value="{{ route.route }}" *ngFor="let route of routesdata">
+              {{ route.route }}
+            </option>
+          </select>
+        </div>
+        <div class="col-sm-12 col-md-3 text-muted">
+          <label for="drivernm" class="label m-0">Driver Name</label>
+          <input
+            type="text"
+            class="form-control"
+            [(ngModel)]="drivernm"
+            id="drivernm"
+            placeholder="Enter Driver's Name"
+          />
+        </div>
+        <div class="col-sm-12 col-md-3 text-muted">
+          <label for="vehno" class="label m-0">Vehicle Name</label>
+          <input
+            type="text"
+            class="form-control"
+            [(ngModel)]="vehno"
+            id="vehno"
+            placeholder="Enter Vehicle No."
+          />
+        </div>
+        <div class="col-sm-12 col-md-3 text-muted my-3">
+          <button
+            class="btn btn-sm btn-primary"
+            [disabled]="!deldate || !routeno || !drivernm || !vehno"
+            (click)="addDriver()"
+            *ngIf="!driverdetspresent"
+          >
+            Add Driver
+          </button>
+          <button
+            class="btn btn-sm btn-warning"
+            [disabled]="!deldate || !routeno || !drivernm || !vehno"
+            (click)="updateDriver()"
+            *ngIf="driverdetspresent"
+          >
+            Update Driver
+          </button>
+        </div>
+      </div>
+
+      <app-viewroutedets
+        routeno="{{ routeval }}"
+        deldate="{{ deldate }}"
+        *ngIf="routeval"
+      ></app-viewroutedets>
+    </div>
+  </div>
+</div>

@@ -15,6 +15,9 @@ import { ProductComponent } from './product/product.component';
 import { PurchaseComponent } from './purchase/purchase.component';
 import { ViewpurchasesComponent } from './viewpurchases/viewpurchases.component';
 import { NeworderComponent } from './neworder/neworder.component';
+import { MilkroutesComponent } from './milkroutes/milkroutes.component';
+import { ViewroutedetsComponent } from './viewroutedets/viewroutedets.component';
+import { DummyComponent } from './dummy/dummy.component';
 
 @NgModule({
   declarations: [
@@ -28,7 +31,10 @@ import { NeworderComponent } from './neworder/neworder.component';
     ProductComponent,
     PurchaseComponent,
     ViewpurchasesComponent,
-    NeworderComponent
+    NeworderComponent,
+    MilkroutesComponent,
+    ViewroutedetsComponent,
+    DummyComponent
   ],
   imports: [
     BrowserModule,

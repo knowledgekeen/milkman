@@ -1,0 +1,117 @@
+<div class="row my-3">
+  <div class="col-md-12 col-sm-12 table-responsive">
+    <app-message
+      msgtext="{{ msgtext }}"
+      msgclass="{{ msgclass }}"
+      *ngIf="msgtext"
+    ></app-message>
+    <h6 class="text-primary">
+      Route No: {{ routeno }}
+      <span class="float-right text-success">
+        Total Cans: {{ totalbuffcans }} ({{ totalcowcans }})
+      </span>
+    </h6>
+    <h6 class="text-danger" *ngIf="!routesdata">
+      <i class="fa fa-exclamation-triangle"></i>
+      <span class="mx-1">
+        There aren't any customers available on this route.
+      </span>
+    </h6>
+    <table class="table table-bordered" *ngIf="routesdata">
+      <thead>
+        <tr>
+          <th scope="col">#</th>
+          <th scope="col">Customer</th>
+          <th scope="col">Buffalo Milk</th>
+          <th scope="col">Cow Milk</th>
+          <th scope="col">Cans</th>
+          <th scope="col">Change Route</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr *ngFor="let det of routesdata; let i = index">
+          <th scope="row">{{ i + 1 }}</th>
+          <td>{{ det.name }}</td>
+          <td>{{ det.buffaloqty }}</td>
+          <td>{{ det.cowqty }}</td>
+          <td>{{ det.buffcans }} ({{ det.cowcans }})</td>
+          <td>
+            <a href="javascript:void(0);" (click)="openChangeRouteModal(det)">
+              Change Route
+            </a>
+          </td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+</div>
+
+<div class="overlay" *ngIf="isChange">
+  <!-- Modal -->
+  <div
+    class="modal"
+    id="exampleModal"
+    tabindex="-1"
+    role="dialog"
+    aria-labelledby="exampleModalLabel"
+    aria-hidden="true"
+  >
+    <div class="modal-dialog" role="document">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title" id="exampleModalLabel">Change Route</h5>
+          <button
+            type="button"
+            class="close"
+            data-dismiss="modal"
+            aria-label="Close"
+          >
+            <span aria-hidden="true">&times;</span>
+          </button>
+        </div>
+        <div class="modal-body">
+          <div class="row">
+            <div class="col-md-12">
+              <h6 class="text-primary">
+                Current Route:
+                <span class="font-weight-bold text-success">
+                  {{ isChange.route }}
+                </span>
+              </h6>
+            </div>
+          </div>
+          <div class="row">
+            <div class="col-md-12">
+              <label for="newroute" class="label m-0">Enter New Route</label>
+              <input
+                type="text"
+                class="form-control"
+                [(ngModel)]="newroute"
+                id="newroute"
+                placeholder="Enter new route"
+              />
+            </div>
+          </div>
+        </div>
+        <div class="modal-footer">
+          <button
+            type="button"
+            class="btn btn-secondary"
+            data-dismiss="modal"
+            (click)="isChange = false"
+          >
+            Close
+          </button>
+          <button
+            type="button"
+            class="btn btn-primary"
+            (click)="changeRoute()"
+            [disabled]="!newroute"
+          >
+            Save changes
+          </button>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

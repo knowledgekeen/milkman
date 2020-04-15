@@ -61,7 +61,6 @@ if($action == "placeOrder"){
 	echo json_encode($data1);
 }
 
-
 if($action == "getCustomerLastOrderDets"){
 	$headers = apache_request_headers();
 	authenticate($headers);
