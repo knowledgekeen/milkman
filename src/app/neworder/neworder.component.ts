@@ -131,7 +131,7 @@ export class NeworderComponent implements OnInit {
     this.custname = null;
     this.buffalomilk = "0";
     this.cowmilk = '0';
-    this.deliveryplace = "0";
+    this.deliveryplace = null;
     this.route = null;
     this.buffalomilkrate = '0';
     this.cowmilkrate = '0';
@@ -140,7 +140,7 @@ export class NeworderComponent implements OnInit {
   getCustomerDetails() {
     this.buffalomilk = "0";
     this.cowmilk = '0';
-    this.deliveryplace = "0";
+    this.deliveryplace = null;
     this.route = null;
     this.buffalomilkrate = '0';
     this.cowmilkrate = '0';
