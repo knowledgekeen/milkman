@@ -1,10 +1,10 @@
-import { Component, OnInit } from '@angular/core';
-import { RestService } from '../rest.service';
+import { Component, OnInit } from "@angular/core";
+import { RestService } from "../rest.service";
 
 @Component({
-  selector: 'app-product',
-  templateUrl: './product.component.html',
-  styleUrls: ['./product.component.css']
+  selector: "app-product",
+  templateUrl: "./product.component.html",
+  styleUrls: ["./product.component.css"],
 })
 export class ProductComponent implements OnInit {
   msgtext: string = null;
@@ -13,7 +13,7 @@ export class ProductComponent implements OnInit {
   isEditClientId: any = false;
   allprods: any = null;
 
-  constructor(private _rest: RestService) { }
+  constructor(private _rest: RestService) {}
 
   ngOnInit(): void {
     this.getProducts();
@@ -21,42 +21,48 @@ export class ProductComponent implements OnInit {
 
   addProduct() {
     let obj = { prodnm: this.prodnm };
-    this._rest.postData("product.php", "addProduct", obj).subscribe(Response => {
-      this.msgtext = "Product added successfully.";
-      this.msgclass = "success";
-      this.prodnm = null;
-      this.getProducts();
-      this.timer();
-    }, err => {
-      this.msgtext = "Product addition failed.";
-      this.msgclass = "danger";
-      this.timer();
-    });
+    this._rest.postData("product.php", "addProduct", obj).subscribe(
+      (Response) => {
+        this.msgtext = "Product added successfully.";
+        this.msgclass = "success";
+        this.prodnm = null;
+        this.getProducts();
+        this.timer();
+      },
+      (err) => {
+        this.msgtext = "Product addition failed.";
+        this.msgclass = "danger";
+        this.timer();
+      }
+    );
   }
 
   editProduct(prodid, prodnm) {
     this.isEditClientId = prodid;
     this.prodnm = prodnm;
-    console.log(prodid)
+    console.log(prodid);
   }
 
   updateProduct() {
     let obj = {
       prodid: this.isEditClientId,
-      prodnm: this.prodnm
-    }
-    this._rest.postData("product.php", "updateProduct", obj).subscribe(Response => {
-      this.msgtext = "Product updated successfully.";
-      this.msgclass = "success";
-      this.prodnm = null;
-      this.isEditClientId = null;
-      this.getProducts();
-      this.timer();
-    }, err => {
-      this.msgtext = "Product updation failed.";
-      this.msgclass = "danger";
-      this.timer();
-    })
+      prodnm: this.prodnm,
+    };
+    this._rest.postData("product.php", "updateProduct", obj).subscribe(
+      (Response) => {
+        this.msgtext = "Product updated successfully.";
+        this.msgclass = "success";
+        this.prodnm = null;
+        this.isEditClientId = null;
+        this.getProducts();
+        this.timer();
+      },
+      (err) => {
+        this.msgtext = "Product updation failed.";
+        this.msgclass = "danger";
+        this.timer();
+      }
+    );
   }
 
   timer() {
@@ -69,11 +75,13 @@ export class ProductComponent implements OnInit {
 
   getProducts() {
     this.allprods = null;
-    this._rest.getData("product.php", "getAllProducts").subscribe(Response => {
-      console.log(Response)
-      if (Response && Response["data"]) {
-        this.allprods = Response["data"];
-      }
-    })
+    this._rest
+      .getData("product.php", "getAllProducts")
+      .subscribe((Response) => {
+        console.log(Response);
+        if (Response && Response["data"]) {
+          this.allprods = Response["data"];
+        }
+      });
   }
 }

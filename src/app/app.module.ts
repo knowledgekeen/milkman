@@ -18,6 +18,8 @@ import { NeworderComponent } from './neworder/neworder.component';
 import { MilkroutesComponent } from './milkroutes/milkroutes.component';
 import { ViewroutedetsComponent } from './viewroutedets/viewroutedets.component';
 import { DummyComponent } from './dummy/dummy.component';
+import { SupplieropeningbalComponent } from './supplieropeningbal/supplieropeningbal.component';
+import { PurchasepaymentComponent } from './purchasepayment/purchasepayment.component';
 
 @NgModule({
   declarations: [
@@ -34,7 +36,9 @@ import { DummyComponent } from './dummy/dummy.component';
     NeworderComponent,
     MilkroutesComponent,
     ViewroutedetsComponent,
-    DummyComponent
+    DummyComponent,
+    SupplieropeningbalComponent,
+    PurchasepaymentComponent
   ],
   imports: [
     BrowserModule,
