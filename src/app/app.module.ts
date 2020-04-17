@@ -40,7 +40,7 @@ import { PurchasepaymentComponent } from './purchasepayment/purchasepayment.comp
     ViewroutedetsComponent,
     DummyComponent,
     SupplieropeningbalComponent,
-    PurchasepaymentComponent
+    PurchasepaymentComponent,
     InhouseprodComponent,
     ViewstocksComponent
   ],
