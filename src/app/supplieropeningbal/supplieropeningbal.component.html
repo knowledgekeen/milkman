@@ -1,0 +1,48 @@
+<div class="container">
+  <h5 class="my-3">Add supplier opening balance</h5>
+  <div class="card">
+    <div class="card-body">
+      <div class="row">
+        <div class="col-sm-12 col-md-4 text-muted">
+          <label for="suppliernm" class="label m-0">select Supplier Name</label>
+          <input
+            type="text"
+            class="form-control"
+            [(ngModel)]="suppliernm"
+            id="suppliernm"
+            placeholder="select supplier Name"
+          />
+        </div>
+        <div class="col-sm-12 col-md-4 text-muted">
+          <label for="openingBal" class="openingBal m-0">opening Balance</label>
+          <input
+            type="text"
+            class="form-control"
+            [(ngModel)]="openingBal"
+            id="openingBal"
+            placeholder="Enter opening balance."
+          />
+        </div>
+        <div class="col-sm-12 col-md-4 text-muted">
+          <label for="openingBalDate" class="label m-0">
+            opening Balance Date</label
+          >
+          <input
+            type="date"
+            class="form-control"
+            [(ngModel)]="openingBalDate"
+            id="openingBalDate"
+          />
+        </div>
+        <div class="col-sm-12 col-md-3 text-muted my-3">
+          <button
+            class="btn btn-sm btn-warning"
+            [disabled]="!suppliernm || !openingBal || !openingBalDate"
+          >
+            Update opening balance
+          </button>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
