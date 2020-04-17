@@ -109,6 +109,7 @@ export class NeworderComponent implements OnInit {
         prodname: this.milkdata[1].prodname,
         qty: this.cowmilk,
       });
+
       let dt = new Date(this.orderdate);
       let deldt = new Date(this.deliverydate);
       deldt.setHours(parseInt(this.deliverytime.split(":")[0]));
@@ -125,7 +126,7 @@ export class NeworderComponent implements OnInit {
         cowinr: this.cowmilkrate,
         milkstkobj: milkstkobj,
       };
-      console.log(custobj);
+      // console.log(custobj);
       this._rest
         .postData("order.php", "placeOrder", custobj)
         .subscribe((Response) => {

@@ -16,23 +16,5 @@ export class PurchasepaymentComponent implements OnInit {
   Particulars: any = null;
 
   constructor(private _rest: RestService) {}
-  ngOnInit(): void {
-    //this.addPayment();
-  }
-  /* addPayment() {
-    if (
-      !this.suppliernm ||
-      !this.paymentdate ||
-      this.amountpaid ||
-      this.modeofpayment ||
-      this.Particulars
-    ) { 
-      this.msgtext = "All Fields are Compulsory";
-      this.msgclass = "danger";
-      //this.timer();
-    } else {
-      this.msgtext = "Order Placed Successfully";
-      this.msgclass = "success";
-    }
-  }*/
+  ngOnInit(): void {}
 }
