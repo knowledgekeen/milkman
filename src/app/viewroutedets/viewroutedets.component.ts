@@ -7,8 +7,16 @@ import { RestService } from '../rest.service';
   styleUrls: ['./viewroutedets.component.css']
 })
 export class ViewroutedetsComponent implements OnInit {
-  @Input() routeno;
+  private _routeno: string;
   @Input() deldate;
+  @Input() set routeno(value: string) {
+    this._routeno = value;
+    this.getRouteCustomersOnDate();
+ }
+
+ get routeno(): string {
+     return this._routeno;
+ }
   routesdata: any = null;
   totalcowcans: number = 0;
   totalbuffcans: number = 0;
@@ -20,6 +28,7 @@ export class ViewroutedetsComponent implements OnInit {
   constructor(private _rest: RestService) { }
 
   ngOnInit(): void {
+    
     this.getRouteCustomersOnDate();
   }
 

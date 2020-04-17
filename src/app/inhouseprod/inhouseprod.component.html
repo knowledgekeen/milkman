@@ -1,0 +1,51 @@
+<div class="container">
+  <h5 class="my-3">Add In-House Production</h5>
+  <app-message
+    msgtext="{{ msgtext }}"
+    msgclass="{{ msgclass }}"
+    *ngIf="msgtext"
+  ></app-message>
+
+  <div class="card">
+    <div class="card-body">
+      <div class="row">
+        <div class="col-sm-12 col-md-4 text-muted">
+          <label for="proddt" class="label m-0">Production Date</label>
+          <input
+            type="date"
+            class="form-control"
+            [(ngModel)]="proddt"
+            id="proddt"
+          />
+        </div>
+        <div class="col-sm-12 col-md-4 text-muted">
+          <label for="prod" class="label m-0">Product</label>
+          <select id="prod" class="form-control" [(ngModel)]="prod">
+            <option value="{{ prods.prodid }}" *ngFor="let prods of proddata">{{
+              prods.prodname
+            }}</option>
+          </select>
+        </div>
+        <div class="col-sm-12 col-md-4 text-muted">
+          <label for="qty" class="label m-0">Quantity</label>
+          <input
+            type="text"
+            class="form-control"
+            id="qty"
+            [(ngModel)]="qty"
+            placeholder="Enter Product Quantity"
+          />
+        </div>
+        <div class="col-sm-12 col-md-12 text-muted my-3">
+          <button
+            class="btn btn-primary"
+            [disabled]="!proddt || !prod || !qty"
+            (click)="addProduction()"
+          >
+            Add
+          </button>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

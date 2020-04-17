@@ -32,4 +32,12 @@ export class StorageService {
       });
     });
   }
+
+  clearStorage() {
+    let _this = this;
+    return new Promise(function (resolve, reject) {
+      _this.storagetype.clear();
+      resolve(true);
+    });
+  }
 }

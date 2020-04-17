@@ -43,6 +43,10 @@ export class MilkroutesComponent implements OnInit {
           this.routeval = this.routesdata[0].route;
           this.getDriverDetails();
         }
+        else {
+          this.routeval ="0";
+        }
+
       },
         err => {
           console.log(err);

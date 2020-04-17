@@ -75,13 +75,11 @@ export class ProductComponent implements OnInit {
 
   getProducts() {
     this.allprods = null;
-    this._rest
-      .getData("product.php", "getAllProducts")
-      .subscribe((Response) => {
-        console.log(Response);
-        if (Response && Response["data"]) {
-          this.allprods = Response["data"];
-        }
-      });
+    this._rest.getData("product.php", "getAllProducts").subscribe(Response => {
+      console.log(Response)
+      if (Response && Response["data"]) {
+        this.allprods = Response["data"];
+      }
+    });
   }
 }

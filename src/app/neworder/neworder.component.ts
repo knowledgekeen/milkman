@@ -124,17 +124,15 @@ export class NeworderComponent implements OnInit {
         deliverydt: deldt.getTime(),
         buffaloinr: this.buffalomilkrate,
         cowinr: this.cowmilkrate,
-        milkstkobj: milkstkobj,
-      };
+        milkstkobj: milkstkobj
+      }
       // console.log(custobj);
-      this._rest
-        .postData("order.php", "placeOrder", custobj)
-        .subscribe((Response) => {
-          this.msgtext = "Order Placed Successfully";
-          this.msgclass = "success";
-          this.timer();
-          this.resetForm();
-        });
+      this._rest.postData("order.php", "placeOrder", custobj).subscribe(Response => {
+        this.msgtext = "Order Placed Successfully";
+        this.msgclass = "success";
+        this.timer();
+        this.resetForm();
+      });
     }
   }
 

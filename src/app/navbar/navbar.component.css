@@ -1,7 +1,12 @@
-.nav-item a{
-    cursor: pointer;
+.nav-item a {
+  cursor: pointer;
 }
 
-header{
-    background: #ffffff;
+header {
+  background: #ffffff;
+}
+
+.menus li:first-child {
+  text-transform: uppercase;
+  font-weight: 500;
 }

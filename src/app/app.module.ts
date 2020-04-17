@@ -18,6 +18,8 @@ import { NeworderComponent } from './neworder/neworder.component';
 import { MilkroutesComponent } from './milkroutes/milkroutes.component';
 import { ViewroutedetsComponent } from './viewroutedets/viewroutedets.component';
 import { DummyComponent } from './dummy/dummy.component';
+import { InhouseprodComponent } from './inhouseprod/inhouseprod.component';
+import { ViewstocksComponent } from './viewstocks/viewstocks.component';
 import { SupplieropeningbalComponent } from './supplieropeningbal/supplieropeningbal.component';
 import { PurchasepaymentComponent } from './purchasepayment/purchasepayment.component';
 
@@ -39,6 +41,8 @@ import { PurchasepaymentComponent } from './purchasepayment/purchasepayment.comp
     DummyComponent,
     SupplieropeningbalComponent,
     PurchasepaymentComponent
+    InhouseprodComponent,
+    ViewstocksComponent
   ],
   imports: [
     BrowserModule,
