@@ -6,11 +6,11 @@ import { Component, OnInit } from "@angular/core";
   styleUrls: ["./customeropeningbal.component.css"],
 })
 export class CustomeropeningbalComponent implements OnInit {
-  customernm: String = null;
+  customernm: string = null;
   openingbal: any = null;
   openingbaldate: any = null;
 
-  constructor() {}
+  constructor() { }
 
-  ngOnInit() {}
+  ngOnInit() { }
 }
