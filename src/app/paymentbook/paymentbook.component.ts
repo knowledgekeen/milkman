@@ -7,7 +7,10 @@ import { RestService } from "../rest.service";
   styleUrls: ["./paymentbook.component.css"],
 })
 export class PaymentbookComponent implements OnInit {
-  allcustpayment: any = null;
+  activetab: number = 1;
+  allsuppayment: any = [];
+  allcustpayment: any = [];
+
   date: any = null;
   particular: any = null;
   debit: any = null;

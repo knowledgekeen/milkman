@@ -71,9 +71,9 @@
             [disabled]="
               !this.customernm ||
               !this.paymentdate ||
-              this.amountpaid ||
-              this.modeofpayment ||
-              this.Particulars
+              !this.amountpaid ||
+              !this.modeofpayment ||
+              !this.Particulars
             "
           >
             Add Payment

@@ -25,6 +25,7 @@ import { PurchasepaymentComponent } from './purchasepayment/purchasepayment.comp
 import { PaymentbookComponent } from './paymentbook/paymentbook.component';
 import { CustomeropeningbalComponent } from './customeropeningbal/customeropeningbal.component';
 import { SalespaymentComponent } from './salespayment/salespayment.component';
+import { ViewallcustomersComponent } from './viewallcustomers/viewallcustomers.component';
 
 @NgModule({
   declarations: [
@@ -48,7 +49,8 @@ import { SalespaymentComponent } from './salespayment/salespayment.component';
     ViewstocksComponent,
     PaymentbookComponent,
     CustomeropeningbalComponent,
-    SalespaymentComponent
+    SalespaymentComponent,
+    ViewallcustomersComponent
   ],
   imports: [
     BrowserModule,

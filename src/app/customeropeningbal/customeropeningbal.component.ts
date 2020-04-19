@@ -1,4 +1,6 @@
 import { Component, OnInit } from "@angular/core";
+import { RestService } from "../rest.service";
+import { ActivatedRoute, Router } from "@angular/router";
 
 @Component({
   selector: "app-customeropeningbal",
@@ -9,8 +11,22 @@ export class CustomeropeningbalComponent implements OnInit {
   customernm: string = null;
   openingbal: any = null;
   openingbaldate: any = null;
+  msgtext: string = null;
+  msgclass: string = null;
 
-  constructor() { }
+  constructor(
+    private _rest: RestService,
+    private _route: ActivatedRoute,
+    private _router: Router
+  ) {}
 
-  ngOnInit() { }
+  ngOnInit() {}
+  updateopeningbal() {
+    let tmpobj = {
+      customernm: this.customernm,
+      openingbal: this.openingbal,
+      openingbaldate: this.openingbaldate,
+    };
+    console.log(tmpobj);
+  }
 }
