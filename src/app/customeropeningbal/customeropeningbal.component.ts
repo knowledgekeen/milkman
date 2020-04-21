@@ -17,6 +17,8 @@ export class CustomeropeningbalComponent implements OnInit {
   custid: string = null;
   disableval: boolean = false;
   editdata: any = null;
+  invalidcustomer: any = null;
+
   constructor(
     private _rest: RestService,
   ) { }
@@ -110,6 +112,8 @@ export class CustomeropeningbalComponent implements OnInit {
 
   checkIfOpeningBalPresent() {
     this.editdata = null;
+    this.custid = null;
+    this.invalidcustomer = null;
     console.log(this.customernm);
     this.disableval = true;
     for (let i in this.custdata) {
@@ -117,6 +121,11 @@ export class CustomeropeningbalComponent implements OnInit {
         this.custid = this.custdata[i].clientid;
         break;
       }
+    }
+    if (this.custid == null) {
+      this.invalidcustomer = true;
+      this.disableval = false;
+      return;
     }
 
     let urldata = "clientid=" + this.custid + "&openbaldate=" + (new Date(this.openingbaldate).getTime());

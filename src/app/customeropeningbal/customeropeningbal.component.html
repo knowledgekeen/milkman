@@ -9,9 +9,9 @@
     <div class="card-body">
       <div class="row">
         <div class="col-md-12 mb-3">
-          <span class="text-danger text-sm">
-            Note: You need to add opening balance even if the opening balance of
-            customer is 0.
+          <span class="text-primary text-sm">
+            <strong><i class="fa fa-info-circle"></i> Note:</strong> You need to
+            add opening balance even if the opening balance of customer is 0.
           </span>
         </div>
         <div class="col-sm-12 col-md-4 text-muted">
@@ -26,6 +26,9 @@
             (change)="checkIfOpeningBalPresent()"
             [disabled]="disableval"
           />
+          <h6 class="text-danger" *ngIf="invalidcustomer">
+            <i class="fa fa-exclamation-triangle"></i> Invalid Customer.
+          </h6>
           <datalist id="customers">
             <option value="{{ cust.name }}" *ngFor="let cust of custdata">
             </option>
@@ -60,7 +63,9 @@
           <button
             class="btn btn-primary"
             (click)="addOpeningBalance()"
-            [disabled]="!customernm || !openingbaldate || disableval"
+            [disabled]="
+              !customernm || !openingbaldate || disableval || invalidcustomer
+            "
             *ngIf="!editdata"
           >
             Add Opening Balance
@@ -68,7 +73,9 @@
           <button
             class="btn btn-warning"
             (click)="updateOpeningBalance()"
-            [disabled]="!customernm || !openingbaldate || disableval"
+            [disabled]="
+              !customernm || !openingbaldate || disableval || invalidcustomer
+            "
             *ngIf="editdata"
           >
             Update Opening Balance
