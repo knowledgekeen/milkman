@@ -1,37 +1,46 @@
 <div class="container">
   <h5 class="my-3">Purchase Payments</h5>
+  <app-message
+    msgtext="{{ msgtext }}"
+    msgclass="{{ msgclass }}"
+    *ngIf="msgtext"
+  ></app-message>
   <div class="card">
     <div class="card-body">
       <div class="row">
         <div class="col-sm-12 col-md-5 text-muted">
-          <label for="suppliernm" class="label m-0">supplier Name</label>
+          <label for="suppliernm" class="label m-0">Supplier Name</label>
           <input
             type="text"
             id="suppliernm"
             class="form-control"
             [(ngModel)]="suppliernm"
-            placeholder="select supplier Name"
+            placeholder="Select Supplier Name"
             list="suppliers"
+            (change)="getClientId()"
           />
           <datalist id="suppliers">
             <option
               value="{{ supplier.name }}"
-              *ngFor="let supplier of supplierdata"
+              *ngFor="let supplier of suppdata"
             >
             </option>
           </datalist>
+          <h6 class="text-danger" *ngIf="invalidsupp">
+            <i class="fa fa-exclamation-triangle"></i> Invalid Supplier
+          </h6>
         </div>
-        <div class="col-sm-12 col-md-4 text-muted">
-          <label for="paymentdate" class="label m-0">Payment Date</label>
+        <div class="col-sm-12 col-md-3 text-muted">
+          <label for="paydate" class="label m-0">Payment Date</label>
           <input
             type="date"
-            id="paymentdate"
+            id="paydate"
             class="form-control"
-            [(ngModel)]="paymentdate"
+            [(ngModel)]="paydate"
             placeholder="Enter Payment Date"
           />
         </div>
-        <div class="col-sm-12 col-md-3 text-muted">
+        <div class="col-sm-12 col-md-4 text-muted">
           <label for="amountpaid" class="label m-0">Amount Paid</label>
           <input
             type="text"
@@ -41,27 +50,28 @@
             placeholder="Amount Paid"
           />
         </div>
-        <div class="col-sm-12 col-md-4 text-muted">
+        <div class="col-sm-12 col-md-3 text-muted">
           <h5 class="my-3"></h5>
-          <label for="modeofpayment" class="label m-0">Mode of payment</label>
+          <label for="modeofpayment" class="label m-0">Mode Of Payment</label>
           <select
             name="modeofpayment"
             id="modeofpayment"
             class="form-control"
             [(ngModel)]="modeofpayment"
           >
-            <option value="1">cash</option>
-            <option value="2">online</option>
+            <option value="1">CASH</option>
+            <option value="2">CHEQUE</option>
+            <option value="3">NEFT / RTGS</option>
           </select>
         </div>
-        <div class="col-sm-12 col-md-8 mt-8 text-muted">
+        <div class="col-sm-12 col-md-9 mt-8 text-muted">
           <h5 class="my-3"></h5>
           <label for="Particulars" class="label m-0">Particulars</label>
           <input
             type="text"
             id="Particulars"
             class="form-control"
-            [(ngModel)]="Particulars"
+            [(ngModel)]="particulars"
             placeholder="Particulars"
           />
         </div>
@@ -70,11 +80,12 @@
             class="btn btn-primary"
             [disabled]="
               !this.suppliernm ||
-              !this.paymentdate ||
-              this.amountpaid ||
-              this.modeofpayment ||
-              this.Particulars
+              !this.paydate ||
+              !this.amountpaid ||
+              !this.particulars ||
+              invalidsupp
             "
+            (click)="addPayment()"
           >
             Add Payment
           </button>
