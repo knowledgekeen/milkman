@@ -15,7 +15,14 @@ export class ViewpurchasesComponent implements OnInit {
   constructor(private _rest: RestService) { }
 
   ngOnInit(): void {
-    this.getAllPurchases().then(resp => { });
+    this.getAllPurchases().then(resp => {
+    });
+  }
+
+  getTotalAmount() {
+    for (let i in this.allpurchase) {
+      this.allpurchase[i].amount = parseFloat(this.allpurchase[i].quantity) * parseFloat(this.allpurchase[i].rate);
+    }
   }
 
   getAllPurchases() {
@@ -25,6 +32,7 @@ export class ViewpurchasesComponent implements OnInit {
       this._rest.getData("purchase.php", "getAllPurchases").subscribe(Response => {
         if (Response && Response["data"]) {
           this.allpurchase = Response["data"];
+          this.getTotalAmount();
           resolve(this.allpurchase);
         }
       });

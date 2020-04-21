@@ -17,6 +17,7 @@
             <th scope="col">Purchase Date</th>
             <th scope="col">Quantity</th>
             <th scope="col">Rate</th>
+            <th scope="col">Amount</th>
             <th scope="col">Edit</th>
           </tr>
         </thead>
@@ -27,7 +28,8 @@
             <td>{{ purch.prodname }}</td>
             <td>{{ purch.purchdate | date: "dd-MM-yyyy hh:mm a" }}</td>
             <td>{{ purch.quantity }}</td>
-            <td>{{ purch.rate }}</td>
+            <td>{{ purch.rate | currency: "INR" }}</td>
+            <td>{{ purch.amount | currency: "INR" }}</td>
 
             <td>
               <a
