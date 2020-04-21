@@ -1,0 +1,80 @@
+<div class="container">
+  <h5 class="my-3">Add Customer Opening Balance</h5>
+  <app-message
+    msgtext="{{ msgtext }}"
+    msgclass="{{ msgclass }}"
+    *ngIf="msgtext"
+  ></app-message>
+  <div class="card">
+    <div class="card-body">
+      <div class="row">
+        <div class="col-md-12 mb-3">
+          <span class="text-danger text-sm">
+            Note: You need to add opening balance even if the opening balance of
+            customer is 0.
+          </span>
+        </div>
+        <div class="col-sm-12 col-md-4 text-muted">
+          <label for="customernm" class="label m-0">Select Customer Name</label>
+          <input
+            type="text"
+            class="form-control"
+            [(ngModel)]="customernm"
+            id="customernm"
+            list="customers"
+            placeholder="Select Customer Name"
+            (change)="checkIfOpeningBalPresent()"
+            [disabled]="disableval"
+          />
+          <datalist id="customers">
+            <option value="{{ cust.name }}" *ngFor="let cust of custdata">
+            </option>
+          </datalist>
+        </div>
+        <div class="col-sm-12 col-md-4 text-muted">
+          <label for="openingbal" class="openingbal m-0">
+            Opening Balance (INR)
+          </label>
+          <input
+            type="text"
+            class="form-control"
+            [(ngModel)]="openingbal"
+            id="openingbal"
+            placeholder="Enter Opening Balance."
+            [disabled]="disableval"
+          />
+        </div>
+        <div class="col-sm-12 col-md-4 text-muted">
+          <label for="openingbaldate" class="label m-0">
+            Opening Balance Date
+          </label>
+          <input
+            type="date"
+            class="form-control"
+            [(ngModel)]="openingbaldate"
+            id="openingbaldate"
+            [disabled]="disableval"
+          />
+        </div>
+        <div class="col-sm-12 col-md-3 text-muted my-3">
+          <button
+            class="btn btn-primary"
+            (click)="addOpeningBalance()"
+            [disabled]="!customernm || !openingbaldate || disableval"
+            *ngIf="!editdata"
+          >
+            Add Opening Balance
+          </button>
+          <button
+            class="btn btn-warning"
+            (click)="updateOpeningBalance()"
+            [disabled]="!customernm || !openingbaldate || disableval"
+            *ngIf="editdata"
+          >
+            Update Opening Balance
+          </button>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

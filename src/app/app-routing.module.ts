@@ -9,9 +9,13 @@ import { PurchaseComponent } from "./purchase/purchase.component";
 import { ViewpurchasesComponent } from "./viewpurchases/viewpurchases.component";
 import { NeworderComponent } from "./neworder/neworder.component";
 import { MilkroutesComponent } from "./milkroutes/milkroutes.component";
-import { InhouseprodComponent } from './inhouseprod/inhouseprod.component';
+import { InhouseprodComponent } from "./inhouseprod/inhouseprod.component";
 import { SupplieropeningbalComponent } from "./supplieropeningbal/supplieropeningbal.component";
 import { PurchasepaymentComponent } from "./purchasepayment/purchasepayment.component";
+import { CustomeropeningbalComponent } from "./customeropeningbal/customeropeningbal.component";
+import { SalespaymentComponent } from "./salespayment/salespayment.component";
+import { PaymentbookComponent } from "./paymentbook/paymentbook.component";
+
 const routes: Routes = [
   { path: "login", component: LoginComponent },
   { path: "home", component: HomeComponent },
@@ -22,14 +26,17 @@ const routes: Routes = [
   { path: "purchase", component: PurchaseComponent },
   { path: "neworder", component: NeworderComponent },
   { path: "routes", component: MilkroutesComponent },
-  { path: 'inhouseprod', component: InhouseprodComponent },
+  { path: "inhouseprod", component: InhouseprodComponent },
   { path: "supplieropeningbal", component: SupplieropeningbalComponent },
   { path: "purchasepayment", component: PurchasepaymentComponent },
-  { path: "", redirectTo: "/home", pathMatch: "full" }
+  { path: "customeropeningbal", component: CustomeropeningbalComponent },
+  { path: "salespayment", component: SalespaymentComponent },
+  { path: "paymentbook", component: PaymentbookComponent },
+  { path: "", redirectTo: "/home", pathMatch: "full" },
 ];
 
 @NgModule({
   imports: [RouterModule.forRoot(routes, { useHash: true })],
-  exports: [RouterModule]
+  exports: [RouterModule],
 })
 export class AppRoutingModule {}

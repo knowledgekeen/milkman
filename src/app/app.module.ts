@@ -22,6 +22,10 @@ import { InhouseprodComponent } from './inhouseprod/inhouseprod.component';
 import { ViewstocksComponent } from './viewstocks/viewstocks.component';
 import { SupplieropeningbalComponent } from './supplieropeningbal/supplieropeningbal.component';
 import { PurchasepaymentComponent } from './purchasepayment/purchasepayment.component';
+import { PaymentbookComponent } from './paymentbook/paymentbook.component';
+import { CustomeropeningbalComponent } from './customeropeningbal/customeropeningbal.component';
+import { SalespaymentComponent } from './salespayment/salespayment.component';
+import { ViewallcustomersComponent } from './viewallcustomers/viewallcustomers.component';
 
 @NgModule({
   declarations: [
@@ -42,7 +46,11 @@ import { PurchasepaymentComponent } from './purchasepayment/purchasepayment.comp
     SupplieropeningbalComponent,
     PurchasepaymentComponent,
     InhouseprodComponent,
-    ViewstocksComponent
+    ViewstocksComponent,
+    PaymentbookComponent,
+    CustomeropeningbalComponent,
+    SalespaymentComponent,
+    ViewallcustomersComponent
   ],
   imports: [
     BrowserModule,

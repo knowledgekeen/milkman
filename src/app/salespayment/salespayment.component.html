@@ -1,0 +1,85 @@
+<div class="container">
+  <h5 class="my-3">Sales Payments</h5>
+  <div class="card">
+    <div class="card-body">
+      <div class="row">
+        <div class="col-sm-12 col-md-5 text-muted">
+          <label for="customernm" class="label m-0">Customer Name</label>
+          <input
+            type="text"
+            id="customernm"
+            class="form-control"
+            [(ngModel)]="customernm"
+            placeholder="select Customer Name"
+            list="customer"
+          />
+          <datalist id="customer">
+            <option
+              value="{{ customer.name }}"
+              *ngFor="let customer of customerdata"
+            >
+            </option>
+          </datalist>
+        </div>
+        <div class="col-sm-12 col-md-4 text-muted">
+          <label for="paymentdate" class="label m-0">Payment Date</label>
+          <input
+            type="date"
+            id="paymentdate"
+            class="form-control"
+            [(ngModel)]="paymentdate"
+            placeholder="Enter Payment Date"
+          />
+        </div>
+        <div class="col-sm-12 col-md-3 text-muted">
+          <label for="amountpaid" class="label m-0">Amount Paid</label>
+          <input
+            type="text"
+            id="amountpaid"
+            class="form-control"
+            [(ngModel)]="amountpaid"
+            placeholder="Amount Paid"
+          />
+        </div>
+        <div class="col-sm-12 col-md-4 text-muted">
+          <h5 class="my-3"></h5>
+          <label for="modeofpayment" class="label m-0">Mode of payment</label>
+          <select
+            name="modeofpayment"
+            id="modeofpayment"
+            class="form-control"
+            [(ngModel)]="modeofpayment"
+          >
+            <option value="1">cash</option>
+            <option value="2">online</option>
+          </select>
+        </div>
+        <div class="col-sm-12 col-md-8 mt-8 text-muted">
+          <h5 class="my-3"></h5>
+          <label for="Particulars" class="label m-0">Particulars</label>
+          <input
+            type="text"
+            id="Particulars"
+            class="form-control"
+            [(ngModel)]="Particulars"
+            placeholder="Particulars"
+          />
+        </div>
+        <div class="col-sm-12 col-md-12 mt-3 text-muted">
+          <button
+            class="btn btn-primary"
+            [disabled]="
+              !this.customernm ||
+              !this.paymentdate ||
+              !this.amountpaid ||
+              !this.modeofpayment ||
+              !this.Particulars
+            "
+          >
+            Add Payment
+          </button>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
