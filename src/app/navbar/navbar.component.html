@@ -86,15 +86,19 @@
                     <li>Customer / Supplier</li>
                     <li><a [routerLink]="['/addclient', 0]">Add Client</a></li>
                     <li><a [routerLink]="['/viewclients']">View Client</a></li>
+                  </ul>
+                  <div class="dropdown-divider"></div>
+                  <ul class="py-2 px-4 my-2 list-unstyled menus">
+                    <li>Opening Balance</li>
                     <li>
-                      <a [routerLink]="['/supplieropeningbal']"
-                        >add supplier opening balance</a
-                      >
+                      <a [routerLink]="['/supplieropeningbal']">
+                        Add Supplier Balance
+                      </a>
                     </li>
                     <li>
-                      <a [routerLink]="['/customeropeningbal']"
-                        >add Customer opening balance</a
-                      >
+                      <a [routerLink]="['/customeropeningbal']">
+                        Add Customer Balance
+                      </a>
                     </li>
                   </ul>
                   <div class="dropdown-divider"></div>

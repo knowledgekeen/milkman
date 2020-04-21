@@ -1,6 +1,6 @@
 import { Component, OnInit } from "@angular/core";
 import { RestService } from "../rest.service";
-import { ActivatedRoute, Router } from "@angular/router";
+import * as moment from "moment";
 
 @Component({
   selector: "app-customeropeningbal",
@@ -9,48 +9,56 @@ import { ActivatedRoute, Router } from "@angular/router";
 })
 export class CustomeropeningbalComponent implements OnInit {
   customernm: string = null;
+  custdata: any = null;
   openingbal: any = null;
   openingbaldate: any = null;
   msgtext: string = null;
   msgclass: string = null;
-  clientid: string = null;
-
+  custid: string = null;
+  disableval: boolean = false;
+  editdata: any = null;
   constructor(
     private _rest: RestService,
-    private _route: ActivatedRoute,
-    private _router: Router
-  ) {}
+  ) { }
 
   ngOnInit(): void {
-    this._route.params.subscribe((parm) => {
-      this.clientid = parm.clientid;
-     // if (parm.clientid.toString() != "0") {
-        //this.fetchClientDetails();
-     // }
-    });
+    this.resetForm();
+    this.getCustomers();
   }
-  updateopeningbal() {
+
+  addOpeningBalance() {
     let tmpobj = {
-      customernm: this.customernm,
+      clientid: this.custid,
       openingbal: this.openingbal,
-      openingbaldate: this.openingbaldate,
+      openingbaldate: new Date(this.openingbaldate).getTime(),
     };
     console.log(tmpobj);
     this._rest
-      .postData("openingbalance.php", "customeropeningbal", tmpobj)
+      .postData("openingbalance.php", "addOpeningBalance", tmpobj)
       .subscribe(
         (Response) => {
-          this.msgtext = "Customer opening balance" + " added successfully";
+          this.msgtext = "Customer opening balance added successfully";
           this.msgclass = "success";
           this.timercnt();
         },
         (error) => {
           console.log(error);
-          this.msgtext = "Customer opening balance" + " addition failed";
+          this.msgtext = "Customer opening balance addition failed";
           this.msgclass = "danger";
           this.timercnt();
         }
       );
+  }
+
+  getCustomers() {
+    let geturl = "ctype=2";
+    this._rest
+      .getData("client.php", "getAllClientsByType", geturl)
+      .subscribe((Response) => {
+        if (Response && Response["data"]) {
+          this.custdata = Response["data"];
+        }
+      });
   }
 
   timercnt() {
@@ -59,29 +67,67 @@ export class CustomeropeningbalComponent implements OnInit {
     setTimeout(function () {
       _this.msgtext = null;
       _this.msgclass = null;
-      if (_this.clientid != "0") {
-        _this._router.navigate(["viewclients"]);
-      }
     }, 2000);
   }
 
   resetForm() {
     this.customernm = null;
-    this.openingbal = null;
-    this.openingbaldate = null;
+    this.openingbal = 0;
+    this.setCurrFinanDate();
   }
 
-  /*fetchClientDetails() {
-    let urldata = "clientid=" + this.clientid;
+  setCurrFinanDate() {
+    let finandate = new Date();
+    finandate.setMonth(3, 1);  //Here 3 is April and 1 is Day 1
+    finandate.setHours(0, 0, 0, 1); //This sets hours to night 12:00:00:0001 AM
+    this.openingbaldate = moment(finandate, "YYYY-MM-DD").format("YYYY-MM-DD");
+  }
+
+  updateOpeningBalance() {
+    let tmpobj = {
+      openbalid: this.editdata.openbalid,
+      clientid: this.custid,
+      openingbal: this.openingbal,
+      openingbaldate: new Date(this.openingbaldate).getTime(),
+    };
+    console.log(tmpobj);
     this._rest
-      .getData("openingbalance.php", "getClientDetails", urldata)
-      .subscribe((Response) => {
-        if (Response && Response["data"]) {
-          let data = Response["data"];
-          this.customernm = data.customernm;
-          this.openingbal = data.openingbal;
-          this.openingbaldate = data.openingbaldate;
+      .postData("openingbalance.php", "updateOpeningBalance", tmpobj)
+      .subscribe(
+        (Response) => {
+          this.msgtext = "Customer Opening Balance Updated successfully";
+          this.msgclass = "success";
+          this.timercnt();
+        },
+        (error) => {
+          console.log(error);
+          this.msgtext = "Customer Opening Balance Updation Failed";
+          this.msgclass = "danger";
+          this.timercnt();
         }
-      });*/
+      );
+  }
+
+  checkIfOpeningBalPresent() {
+    this.editdata = null;
+    console.log(this.customernm);
+    this.disableval = true;
+    for (let i in this.custdata) {
+      if (this.customernm == this.custdata[i].name) {
+        this.custid = this.custdata[i].clientid;
+        break;
+      }
+    }
+
+    let urldata = "clientid=" + this.custid + "&openbaldate=" + (new Date(this.openingbaldate).getTime());
+    this._rest.getData("openingbalance.php", "checkIfOpeningBalPresent", urldata).subscribe(Response => {
+      if (Response && Response["data"]) {
+        let data = Response["data"];
+        this.editdata = data;
+        this.disableval = false;
+        this.openingbal = data.amount;
+      }
+      else { this.disableval = false; }
+    })
   }
 }
