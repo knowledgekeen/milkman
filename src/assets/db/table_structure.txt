@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: Apr 21, 2020 at 05:40 AM
+-- Generation Time: Apr 24, 2020 at 05:17 PM
 -- Server version: 10.1.38-MariaDB
 -- PHP Version: 7.3.3
 
@@ -39,6 +39,31 @@ CREATE TABLE `client_master` (
   `ctype` int(2) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
+--
+-- Dumping data for table `client_master`
+--
+
+INSERT INTO `client_master` (`clientid`, `name`, `cno`, `cperson`, `cno1`, `address`, `addinfo`, `ctype`) VALUES
+(1, 'Wasim', '1212', 'Abcde', '1234567890', 'Swargate, Pune 001', '', 2),
+(2, 'Test', '1212', 'aaa', '121', 'aaa', '', 2),
+(3, 'Aaaa', 'sdlfsd', 'df,gdfn', 'ldfkgdlk', 'sdgd', 'eefds', 1),
+(4, 'sdfg', '4553', 'sdfd', 'dfg', '', '', 1),
+(5, 'LMNOP', '12345678890', 'Soni', '122333444455555', 'AAn', '', 2),
+(6, 'AABBCC', '11', 'asdasd', '123123', 'assf', '', 2),
+(7, 'DDEEFF', '1212', '1212', '11222', '', '', 1),
+(8, 'asjfn', 'sdf', 'sdf', 'sdf', 'adv', 'sd', 1),
+(9, 'XYZO', '9898980000', 'XYZO', '9898980000', 'Baramati, Pune', '', 2),
+(10, 's;lfsd;', ';gdklg', 'sdgm', 'sdglk', '', '', 1),
+(11, 'sdfmds', 'sdg', 'fsfd', 'asdf', '', '', 1),
+(12, 'xdfd', 'sfds', '', '', '', '', 1),
+(13, 'salfn', 'sdfn', 'ad', 'lk', '', '', 1),
+(14, 'sdff', 'dfgd', '', '', '', '', 1),
+(15, 'sdffsdf', 'sdr243', '', '', '', '', 1),
+(16, 'sdffsdf', 'sdr243', '', '', '', '', 1),
+(17, 'sdgd', 'r5d4', '', '', '', '', 1),
+(18, 'sdfdsgf', '1234234', '', '', '', '', 1),
+(19, 'supp', '1213', 'sddlfm ', 'sdf', 'as', 'sdf', 1);
+
 -- --------------------------------------------------------
 
 --
@@ -52,6 +77,13 @@ CREATE TABLE `inhouse_production_register` (
   `proddt` varchar(20) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
+--
+-- Dumping data for table `inhouse_production_register`
+--
+
+INSERT INTO `inhouse_production_register` (`inhouseid`, `prodid`, `quantity`, `proddt`) VALUES
+(1, 4, '25', '1586975400001');
+
 -- --------------------------------------------------------
 
 --
@@ -64,6 +96,13 @@ CREATE TABLE `opening_bal_register` (
   `amount` varchar(50) NOT NULL,
   `openbaldt` varchar(20) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+
+--
+-- Dumping data for table `opening_bal_register`
+--
+
+INSERT INTO `opening_bal_register` (`openbalid`, `clientid`, `amount`, `openbaldt`) VALUES
+(1, 1, '600', '1585699200000');
 
 -- --------------------------------------------------------
 
@@ -83,6 +122,37 @@ CREATE TABLE `order_register` (
   `buffaloinr` varchar(50) NOT NULL,
   `cowinr` varchar(50) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+
+--
+-- Dumping data for table `order_register`
+--
+
+INSERT INTO `order_register` (`ordid`, `clientid`, `orderdt`, `buffaloqty`, `cowqty`, `deliveryplace`, `route`, `deliverydt`, `buffaloinr`, `cowinr`) VALUES
+(1, 1, '1586649600000', 0, 30, 'Swargate, Pune 001', 1, '1586734200000', '0', '48'),
+(2, 2, '1586649600000', 20, 0, 'aaa', 2, '1586734200000', '55', '0'),
+(3, 5, '1586908800000', 60, 0, 'Pimpri Chinchwad, Pune', 2, '1586993400000', '60', '0');
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `payment_register`
+--
+
+CREATE TABLE `payment_register` (
+  `payid` int(50) NOT NULL,
+  `clientid` int(50) NOT NULL,
+  `paydt` varchar(20) NOT NULL,
+  `amount` varchar(50) NOT NULL,
+  `particulars` varchar(1000) NOT NULL,
+  `paymode` int(10) NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+
+--
+-- Dumping data for table `payment_register`
+--
+
+INSERT INTO `payment_register` (`payid`, `clientid`, `paydt`, `amount`, `particulars`, `paymode`) VALUES
+(1, 7, '1587407400001', '500', 'Cash Payment', 1);
 
 -- --------------------------------------------------------
 
@@ -118,6 +188,14 @@ CREATE TABLE `purchase_register` (
   `rate` varchar(50) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
+--
+-- Dumping data for table `purchase_register`
+--
+
+INSERT INTO `purchase_register` (`purchid`, `prodid`, `clientid`, `purchdate`, `quantity`, `rate`) VALUES
+(1, 4, 19, '1585715400000', '160', '4500'),
+(2, 3, 7, '1585920600000', '100', '6000');
+
 -- --------------------------------------------------------
 
 --
@@ -131,6 +209,13 @@ CREATE TABLE `route_driver_register` (
   `vehicleno` varchar(50) NOT NULL,
   `deliverydt` varchar(20) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+
+--
+-- Dumping data for table `route_driver_register`
+--
+
+INSERT INTO `route_driver_register` (`routedriverid`, `route`, `drivernm`, `vehicleno`, `deliverydt`) VALUES
+(1, 1, 'Laxman Rasane', 'MH12AB1234', '1586975400001');
 
 -- --------------------------------------------------------
 
@@ -167,6 +252,13 @@ CREATE TABLE `user_master` (
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
 --
+-- Dumping data for table `user_master`
+--
+
+INSERT INTO `user_master` (`userid`, `username`, `password`, `fullname`) VALUES
+(1, 'admin', '15b58dc9465b768e848cb7584191aa8f', 'Wasim');
+
+--
 -- Indexes for dumped tables
 --
 
@@ -193,6 +285,12 @@ ALTER TABLE `opening_bal_register`
 --
 ALTER TABLE `order_register`
   ADD PRIMARY KEY (`ordid`);
+
+--
+-- Indexes for table `payment_register`
+--
+ALTER TABLE `payment_register`
+  ADD PRIMARY KEY (`payid`);
 
 --
 -- Indexes for table `product_master`
@@ -232,25 +330,31 @@ ALTER TABLE `user_master`
 -- AUTO_INCREMENT for table `client_master`
 --
 ALTER TABLE `client_master`
-  MODIFY `clientid` int(20) NOT NULL AUTO_INCREMENT;
+  MODIFY `clientid` int(20) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=20;
 
 --
 -- AUTO_INCREMENT for table `inhouse_production_register`
 --
 ALTER TABLE `inhouse_production_register`
-  MODIFY `inhouseid` int(50) NOT NULL AUTO_INCREMENT;
+  MODIFY `inhouseid` int(50) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
 
 --
 -- AUTO_INCREMENT for table `opening_bal_register`
 --
 ALTER TABLE `opening_bal_register`
-  MODIFY `openbalid` int(50) NOT NULL AUTO_INCREMENT;
+  MODIFY `openbalid` int(50) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
 
 --
 -- AUTO_INCREMENT for table `order_register`
 --
 ALTER TABLE `order_register`
-  MODIFY `ordid` int(20) NOT NULL AUTO_INCREMENT;
+  MODIFY `ordid` int(20) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=4;
+
+--
+-- AUTO_INCREMENT for table `payment_register`
+--
+ALTER TABLE `payment_register`
+  MODIFY `payid` int(50) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
 
 --
 -- AUTO_INCREMENT for table `product_master`
@@ -262,13 +366,13 @@ ALTER TABLE `product_master`
 -- AUTO_INCREMENT for table `purchase_register`
 --
 ALTER TABLE `purchase_register`
-  MODIFY `purchid` int(50) NOT NULL AUTO_INCREMENT;
+  MODIFY `purchid` int(50) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
 
 --
 -- AUTO_INCREMENT for table `route_driver_register`
 --
 ALTER TABLE `route_driver_register`
-  MODIFY `routedriverid` int(50) NOT NULL AUTO_INCREMENT;
+  MODIFY `routedriverid` int(50) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
 
 --
 -- AUTO_INCREMENT for table `stock_master`
@@ -280,7 +384,7 @@ ALTER TABLE `stock_master`
 -- AUTO_INCREMENT for table `user_master`
 --
 ALTER TABLE `user_master`
-  MODIFY `userid` int(10) NOT NULL AUTO_INCREMENT;
+  MODIFY `userid` int(10) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
 COMMIT;
 
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
