@@ -1,45 +1,84 @@
 <div class="container">
-  <h5 class="my-3">Add supplier opening balance</h5>
+  <h5 class="my-3">Add Supplier Opening Balance</h5>
+  <app-message
+    msgtext="{{ msgtext }}"
+    msgclass="{{ msgclass }}"
+    *ngIf="msgtext"
+  ></app-message>
   <div class="card">
     <div class="card-body">
       <div class="row">
+        <div class="col-md-12 mb-3">
+          <span class="text-primary text-sm">
+            <strong><i class="fa fa-info-circle"></i> Note:</strong> You need to
+            add opening balance even if the opening balance of supplier is 0.
+          </span>
+        </div>
         <div class="col-sm-12 col-md-4 text-muted">
-          <label for="suppliernm" class="label m-0">select Supplier Name</label>
+          <label for="suppliernm" class="label m-0">Select Supplier Name</label>
           <input
             type="text"
             class="form-control"
             [(ngModel)]="suppliernm"
             id="suppliernm"
+            list="suppliers"
             placeholder="select supplier Name"
+            (change)="checkIfOpeningBalPresent()"
+            [disabled]="disableval"
           />
+          <h6 class="text-danger" *ngIf="invalidsupplier">
+            <i class="fa fa-exclamation-triangle"></i> Invalid Customer.
+          </h6>
+          <datalist id="suppliers">
+            <option value="{{ supp.name }}" *ngFor="let supp of suppdata">
+            </option>
+          </datalist>
         </div>
         <div class="col-sm-12 col-md-4 text-muted">
-          <label for="openingBal" class="openingBal m-0">opening Balance</label>
+          <label for="openingbal" class="openingbal m-0">
+            Opening Balance (INR)
+          </label>
           <input
             type="text"
             class="form-control"
-            [(ngModel)]="openingBal"
-            id="openingBal"
-            placeholder="Enter opening balance."
+            [(ngModel)]="openingbal"
+            id="openingbal"
+            placeholder="Enter Opening Balance."
+            [disabled]="disableval"
           />
         </div>
         <div class="col-sm-12 col-md-4 text-muted">
-          <label for="openingBalDate" class="label m-0">
-            opening Balance Date</label
-          >
+          <label for="openingbaldate" class="label m-0">
+            Opening Balance Date
+          </label>
           <input
             type="date"
             class="form-control"
-            [(ngModel)]="openingBalDate"
-            id="openingBalDate"
+            [(ngModel)]="openingbaldate"
+            id="openingbaldate"
+            [disabled]="disableval"
           />
         </div>
         <div class="col-sm-12 col-md-3 text-muted my-3">
           <button
-            class="btn btn-sm btn-warning"
-            [disabled]="!suppliernm || !openingBal || !openingBalDate"
+            class="btn btn-primary"
+            (click)="addOpeningBalance()"
+            [disabled]="
+              !suppliernm || !disableval || !openingbaldate || invalidsupplier
+            "
+            *ngIf="!editdata"
           >
-            Update opening balance
+            Add Opening Balance
+          </button>
+          <button
+            class="btn btn-warning"
+            (click)="updateOpeningBalance()"
+            [disabled]="
+              !suppliernm || !openingbaldate || disableval || invalidsupplier
+            "
+            *ngIf="editdata"
+          >
+            Update Opening Balance
           </button>
         </div>
       </div>

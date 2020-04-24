@@ -19,10 +19,7 @@ export class CustomeropeningbalComponent implements OnInit {
   editdata: any = null;
   invalidcustomer: any = null;
 
-  constructor(
-    private _rest: RestService,
-  ) { }
-
+  constructor(private _rest: RestService) {}
   ngOnInit(): void {
     this.resetForm();
     this.getCustomers();
@@ -80,7 +77,7 @@ export class CustomeropeningbalComponent implements OnInit {
 
   setCurrFinanDate() {
     let finandate = new Date();
-    finandate.setMonth(3, 1);  //Here 3 is April and 1 is Day 1
+    finandate.setMonth(3, 1); //Here 3 is April and 1 is Day 1
     finandate.setHours(0, 0, 0, 1); //This sets hours to night 12:00:00:0001 AM
     this.openingbaldate = moment(finandate, "YYYY-MM-DD").format("YYYY-MM-DD");
   }
@@ -128,15 +125,23 @@ export class CustomeropeningbalComponent implements OnInit {
       return;
     }
 
-    let urldata = "clientid=" + this.custid + "&openbaldate=" + (new Date(this.openingbaldate).getTime());
-    this._rest.getData("openingbalance.php", "checkIfOpeningBalPresent", urldata).subscribe(Response => {
-      if (Response && Response["data"]) {
-        let data = Response["data"];
-        this.editdata = data;
-        this.disableval = false;
-        this.openingbal = data.amount;
-      }
-      else { this.disableval = false; }
-    })
+    let urldata =
+      "clientid=" +
+      this.custid +
+      "&openbaldate=" +
+      new Date(this.openingbaldate).getTime();
+    console.log(this.custid);
+    this._rest
+      .getData("openingbalance.php", "checkIfOpeningBalPresent", urldata)
+      .subscribe((Response) => {
+        if (Response && Response["data"]) {
+          let data = Response["data"];
+          this.editdata = data;
+          this.disableval = false;
+          this.openingbal = data.amount;
+        } else {
+          this.disableval = false;
+        }
+      });
   }
 }
