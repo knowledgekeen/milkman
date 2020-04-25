@@ -12,7 +12,10 @@ export class PaymentbookComponent implements OnInit {
   debit: any = null;
   credit: any = null;
   balance: any = null;
+  allpayments: any = null;
 
   constructor(private _rest: RestService) { }
   ngOnInit(): void { }
+  editPayment() { }
+  deletePayment() { }
 }
