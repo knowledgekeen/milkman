@@ -13,9 +13,10 @@ export class StorageService {
     let _this = this;
     return new Promise(function (resolve, reject) {
       if (_this.storagetype.getItem("userkey")) {
-        _this._global.setNavStatus(true);
         let cipherobj = (_this.storagetype.getItem("userkey"));
-        resolve(_this._enc.decrypt(cipherobj))
+        let data = _this._enc.decrypt(cipherobj)
+        _this._global.setNavStatus(data[0].fullname);
+        resolve(data)
       }
       else {
         reject(false);
