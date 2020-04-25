@@ -11,12 +11,14 @@ import { Router } from '@angular/router';
 })
 export class NavbarComponent implements OnInit {
   hidenavbar: boolean = true;
+  username: any = null;
   navstatussubs: Subscription;
   display_navbar: boolean = false;
 
   constructor(private _storage: StorageService, private _global: GlobalService, private _router: Router) {
     this.navstatussubs = this._global.getNavStatus().subscribe(Response => {
       if (Response.status) {
+        this.username = Response.status;
         this.display_navbar = Response.status;
       }
       else {
@@ -30,6 +32,7 @@ export class NavbarComponent implements OnInit {
   ngOnInit(): void {
     this._storage.checkStorage().then(Response => {
       // console.log(Response);
+      // this.username = Response[0].fullname;
     }, error => {
       console.log("error", error);
       this._router.navigate(["/login"]);

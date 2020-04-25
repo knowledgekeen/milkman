@@ -38,7 +38,8 @@ export class LoginComponent implements OnInit {
     this._rest.postData("user.php", "checkLogin", tmpobj).subscribe(Response => {
       if (Response) {
         this._storage.setStorage(Response).then(Resp => {
-          this._global.setNavStatus(true);
+          let data = this._enc.decrypt(Resp)[0];
+          this._global.setNavStatus(data.fullname);
           this._router.navigate(["/home"]);
         });
       }
