@@ -15,6 +15,8 @@ import { PurchasepaymentComponent } from "./purchasepayment/purchasepayment.comp
 import { CustomeropeningbalComponent } from "./customeropeningbal/customeropeningbal.component";
 import { SalespaymentComponent } from "./salespayment/salespayment.component";
 import { PaymentbookComponent } from "./paymentbook/paymentbook.component";
+import { ViewpurchpaymentsComponent } from './viewpurchpayments/viewpurchpayments.component';
+import { ViewsalepaymentsComponent } from './viewsalepayments/viewsalepayments.component';
 
 const routes: Routes = [
   { path: "login", component: LoginComponent },
@@ -31,7 +33,8 @@ const routes: Routes = [
   { path: "purchasepayment", component: PurchasepaymentComponent },
   { path: "customeropeningbal", component: CustomeropeningbalComponent },
   { path: "salespayment", component: SalespaymentComponent },
-  { path: "paymentbook", component: PaymentbookComponent },
+  { path: "viewpurchpay", component: ViewpurchpaymentsComponent },
+  { path: "viewsalepay", component: ViewsalepaymentsComponent },
   { path: "", redirectTo: "/home", pathMatch: "full" },
 ];
 
@@ -39,4 +42,4 @@ const routes: Routes = [
   imports: [RouterModule.forRoot(routes, { useHash: true })],
   exports: [RouterModule],
 })
-export class AppRoutingModule {}
+export class AppRoutingModule { }

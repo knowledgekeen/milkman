@@ -7,18 +7,12 @@ import { RestService } from "../rest.service";
   styleUrls: ["./paymentbook.component.css"],
 })
 export class PaymentbookComponent implements OnInit {
-  activetab: number = 1;
-  allsuppayment: any = [];
-  allcustpayment: any = [];
-
   date: any = null;
   particular: any = null;
   debit: any = null;
   credit: any = null;
   balance: any = null;
 
-  constructor(private _rest: RestService) {}
-  ngOnInit(): void {}
-  editPayment() {}
-  deletePayment() {}
+  constructor(private _rest: RestService) { }
+  ngOnInit(): void { }
 }

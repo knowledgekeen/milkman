@@ -26,6 +26,8 @@ import { PaymentbookComponent } from './paymentbook/paymentbook.component';
 import { CustomeropeningbalComponent } from './customeropeningbal/customeropeningbal.component';
 import { SalespaymentComponent } from './salespayment/salespayment.component';
 import { ViewallcustomersComponent } from './viewallcustomers/viewallcustomers.component';
+import { ViewpurchpaymentsComponent } from './viewpurchpayments/viewpurchpayments.component';
+import { ViewsalepaymentsComponent } from './viewsalepayments/viewsalepayments.component';
 
 @NgModule({
   declarations: [
@@ -50,7 +52,9 @@ import { ViewallcustomersComponent } from './viewallcustomers/viewallcustomers.c
     PaymentbookComponent,
     CustomeropeningbalComponent,
     SalespaymentComponent,
-    ViewallcustomersComponent
+    ViewallcustomersComponent,
+    ViewpurchpaymentsComponent,
+    ViewsalepaymentsComponent
   ],
   imports: [
     BrowserModule,
