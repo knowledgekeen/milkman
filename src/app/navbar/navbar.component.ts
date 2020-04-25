@@ -17,6 +17,7 @@ export class NavbarComponent implements OnInit {
 
   constructor(private _storage: StorageService, private _global: GlobalService, private _router: Router) {
     this.navstatussubs = this._global.getNavStatus().subscribe(Response => {
+      // Response.status is a dynamic SUBJECT variable used for conditional navbar and display name on the login form 
       if (Response.status) {
         this.username = Response.status;
         this.display_navbar = Response.status;
