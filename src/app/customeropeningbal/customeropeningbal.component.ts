@@ -19,7 +19,7 @@ export class CustomeropeningbalComponent implements OnInit {
   editdata: any = null;
   invalidcustomer: any = null;
 
-  constructor(private _rest: RestService) {}
+  constructor(private _rest: RestService) { }
   ngOnInit(): void {
     this.resetForm();
     this.getCustomers();
@@ -70,6 +70,9 @@ export class CustomeropeningbalComponent implements OnInit {
   }
 
   resetForm() {
+    this.editdata = null;
+    this.custid = null;
+    this.invalidcustomer = null;
     this.customernm = null;
     this.openingbal = 0;
     this.setCurrFinanDate();
@@ -143,5 +146,10 @@ export class CustomeropeningbalComponent implements OnInit {
           this.disableval = false;
         }
       });
+  }
+
+
+  clearCustomerName() {
+    this.resetForm();
   }
 }

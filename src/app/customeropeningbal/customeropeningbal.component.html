@@ -14,7 +14,7 @@
             add opening balance even if the opening balance of customer is 0.
           </span>
         </div>
-        <div class="col-sm-12 col-md-4 text-muted">
+        <div class="col-sm-12 col-md-4 text-muted position-relative">
           <label for="customernm" class="label m-0">Select Customer Name</label>
           <input
             type="text"
@@ -26,6 +26,12 @@
             (change)="checkIfOpeningBalPresent()"
             [disabled]="disableval"
           />
+          <i
+            class="fa fa-times text-danger position-absolute clearIcon"
+            title="Clear Customer Name"
+            (click)="clearCustomerName()"
+            *ngIf="customernm"
+          ></i>
           <h6 class="text-danger" *ngIf="invalidcustomer">
             <i class="fa fa-exclamation-triangle"></i> Invalid Customer.
           </h6>

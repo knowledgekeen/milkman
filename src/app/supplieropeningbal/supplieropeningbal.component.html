@@ -14,7 +14,7 @@
             add opening balance even if the opening balance of supplier is 0.
           </span>
         </div>
-        <div class="col-sm-12 col-md-4 text-muted">
+        <div class="col-sm-12 col-md-4 text-muted position-relative">
           <label for="suppliernm" class="label m-0">Select Supplier Name</label>
           <input
             type="text"
@@ -22,10 +22,16 @@
             [(ngModel)]="suppliernm"
             id="suppliernm"
             list="suppliers"
-            placeholder="select supplier Name"
+            placeholder="Select Supplier Name"
             (change)="checkIfOpeningBalPresent()"
             [disabled]="disableval"
           />
+          <i
+            class="fa fa-times text-danger position-absolute suppClearIcon"
+            title="Clear Supplier Name"
+            (click)="clearSupplierName()"
+            *ngIf="suppliernm"
+          ></i>
           <h6 class="text-danger" *ngIf="invalidsupplier">
             <i class="fa fa-exclamation-triangle"></i> Invalid Customer.
           </h6>
@@ -64,7 +70,7 @@
             class="btn btn-primary"
             (click)="addOpeningBalance()"
             [disabled]="
-              !suppliernm || !disableval || !openingbaldate || invalidsupplier
+              !suppliernm || disableval || !openingbaldate || invalidsupplier
             "
             *ngIf="!editdata"
           >

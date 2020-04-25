@@ -19,12 +19,13 @@ export class SupplieropeningbalComponent implements OnInit {
   editdata: any = null;
   invalidsupplier: any = null;
 
-  constructor(private _rest: RestService) {}
+  constructor(private _rest: RestService) { }
 
   ngOnInit(): void {
     this.resetForm();
     this.getCustomers();
   }
+
   addOpeningBalance() {
     let tmpobj = {
       clientid: this.suppid,
@@ -48,6 +49,7 @@ export class SupplieropeningbalComponent implements OnInit {
         }
       );
   }
+
   getCustomers() {
     let geturl = "ctype=1";
     this._rest
@@ -69,6 +71,9 @@ export class SupplieropeningbalComponent implements OnInit {
   }
 
   resetForm() {
+    this.editdata = null;
+    this.suppid = null;
+    this.invalidsupplier = null;
     this.suppliernm = null;
     this.openingbal = 0;
     this.setCurrFinanDate();
@@ -80,6 +85,7 @@ export class SupplieropeningbalComponent implements OnInit {
     finandate.setHours(0, 0, 0, 1); //This sets hours to night 12:00:00:0001 AM
     this.openingbaldate = moment(finandate, "YYYY-MM-DD").format("YYYY-MM-DD");
   }
+
   updateOpeningBalance() {
     let tmpobj = {
       openbalid: this.editdata.openbalid,
@@ -104,6 +110,7 @@ export class SupplieropeningbalComponent implements OnInit {
         }
       );
   }
+
   checkIfOpeningBalPresent() {
     this.editdata = null;
     this.suppid = null;
@@ -116,6 +123,7 @@ export class SupplieropeningbalComponent implements OnInit {
         break;
       }
     }
+    console.log(this.suppid)
     if (this.suppid == null) {
       this.invalidsupplier = true;
       this.disableval = false;
@@ -139,5 +147,9 @@ export class SupplieropeningbalComponent implements OnInit {
           this.disableval = false;
         }
       });
+  }
+
+  clearSupplierName() {
+    this.resetForm();
   }
 }
