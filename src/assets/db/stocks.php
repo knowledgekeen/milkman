@@ -35,7 +35,7 @@ if($action == "getAllStocks"){
 		header(' ', true, 200);
 	}
 	else{
-		$log  = "File: client.php - Method: getAllClients".PHP_EOL.
+		$log  = "File: stocks.php - Method: $action".PHP_EOL.
 		"Error message: ".$conn->error.PHP_EOL;
 		write_log($log, "error", $conn->error);
 		$data["status"] = 204;

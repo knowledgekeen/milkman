@@ -11,46 +11,45 @@ if($action == "placeOrder"){
 	$headers = apache_request_headers();
 	authenticate($headers);
     $data = json_decode(file_get_contents("php://input"));
-	$clientid = $data->clientid;
 	$orderdt = $data->orderdt;
-	$buffaloqty = $data->buffaloqty;
-	$cowqty = $data->cowqty;
-	$deliveryplace = $data->deliveryplace;
-	$route = $data->route;
-	$deliverydt = $data->deliverydt;
-	$buffaloinr = $data->buffaloinr;
-	$cowinr = $data->cowinr;
-	$milkstkobj = $data->milkstkobj;
+	$routeno = $data->routeno;
+	$drivernm = $data->drivernm;
+	$vehicleno = $data->vehicleno;
+	$buffalostkqty = $data->buffalostkqty;
+	$cowstkqty = $data->cowstkqty;
+	$custorders = $data->custorders;
 	
     if($_SERVER['REQUEST_METHOD']=='POST'){
-		$sql = "INSERT INTO `order_register`(`clientid`, `orderdt`, `buffaloqty`, `cowqty`, `deliveryplace`, `route`, `deliverydt`, `buffaloinr`, `cowinr`) VALUES ($clientid,'$orderdt',$buffaloqty,$cowqty,'$deliveryplace',$route,'$deliverydt','$buffaloinr','$cowinr')";
+		$sql = "INSERT INTO `route_driver_register`(`route`, `drivernm`, `vehicleno`, `orderdt`) VALUES ($routeno, '$drivernm', '$vehicleno', '$orderdt')";
 		$result = $conn->query($sql);
-		$orderid = $conn->insert_id;
+		$orddriverid = $conn->insert_id;
+		for($i=0; $i<count($custorders); $i++) {
+			$cust = $custorders[$i];
+			$sqlins="INSERT INTO `order_register`(`clientid`, `orderdt`, `buffaloqty`, `cowqty`, `route`, `buffaloinr`, `cowinr`, `amount`) VALUES ($cust->clientid,'$orderdt',$cust->buffaloqty,$cust->cowqty,$routeno,'$cust->buffalorate', '$cust->cowrate', '$cust->amount')";
+			$resultins = $conn->query($sqlins);
+			$orderid = $conn->insert_id;
+		}
 
-        for($i=0; $i<count($milkstkobj); $i++) {
-            $prodid=$milkstkobj[$i]->prodid;
-            $qty=$milkstkobj[$i]->qty;
-            $sql = "SELECT `stockid`,`quantity` FROM `stock_master` WHERE `prodid`=$prodid";
-            $result = $conn->query($sql);
-            $row = $result->fetch_array(MYSQLI_ASSOC);
-            $totalqty = floatval($row["quantity"]) - floatval($qty);
-
-            $sqlupdt = "UPDATE `stock_master` SET `quantity`='$totalqty' WHERE `prodid`=$prodid";
-            $resultqty = $conn->query($sqlupdt);
-        }
+		// Update buffalo stock quantity in stock
+		$sqlbuffupt = "UPDATE `stock_master` SET `quantity`='$buffalostkqty' WHERE `stockid`=2";
+		$resultbuffupt = $conn->query($sqlbuffupt);
+		
+		// Update cow stock quantity in stock
+		$sqlcowupt = "UPDATE `stock_master` SET `quantity`='$cowstkqty' WHERE `stockid`=1";
+		$resultcowupt = $conn->query($sqlcowupt);
 	}
     $data1= array();
     if($result){
 		$data1["status"] = 200;
-		$data1["data"] = $orderid;
+		$data1["data"] = $orddriverid;
 		header(' ', true, 200);
 		//Logging
-		$log  = "File: product.php - Method: $action".PHP_EOL.
+		$log  = "File: order.php - Method: $action".PHP_EOL.
 		"Data: ".json_encode($data).PHP_EOL;
 		write_log($log, "success", NULL);
 	}
 	else{
-		$log  = "File: product.php - Method: $action".PHP_EOL.
+		$log  = "File: order.php - Method: $action".PHP_EOL.
 		"Error message: ".$conn->error.PHP_EOL.
 		"Data: ".json_encode($data).PHP_EOL;
 		write_log($log, "error", $conn->error);
