@@ -200,5 +200,131 @@ if($action == "getAllClientsByType"){
 	}
 	echo json_encode($data);
 }
+//addCustomer code
+if($action == "addCustomer"){
+	$headers = apache_request_headers();
+	authenticate($headers);
+    $data = json_decode(file_get_contents("php://input"));
+	$fname = mysqli_real_escape_string($conn,$data->fname);
+	$cno = $data->cno;
+	$cperson = $data->cperson;
+	$cno1 = $data->cno1;
+	$address = mysqli_real_escape_string($conn,$data->address);
+	$addinfo = mysqli_real_escape_string($conn,$data->addinfo);
+	$routeno=$data->routeno;
+	$buffalorate=$data->buffalorate;
+	$cowrate=$data->cowrate;
+	if($buffalorate==null){
+		$buffalorate="0";
+	}
+	if($cowrate==null){
+		$cowrate="0";
+	}
+	if($routeno==null)
+	{
+		$routeno="Null";
+	}
+    if($_SERVER['REQUEST_METHOD']=='POST'){
+        //Status: 1 == 'active'
+		$sql = "INSERT INTO `client_master`(`name`, `cno`, `cperson`, `cno1`, `address`, `addinfo`,`routeno`,`buffalorate`,`cowrate` ) VALUES ('$fname','$cno','$cperson','$cno1','$address','$addinfo','$routeno','$buffalorate','$cowrate')";
+        $result = $conn->query($sql);
+        $userid = $conn->insert_id;
+	}
+    $data1= array();
+    if($result){
+		$data1["status"] = 200;
+		$data1["data"] = $userid;
+		header(' ', true, 200);
+		//Logging
+		$log  = "File: client.php - Method: addClient".PHP_EOL.
+		"Data: ".json_encode($data).PHP_EOL;
+		write_log($log, "success", NULL);
+	}
+	else{
+		$log  = "File: client.php - Method: addClient".PHP_EOL.
+		"Error message: ".$conn->error.PHP_EOL.
+		"Data: ".json_encode($data).PHP_EOL;
+		write_log($log, "error", $conn->error);
+		$data1["status"] = 204;
+		header(' ', true, 204);
+	}
 
+	echo json_encode($data1);
+}
+
+if($action == "getCustomerDetails"){
+	$headers = apache_request_headers();
+	authenticate($headers);
+	$clientid = ($_GET["clientid"]);
+	$sql = "SELECT * FROM `client_master` WHERE `clientid`=$clientid ORDER BY `name`";
+	$result = $conn->query($sql);
+	$row = $result->fetch_array(MYSQLI_ASSOC);
+	$tmp = array();
+	$data = array();
+
+	if($result){
+		$tmp['clientid'] = $row['clientid'];
+		$tmp['name'] = $row['name'];
+		$tmp['address'] = $row['address'];
+		$tmp['cno'] = $row['cno'];
+		$tmp['cperson'] = $row['cperson'];
+		$tmp['cno1'] = $row['cno1'];
+		$tmp['addinfo'] = $row['addinfo'];
+		$data['routeno']=$row['routeno'];
+		$data['buffalorate']=$row['buffalorate'];
+		$data['cowrate']=$row['cowrate'];
+		$data["status"] = 200;
+		$data["data"] = $tmp;
+		header(' ', true, 200);
+	}
+	else{
+		$log  = "File: client.php - Method: $action".PHP_EOL.
+		"Error message: ".$conn->error.PHP_EOL;
+		write_log($log, "error", $conn->error);
+		$data["status"] = 204;
+		header(' ', true, 204);
+	}
+	echo json_encode($data);
+}
+
+if($action == "updateCustomer"){
+	$headers = apache_request_headers();
+	authenticate($headers);
+    $data = json_decode(file_get_contents("php://input"));
+	$fname = mysqli_real_escape_string($conn,$data->fname);
+	$clientid = $data->clientid;
+	$cno = $data->cno;
+	$cperson = $data->cperson;
+	$cno1 = $data->cno1;
+	$routeno=$data->routeno;
+	$buffalorate=$data->buffalorate;
+	$cowrate=$data->cowrate;
+	$address = mysqli_real_escape_string($conn,$data->address);
+	$addinfo = mysqli_real_escape_string($conn,$data->addinfo);
+	if($_SERVER['REQUEST_METHOD']=='POST'){
+        //Status: 1 == 'active'
+		$sql = "UPDATE `client_master` SET `name`='$fname',`cno`='$cno',`cperson`='$cperson',`cno1`='$cno1',`address`='$address',`addinfo`='$addinfo',`routeno`,'$routeno',`buffalorate`,'$buffalorate',`cowrate`,'$cowrate'  WHERE `clientid`=$clientid";
+        $result = $conn->query($sql);
+	}
+    $data1= array();
+    if($result){
+		$data1["status"] = 200;
+		$data1["data"] = $clientid;
+		header(' ', true, 200);
+		//Logging
+		$log  = "File: client.php - Method: $action".PHP_EOL.
+		"Data: ".json_encode($data).PHP_EOL;
+		write_log($log, "success", NULL);
+	}
+	else{
+		$log  = "File: client.php - Method: $action".PHP_EOL.
+		"Error message: ".$conn->error.PHP_EOL.
+		"Data: ".json_encode($data).PHP_EOL;
+		write_log($log, "error", $conn->error);
+		$data1["status"] = 204;
+		header(' ', true, 204);
+	}
+
+	echo json_encode($data1);
+}
 ?>
