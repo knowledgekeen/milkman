@@ -1,5 +1,10 @@
 <div class="container">
   <h5 class="my-3">Sales Payments</h5>
+  <app-message
+    msgtext="{{ msgtext }}"
+    msgclass="{{ msgclass }}"
+    *ngIf="msgtext"
+  ></app-message>
   <div class="card">
     <div class="card-body">
       <div class="row">
@@ -11,12 +16,13 @@
             class="form-control"
             [(ngModel)]="customernm"
             placeholder="select Customer Name"
-            list="customer"
+            list="customers"
+            (change)="getClientId()"
           />
-          <datalist id="customer">
+          <datalist id="customers">
             <option
               value="{{ customer.name }}"
-              *ngFor="let customer of customerdata"
+              *ngFor="let customer of custdata"
             >
             </option>
           </datalist>
@@ -25,9 +31,9 @@
           <label for="paymentdate" class="label m-0">Payment Date</label>
           <input
             type="date"
-            id="paymentdate"
+            id="paydate"
             class="form-control"
-            [(ngModel)]="paymentdate"
+            [(ngModel)]="paydate"
             placeholder="Enter Payment Date"
           />
         </div>
@@ -50,19 +56,20 @@
             class="form-control"
             [(ngModel)]="modeofpayment"
           >
-            <option value="1">cash</option>
-            <option value="2">online</option>
+            <option value="1">CASH</option>
+            <option value="2">CHEQUE</option>
+            <option value="3">NEFT / RTGS</option>
           </select>
         </div>
         <div class="col-sm-12 col-md-8 mt-8 text-muted">
           <h5 class="my-3"></h5>
-          <label for="Particulars" class="label m-0">Particulars</label>
+          <label for="particulars" class="label m-0">Particulars</label>
           <input
             type="text"
-            id="Particulars"
+            id="particulars"
             class="form-control"
-            [(ngModel)]="Particulars"
-            placeholder="Particulars"
+            [(ngModel)]="particulars"
+            placeholder="particulars"
           />
         </div>
         <div class="col-sm-12 col-md-12 mt-3 text-muted">
@@ -70,11 +77,12 @@
             class="btn btn-primary"
             [disabled]="
               !this.customernm ||
-              !this.paymentdate ||
+              !this.paydate ||
               !this.amountpaid ||
-              !this.modeofpayment ||
-              !this.Particulars
+              invalidcust ||
+              !this.particulars
             "
+            (click)="addPayment()"
           >
             Add Payment
           </button>
