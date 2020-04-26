@@ -7,135 +7,143 @@ import * as moment from "moment";
   templateUrl: "./neworder.component.html",
   styleUrls: ["./neworder.component.css"],
 })
-export class NeworderComponent implements OnInit {
-  custdata: any = null;
-  productdata: any = null;
-  milkdata: any = null;
-  custname: string = null;
-  msgtext: string = null;
-  msgclass: string = null;
-  orderdate: any = null;
-  buffalomilk: string = "0";
-  cowmilk: string = "0";
-  deliveryplace: string = null;
-  route: string = null;
-  deliverydate: any = null;
-  deliverytime: any = null;
-  buffalomilkrate: string = "0";
-  cowmilkrate: string = "0";
 
-  constructor(private _rest: RestService) {}
+// TODO: Once an order is placed and same route is selected get the orders back
+export class NeworderComponent implements OnInit {
+  msgclass: string = null;
+  msgtext: string = null;
+  routeno: string = null;
+  vehicleno: string = null;
+  drivernm: string = null;
+  orderdt: any = null;
+  allcustdata: any = null;
+  routecusts: any = null;
+  routesdata: any = null;
+  stockbuffaloqty: any = 0;
+  stockcowqty: any = 0;
+  orderalreadyplaced: boolean = false;
+
+  constructor(private _rest: RestService) { }
 
   ngOnInit(): void {
-    this.milkdata = [];
-    this.resetForm();
-    this.getCustomers();
-    this.getAllProducts().then((resp) => {
-      let result: any;
-      result = resp;
-      result.filter((data) => {
-        if (data.prodname.match("Milk")) {
-          this.milkdata.push(data);
-        }
-      });
-      console.log(this.milkdata);
-    });
-  }
-
-  getCustomers() {
-    let geturl = "ctype=2";
-    this._rest
-      .getData("client.php", "getAllClientsByType", geturl)
-      .subscribe((Response) => {
-        if (Response && Response["data"]) {
-          this.custdata = Response["data"];
-        }
-      });
-  }
-
-  getAllProducts() {
-    return new Promise((resolve, reject) => {
-      this._rest
-        .getData("product.php", "getAllProducts")
-        .subscribe((Response) => {
-          if (Response && Response["data"]) {
-            this.productdata = Response["data"];
-            resolve(this.productdata);
-          }
-        });
-    });
-  }
-
-  placeOrder() {
-    if (
-      !this.custname ||
-      !this.orderdate ||
-      !this.buffalomilk ||
-      !this.cowmilk ||
-      !this.deliveryplace ||
-      !this.route ||
-      !this.deliverydate ||
-      !this.deliverytime ||
-      !this.buffalomilkrate ||
-      !this.cowmilkrate
-    ) {
-      this.msgtext = "All Fields are Compulsory";
-      this.msgclass = "danger";
+    this.orderalreadyplaced = false;
+    let tomorrowdt = new Date();
+    tomorrowdt.setDate(tomorrowdt.getDate() + 1);
+    tomorrowdt.setHours(0, 0, 0, 1);
+    this.orderdt = moment(tomorrowdt, "YYYY-MM-DD").format("YYYY-MM-DD");
+    this.getAllStocks();
+    this.getAllClientsByType().then(Resp => {
+      this.getAllDistinctRoutes().then(Routes => {
+        this.filterCustAsPerRoutes();
+      }).catch(routeerr => {
+        this.routecusts = [];
+      })
+    }).catch(err => {
+      this.msgclass = 'danger';
+      this.msgtext = 'Cannot find any customers, Kindly add a customer first';
       this.timer();
+    })
+  }
+
+  // This method checks if any data present for this route and date
+  getRoutesOrders(dt) {
+    this.orderalreadyplaced = false;
+    let urldata = 'routeno=' + this.routeno + "&tomdt=" + dt.getTime();
+    this._rest.getData("routes.php", "getRoutesOrders", urldata)
+      .subscribe(Response => {
+        if (Response && Response["data"]) {
+          console.log(Response)
+          this.setRouteOrdersData(Response);
+        }
+      });
+  }
+
+  // This method is only called if there is some data present for this route and on this date, AND sets the data back
+  setRouteOrdersData(Response) {
+    this.orderalreadyplaced = true;
+    let data = Response["data"];
+    let driverdets = Response["driverdets"];
+    for (let i in this.routecusts) {
+      this.routecusts[i].buffaloqty = data[i].buffaloqty;
+      this.routecusts[i].cowqty = data[i].cowqty;
+      this.routecusts[i].amount = data[i].amount;
+    }
+    this.drivernm = driverdets.drivernm;
+    this.vehicleno = driverdets.vehicleno;
+  }
+
+  filterCustAsPerRoutes() {
+    this.resetForm();
+    let tmpcustdata = JSON.parse(JSON.stringify(this.allcustdata)); //Deep Copy
+
+    for (let i in tmpcustdata) {
+      if (this.routeno === tmpcustdata[i].routeno) {
+        this.routecusts.push(tmpcustdata[i]);
+      }
+    }
+    if (this.routecusts.length > 0) {
     } else {
-      let custid = null;
-      for (let i in this.custdata) {
-        if (this.custname == this.custdata[i].name) {
-          custid = this.custdata[i].clientid;
-          break;
+      this.routecusts = []
+    }
+
+    let tomorrowdt = new Date(this.orderdt);
+    tomorrowdt.setHours(0, 0, 0, 1);
+    this.getRoutesOrders(tomorrowdt);
+  }
+
+  getAllDistinctRoutes() {
+    let _this = this;
+    return new Promise(function (resolve, reject) {
+      _this._rest.getData("routes.php", "getAllDistinctRoutes").subscribe(Response => {
+        if (Response && Response["data"]) {
+          _this.routesdata = Response["data"];
+          _this.routeno = _this.routesdata[0].routeno;
+          resolve(true);
+        }
+        else {
+          reject(false);
+        }
+      });
+    });
+  }
+
+  getAllStocks() {
+    this._rest.getData("stocks.php", "getAllStocks").subscribe(Response => {
+      if (Response && Response["data"]) {
+        let data = Response["data"];
+        for (let i in data) {
+          if (data[i].stockid.toString() === "1") {
+            this.stockcowqty = data[i].quantity;
+          }
+          if (data[i].stockid.toString() === "2") {
+            this.stockbuffaloqty = data[i].quantity;
+          }
         }
       }
-      if (custid == null) {
-        this.msgtext =
-          'Customer cannot be found, Kindly add this customer first in "Add Client" Menu';
-        this.msgclass = "danger";
-        this.timer(3000);
-        return;
-      }
+    })
+  }
 
-      let milkstkobj = [];
-      milkstkobj.push({
-        prodid: this.milkdata[0].prodid,
-        prodname: this.milkdata[0].prodname,
-        qty: this.buffalomilk,
+  getAllClientsByType() {
+    let geturl = 'ctype=2';
+    let _this = this;
+    return new Promise(function (resolve, reject) {
+      _this._rest.getData("client.php", 'getAllClientsByType', geturl).subscribe(Response => {
+        if (Response && Response["data"]) {
+          _this.allcustdata = Response["data"];
+          // This is dynamic qty added to use by later;
+          for (let i in _this.allcustdata) {
+            _this.allcustdata[i].buffaloqty = 0;
+            _this.allcustdata[i].cowqty = 0;
+            _this.allcustdata[i].amount = 0;
+          }
+          resolve(true);
+        }
+        else {
+          reject(false)
+        }
+        _this = null;
       });
-      milkstkobj.push({
-        prodid: this.milkdata[1].prodid,
-        prodname: this.milkdata[1].prodname,
-        qty: this.cowmilk,
-      });
-
-      let dt = new Date(this.orderdate);
-      let deldt = new Date(this.deliverydate);
-      deldt.setHours(parseInt(this.deliverytime.split(":")[0]));
-      deldt.setMinutes(parseInt(this.deliverytime.split(":")[1]));
-      let custobj = {
-        clientid: custid,
-        orderdt: dt.getTime(),
-        buffaloqty: this.buffalomilk,
-        cowqty: this.cowmilk,
-        deliveryplace: this.deliveryplace,
-        route: this.route,
-        deliverydt: deldt.getTime(),
-        buffaloinr: this.buffalomilkrate,
-        cowinr: this.cowmilkrate,
-        milkstkobj: milkstkobj,
-      };
-      // console.log(custobj);
-      this._rest
-        .postData("order.php", "placeOrder", custobj)
-        .subscribe((Response) => {
-          this.msgtext = "Order Placed Successfully";
-          this.msgclass = "success";
-          this.timer();
-          this.resetForm();
-        });
-    }
+    });
   }
 
   timer(ms: any = 2000) {
@@ -146,54 +154,52 @@ export class NeworderComponent implements OnInit {
     }, ms);
   }
 
-  resetForm() {
-    let dt = moment(new Date(), "YYYY-MM-DD");
-    this.orderdate = dt.format("YYYY-MM-DD");
-    let tomorrowdt = new Date();
-    tomorrowdt.setHours(5, 0, 0, 0);
-    tomorrowdt.setDate(tomorrowdt.getDate() + 1);
-    this.deliverydate = moment(tomorrowdt, "YYYY-MM-DD").format("YYYY-MM-DD");
-    this.deliverytime = moment(tomorrowdt, "YYYY-MM-DD").format("HH:mm");
-    this.custname = null;
-    this.buffalomilk = "0";
-    this.cowmilk = "0";
-    this.deliveryplace = null;
-    this.route = null;
-    this.buffalomilkrate = "0";
-    this.cowmilkrate = "0";
-  }
-
-  getCustomerDetails() {
-    this.buffalomilk = "0";
-    this.cowmilk = "0";
-    this.deliveryplace = null;
-    this.route = null;
-    this.buffalomilkrate = "0";
-    this.cowmilkrate = "0";
-    for (let i in this.custdata) {
-      if (this.custname == this.custdata[i].name) {
-        this.deliveryplace = this.custdata[i].address;
-        this.getCustomerLastRouteData(this.custdata[i].clientid);
-        break;
-      }
+  placeOrder() {
+    let totalbuffqty = 0, totalcowqty = 0;
+    for (let i in this.routecusts) {
+      totalbuffqty += parseFloat(this.routecusts[i].buffaloqty);
+      totalcowqty += parseFloat(this.routecusts[i].cowqty);
     }
+    if ((parseFloat(this.stockbuffaloqty) - totalbuffqty) < 0 || (parseFloat(this.stockcowqty) - totalcowqty) < 0) {
+      this.msgclass = "danger";
+      this.msgtext = "Your total order cannot be greater than available stock...";
+      this.timer();
+      return;
+    }
+    let dt = new Date(this.orderdt);
+    dt.setHours(0, 0, 0, 1);
+    let tmpobj = {
+      orderdt: dt.getTime(),
+      routeno: this.routeno,
+      drivernm: this.drivernm,
+      vehicleno: this.vehicleno,
+      custorders: this.routecusts,
+      buffalostkqty: (parseFloat(this.stockbuffaloqty) - totalbuffqty),
+      cowstkqty: (parseFloat(this.stockcowqty) - totalcowqty),
+    };
+    console.log(tmpobj);
+
+    this._rest.postData("order.php", "placeOrder", tmpobj).subscribe(Response => {
+      this.msgtext = "Order Placed Successfully...";
+      this.msgclass = "success";
+      this.getAllStocks();
+      this.timer();
+      this.resetForm();
+    }, err => {
+      this.msgtext = "Order Cannot Be Placed.";
+      this.msgclass = "danger";
+      this.timer();
+      this.resetForm();
+    })
   }
 
-  getCustomerLastRouteData(clientid) {
-    if (!clientid) return;
-    let urldata = "clientid=" + clientid;
-    this._rest
-      .getData("order.php", "getCustomerLastOrderDets", urldata)
-      .subscribe((Response) => {
-        if (Response && Response["data"]) {
-          let data = Response["data"];
-          this.buffalomilk = data.buffaloqty;
-          this.cowmilk = data.cowqty;
-          this.deliveryplace = data.deliveryplace;
-          this.route = data.route;
-          this.buffalomilkrate = data.buffaloinr;
-          this.cowmilkrate = data.cowinr;
-        }
-      });
+  resetForm() {
+    this.routecusts = [];
+    this.drivernm = null;
+    this.vehicleno = null;
+  }
+
+  calculateAmount(cust, index) {
+    cust.amount = (parseFloat(cust.buffaloqty) * parseFloat(cust.buffalorate)) + (parseFloat(cust.cowqty) * parseFloat(cust.cowrate));
   }
 }

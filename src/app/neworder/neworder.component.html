@@ -1,5 +1,5 @@
 <div class="container">
-  <h5 class="my-3">New Order</h5>
+  <h5 class="my-2">Place Order</h5>
   <app-message
     msgtext="{{ msgtext }}"
     msgclass="{{ msgclass }}"
@@ -9,128 +9,142 @@
   <div class="card">
     <div class="card-body">
       <div class="row">
-        <div class="col-sm-12 col-md-5 text-muted">
-          <label for="custName" class="label m-0">Customer Name</label>
-          <input
-            type="text"
-            id="custName"
+        <div class="col-sm-12 col-md-3 text-muted">
+          <label for="routeno" class="label m-0">Select Route</label>
+          <select
+            name="routeno"
+            id="routeno"
             class="form-control"
-            [(ngModel)]="custname"
-            placeholder="Enter Customer Name"
-            list="customers"
-            (change)="getCustomerDetails()"
-          />
-          <datalist id="customers">
-            <option value="{{ cust.name }}" *ngFor="let cust of custdata">
+            [(ngModel)]="routeno"
+            (change)="filterCustAsPerRoutes()"
+          >
+            <option
+              value="{{ route.routeno }}"
+              *ngFor="let route of routesdata"
+            >
+              {{ route.routeno }}
             </option>
-          </datalist>
+          </select>
         </div>
         <div class="col-sm-12 col-md-3 text-muted">
-          <label for="orderdate" class="label m-0">Order Date</label>
+          <label for="orderdt" class="label m-0">Order Date</label>
           <input
             type="date"
-            id="orderdate"
+            id="orderdt"
             class="form-control"
-            [(ngModel)]="orderdate"
-            placeholder="Enter Order Date"
+            [(ngModel)]="orderdt"
           />
         </div>
-        <div
-          class="col-sm-12 col-md-2 text-muted"
-          *ngIf="milkdata && milkdata.length > 0"
-        >
-          <label for="buffalomilk" class="label m-0">{{
-            milkdata[0].prodname
-          }}</label>
+        <div class="col-sm-12 col-md-3 text-muted">
+          <label for="drivernm" class="label m-0">Driver Name</label>
           <input
             type="text"
-            id="buffalomilk"
+            id="drivernm"
             class="form-control"
-            [(ngModel)]="buffalomilk"
-            placeholder="Enter Milk in Lts"
+            [(ngModel)]="drivernm"
+            placeholder="Enter Driver Name"
           />
         </div>
-        <div
-          class="col-sm-12 col-md-2 text-muted"
-          *ngIf="milkdata && milkdata.length > 0"
-        >
-          <label for="cowmilk" class="label m-0">{{
-            milkdata[1].prodname
-          }}</label>
+        <div class="col-sm-12 col-md-3 text-muted">
+          <label for="vehicleno" class="label m-0">Vehicle No.</label>
           <input
             type="text"
-            id="cowmilk"
+            id="vehicleno"
             class="form-control"
-            [(ngModel)]="cowmilk"
-            placeholder="Enter Milk in Lts"
-          />
-        </div>
-        <div class="col-sm-12 col-md-8 mt-3 text-muted">
-          <label for="deliveryplace" class="label m-0">Place of delivery</label>
-          <input
-            type="text"
-            id="deliveryplace"
-            class="form-control"
-            [(ngModel)]="deliveryplace"
-            placeholder="Enter place of delivery"
-          />
-        </div>
-        <div class="col-sm-12 col-md-4 mt-3 text-muted">
-          <label for="route" class="label m-0">Route</label>
-          <input
-            type="text"
-            id="route"
-            class="form-control"
-            [(ngModel)]="route"
-            placeholder="Enter route of delivery"
-          />
-        </div>
-        <div class="col-sm-12 col-md-3 mt-3 text-muted">
-          <label for="deliverydate" class="label m-0">Delivery Date</label>
-          <input
-            type="date"
-            id="deliverydate"
-            class="form-control"
-            [(ngModel)]="deliverydate"
-            placeholder="Delivery Date"
-          />
-        </div>
-        <div class="col-sm-12 col-md-3 mt-3 text-muted">
-          <label for="deliverytime" class="label m-0">Delivery Time</label>
-          <input
-            type="time"
-            id="deliverytime"
-            class="form-control"
-            [(ngModel)]="deliverytime"
-            placeholder="Delivery Time"
-          />
-        </div>
-        <div class="col-sm-12 col-md-3 mt-3 text-muted">
-          <label for="buffalomilkrate" class="label m-0">
-            Buffalo Milk Rate (INR)
-          </label>
-          <input
-            type="text"
-            id="buffalomilkrate"
-            class="form-control"
-            [(ngModel)]="buffalomilkrate"
-            placeholder="Buffalo Milk Rate"
-          />
-        </div>
-        <div class="col-sm-12 col-md-3 mt-3 text-muted">
-          <label for="cowmilkrate" class="label m-0">Cow Milk Rate (INR)</label>
-          <input
-            type="text"
-            id="cowmilkrate"
-            class="form-control"
-            [(ngModel)]="cowmilkrate"
-            placeholder="Cow Milk Rate"
+            [(ngModel)]="vehicleno"
+            placeholder="Enter Vehicle No."
           />
         </div>
         <div class="col-sm-12 col-md-12 mt-3 text-muted">
-          <button class="btn btn-primary" (click)="placeOrder()">
-            Place Order
-          </button>
+          <div class="row">
+            <div class="col-md-8">
+              <button
+                class="btn btn-primary"
+                (click)="placeOrder()"
+                [disabled]="!drivernm || !vehicleno"
+                title="Place Order"
+                *ngIf="!orderalreadyplaced"
+              >
+                Place Order
+              </button>
+              <h6 class="text-danger" *ngIf="orderalreadyplaced">
+                <i class="fa fa-exclamation-triangle"></i> The order is already
+                placed for this Route on this date, Kindly select other route
+                for placing order
+              </h6>
+            </div>
+            <div class="col-md-4 text-primary">
+              <span>
+                Buffalo Milk Stock:
+                <strong class="text-danger">{{ stockbuffaloqty }}</strong>
+              </span>
+              <span class="ml-3">
+                Cow Milk Stock:
+                <strong class="text-danger">{{ stockcowqty }}</strong>
+              </span>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="row my-3">
+        <div class="col-md-12">
+          <div class="table-responsive">
+            <h6 class="text-primary">
+              All Customers on Route:
+              <span class="text-success">{{ routeno }}</span>
+            </h6>
+            <table class="table table-bordered">
+              <thead>
+                <tr class="bg-info text-white">
+                  <th scope="col">Customer Name</th>
+                  <th scope="col">Buffalo Milk Qty</th>
+                  <th scope="col">Cow Milk Qty</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr *ngFor="let cust of routecusts; let i = index">
+                  <th>
+                    <div class="row">
+                      <div class="col-md-7">
+                        {{ cust.name }}
+                      </div>
+                      <div class="col-md-5">
+                        <small class="text-primary">
+                          Buffalo Milk Rate: <b>{{ cust.buffalorate }}</b>
+                        </small>
+                        <br />
+                        <small class="text-primary">
+                          Cow Milk Rate: <b>{{ cust.cowrate }}</b>
+                        </small>
+                        <br />
+                        <small class="text-primary">
+                          Amount: <b>{{ cust.amount }}</b>
+                        </small>
+                      </div>
+                    </div>
+                  </th>
+                  <td>
+                    <input
+                      type="text"
+                      class="form-control form-control-sm"
+                      placeholder="Enter Buffalo Milk (Mandatory)"
+                      [(ngModel)]="cust.buffaloqty"
+                      (change)="calculateAmount(cust, i)"
+                    />
+                  </td>
+                  <td>
+                    <input
+                      type="text"
+                      class="form-control form-control-sm"
+                      placeholder="Enter Cow Milk (Mandatory)"
+                      [(ngModel)]="cust.cowqty"
+                      (change)="calculateAmount(cust, i)"
+                    />
+                  </td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
         </div>
       </div>
     </div>

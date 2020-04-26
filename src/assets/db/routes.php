@@ -10,9 +10,7 @@ $action = $_GET['action'];
 if($action == "getAllDistinctRoutes"){
 	$headers = apache_request_headers();
 	authenticate($headers);
-	$startdt = ($_GET["startdt"]);
-	$enddt = ($_GET["enddt"]);
-	$sql = "SELECT DISTINCT(`route`) FROM `order_register` WHERE `deliverydt` BETWEEN '$startdt' AND '$enddt' ORDER BY `route`";
+	$sql = "SELECT DISTINCT(`routeno`) FROM `client_master` WHERE `routeno` IS NOT NULL ORDER BY `routeno`";
 	$result = $conn->query($sql);
 	while($row = $result->fetch_array())
 	{
@@ -26,7 +24,7 @@ if($action == "getAllDistinctRoutes"){
 	if(count($rows)>0){
 		foreach($rows as $row)
 		{
-			$tmp[$i]['route'] = $row['route'];
+			$tmp[$i]['routeno'] = $row['routeno'];
 			$i++;
 		}
 		$data["status"] = 200;
@@ -223,5 +221,60 @@ if($action == "changeRoute"){
 	}
 
 	echo json_encode($data1);
+}
+
+if($action == "getRoutesOrders"){
+	$headers = apache_request_headers();
+	authenticate($headers);
+	$routeno = ($_GET["routeno"]);
+	$tomdt = ($_GET["tomdt"]);
+	$sql = "SELECT ord.`ordid`, ord.`clientid`, ord.`orderdt`, ord.`buffaloqty`, ord.`cowqty`, ord.`route`, ord.`buffaloinr`, ord.`cowinr`, ord.`amount` FROM `order_register` ord WHERE ord.`route`=$routeno AND ord.`orderdt`=$tomdt";
+	$result = $conn->query($sql);
+	while($row = $result->fetch_array())
+	{
+		$rows[] = $row;
+	}
+
+	$tmp = array();
+	$data = array();
+	$i = 0;
+
+	if(count($rows)>0){
+		foreach($rows as $row)
+		{
+			$tmp[$i]['ordid'] = $row['ordid'];
+			$tmp[$i]['clientid'] = $row['clientid'];
+			$tmp[$i]['orderdt'] = $row['orderdt'];
+			$tmp[$i]['buffaloqty'] = $row['buffaloqty'];
+			$tmp[$i]['cowqty'] = $row['cowqty'];
+			$tmp[$i]['route'] = $row['route'];
+			$tmp[$i]['buffaloinr'] = $row['buffaloinr'];
+			$tmp[$i]['cowinr'] = $row['cowinr'];
+			$tmp[$i]['amount'] = $row['amount'];
+			$i++;
+		}
+		$sqldriverroute = "SELECT * FROM `route_driver_register` WHERE `route`=1 AND `orderdt`=1587925800001";
+		$resultdriverroute = $conn->query($sqldriverroute);
+		$rowdriverroute = $resultdriverroute->fetch_array(MYSQLI_ASSOC);
+		$tmpdriver = array();
+		if($resultdriverroute && $rowdriverroute['routedriverid']){
+			$tmpdriver['routedriverid'] = $rowdriverroute['routedriverid'];
+			$tmpdriver['drivernm'] = $rowdriverroute['drivernm'];
+			$tmpdriver['vehicleno'] = $rowdriverroute['vehicleno'];
+		}
+		$data["status"] = 200;
+		$data["driverdets"] = $tmpdriver;
+		$data["data"] = $tmp;
+		header(' ', true, 200);
+	}
+	else{
+		$log  = "File: routes.php - Method: $action".PHP_EOL.
+		"Error message: ".$conn->error.PHP_EOL;
+		write_log($log, "error", $conn->error);
+		$data["status"] = 204;
+		header(' ', true, 204);
+	}
+
+	echo json_encode($data);
 }
 ?>

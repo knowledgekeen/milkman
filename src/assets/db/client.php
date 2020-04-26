@@ -185,6 +185,9 @@ if($action == "getAllClientsByType"){
 			$tmp[$i]['cno1'] = $row['cno1'];
 			$tmp[$i]['addinfo'] = $row['addinfo'];
 			$tmp[$i]['ctype'] = $row['ctype'];
+			$tmp[$i]['routeno'] = $row['routeno'];
+			$tmp[$i]['buffalorate'] = $row['buffalorate'];
+			$tmp[$i]['cowrate'] = $row['cowrate'];
 			$i++;
 		}
 		$data["status"] = 200;
