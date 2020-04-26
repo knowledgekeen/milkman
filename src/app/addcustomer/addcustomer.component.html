@@ -1,0 +1,130 @@
+<div class="container">
+  <h5 class="my-3">Add Customer</h5>
+  <app-message
+    msgtext="{{ msgtext }}"
+    msgclass="{{ msgclass }}"
+    *ngIf="msgtext"
+  ></app-message>
+  <div class="card">
+    <div class="card-body">
+      <div class="row">
+        <div class="col-sm-12 col-xs-12 text-danger">
+          <p>
+            Fields marked with asterisk (*) are compulsary
+            <a [routerLink]="['/viewclients']" class="float-right">
+              <i class="fa fa-users"></i>
+              View All Clients
+            </a>
+          </p>
+        </div>
+        <div class="col-sm-6 col-xs-12 mb-3">
+          <label class="m-0">
+            Name <sup class="text-danger font-weight-bold">*</sup>
+          </label>
+          <input
+            type="text"
+            class="form-control"
+            placeholder="Name"
+            [(ngModel)]="fname"
+          />
+        </div>
+        <div class="col-sm-3 col-xs-12 mb-3">
+          <label class="m-0"
+            >Contact Number
+            <sup class="text-danger font-weight-bold">*</sup></label
+          >
+          <input
+            type="text"
+            class="form-control"
+            placeholder="Contact Number"
+            [(ngModel)]="cno"
+          />
+        </div>
+        <div class="col-sm-3 col-xs-12 mb-3">
+          <label class="m-0">Contact Person 1 Name</label>
+          <input
+            type="text"
+            class="form-control"
+            placeholder="Contact Person 1 Name"
+            [(ngModel)]="cperson"
+          />
+        </div>
+        <div class="col-sm-4 col-xs-12 mb-3">
+          <label class="m-0">Contact Person 1 Number</label>
+          <input
+            type="text"
+            class="form-control"
+            placeholder="Contact Person No. 1"
+            [(ngModel)]="cno1"
+          />
+        </div>
+        <div class="col-sm-5 col-xs-12 mb-3">
+          <label class="m-0">Additional Information</label>
+          <input
+            type="text"
+            class="form-control"
+            [(ngModel)]="additionalinfo"
+            placeholder="Additional Information"
+          />
+        </div>
+        <div class="col-sm-3 col-xs-12 mb-3">
+          <label class="m-0">Route Number</label>
+          <input
+            type="text"
+            class="form-control"
+            [(ngModel)]="routeno"
+            placeholder="Enter Route Number"
+          />
+        </div>
+        <div class="col-sm-6 col-xs-12 mb-3">
+          <label class="m-0">Address</label>
+          <textarea
+            class="form-control"
+            rows="2.5"
+            placeholder="Address"
+            [(ngModel)]="address"
+          ></textarea>
+        </div>
+        <div class="col-sm-3 col-xs-12 mb-3">
+          <label class="m-0">Bufallo Milk Rate</label>
+          <input
+            type="text"
+            class="form-control"
+            [(ngModel)]="buffalorate"
+            placeholder="0"
+          />
+        </div>
+        <div class="col-sm-3 col-xs-12 mb-3">
+          <label class="m-0">Cow Milk Rate</label>
+          <input
+            type="text"
+            class="form-control"
+            [(ngModel)]="cowrate"
+            placeholder="0"
+          />
+        </div>
+
+        <div class="col-sm-12 col-xs-12 mb-3">
+          <button
+            type="button"
+            class="btn btn-sm btn-success"
+            (click)="addCustomer()"
+            [disabled]="!fname || !cno"
+            *ngIf="clientid != '0'"
+          >
+            Add
+          </button>
+          <button
+            type="button"
+            class="btn btn-sm btn-warning"
+            (click)="updateCustomer()"
+            [disabled]="!fname || !cno"
+            *ngIf="clientid == '0'"
+          >
+            Update - {{ clientid }}
+          </button>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
