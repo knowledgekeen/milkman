@@ -3,21 +3,24 @@ import { RestService } from "../rest.service";
 import { ActivatedRoute, Router } from "@angular/router";
 
 @Component({
-  selector: "app-addclient",
-  templateUrl: "./addclient.component.html",
-  styleUrls: ["./addclient.component.css"],
+  selector: "app-addsupplier",
+  templateUrl: "./addsupplier.component.html",
+  styleUrls: ["./addsupplier.component.css"],
 })
-export class AddclientComponent implements OnInit {
+export class AddsupplierComponent implements OnInit {
   cno: string = null;
   cno1: string = null;
   fname: string = null;
   cperson: string = null;
-  usertype: string = "1";
   address: string = null;
   additionalinfo: string = null;
   msgtext: string = null;
   msgclass: string = null;
   clientid: string = null;
+  routeno: any = null;
+  buffalorate: String = "0";
+  cowrate: String = "0";
+  ctype: string = "1";
 
   constructor(
     private _rest: RestService,
@@ -39,24 +42,26 @@ export class AddclientComponent implements OnInit {
     let tmpobj = {
       fname: this.fname,
       cno: this.cno,
-      ctype: parseInt(this.usertype),
       cperson: this.cperson,
       cno1: this.cno1,
       address: this.address,
+      routeno: this.routeno,
+      buffalorate: this.buffalorate,
+      cowrate: this.cowrate,
       addinfo: this.additionalinfo,
+      ctype: this.ctype,
     };
     console.log(tmpobj);
 
-    let clienttype = this.usertype == "1" ? "Supplier" : "Customer";
     this._rest.postData("client.php", "addClient", tmpobj).subscribe(
       (Response) => {
-        this.msgtext = clienttype + " added successfully";
+        this.msgtext = " supplier " + " added successfully";
         this.msgclass = "success";
         this.timercnt();
       },
       (error) => {
         console.log(error);
-        this.msgtext = clienttype + " addition failed";
+        this.msgtext = "supplier" + " addition failed";
         this.msgclass = "danger";
         this.timercnt();
       }
@@ -80,15 +85,18 @@ export class AddclientComponent implements OnInit {
     this.cno1 = null;
     this.fname = null;
     this.cperson = null;
-    this.usertype = "1";
     this.address = null;
+    this.routeno = null;
+    this.buffalorate = "0";
+    this.cowrate = "0";
     this.additionalinfo = null;
   }
 
   fetchClientDetails() {
     let urldata = "clientid=" + this.clientid;
+
     this._rest
-      .getData("client.php", "getClientDetails", urldata)
+      .getData("client.php", "getCustomerDetails", urldata)
       .subscribe((Response) => {
         if (Response && Response["data"]) {
           let data = Response["data"];
@@ -96,9 +104,12 @@ export class AddclientComponent implements OnInit {
           this.cno1 = data.cno1;
           this.fname = data.name;
           this.cperson = data.cperson;
-          this.usertype = data.ctype;
+          this.routeno = data.routeno;
+          this.buffalorate = data.buffalorate;
+          this.cowrate = data.cowrate;
           this.address = data.address;
           this.additionalinfo = data.addinfo;
+          this.ctype = "1";
         }
       });
   }
@@ -108,23 +119,25 @@ export class AddclientComponent implements OnInit {
       clientid: this.clientid,
       fname: this.fname,
       cno: this.cno,
-      ctype: parseInt(this.usertype),
+      routeno: this.routeno,
+      buffalorate: this.buffalorate,
+      cowrate: this.cowrate,
       cperson: this.cperson,
       cno1: this.cno1,
       address: this.address,
       addinfo: this.additionalinfo,
+      ctype: this.ctype,
     };
 
-    let clienttype = this.usertype == "1" ? "Supplier" : "Customer";
     this._rest.postData("client.php", "updateClient", tmpobj).subscribe(
       (Response) => {
-        this.msgtext = clienttype + " updated successfully";
+        this.msgtext = "supplier" + " updated successfully";
         this.msgclass = "success";
         this.timercnt();
       },
       (error) => {
         console.log(error);
-        this.msgtext = clienttype + " updation failed";
+        this.msgtext = "supplier" + " updation failed";
         this.msgclass = "danger";
         this.timercnt();
       }

@@ -20,6 +20,7 @@ export class AddcustomerComponent implements OnInit {
   routeno: any = null;
   buffalorate: String = "0";
   cowrate: String = "0";
+  ctype: string = "2";
 
   constructor(
     private _rest: RestService,
@@ -37,7 +38,7 @@ export class AddcustomerComponent implements OnInit {
     });
   }
 
-  addCustomer() {
+  addClient() {
     let tmpobj = {
       fname: this.fname,
       cno: this.cno,
@@ -48,10 +49,11 @@ export class AddcustomerComponent implements OnInit {
       buffalorate: this.buffalorate,
       cowrate: this.cowrate,
       addinfo: this.additionalinfo,
+      ctype: this.ctype,
     };
     console.log(tmpobj);
 
-    this._rest.postData("client.php", "addCustomer", tmpobj).subscribe(
+    this._rest.postData("client.php", "addClient", tmpobj).subscribe(
       (Response) => {
         this.msgtext = " Customer " + " added successfully";
         this.msgclass = "success";
@@ -94,7 +96,7 @@ export class AddcustomerComponent implements OnInit {
     let urldata = "clientid=" + this.clientid;
 
     this._rest
-      .getData("client.php", "getCustomerDetails", urldata)
+      .getData("client.php", "getClientDetails", urldata)
       .subscribe((Response) => {
         if (Response && Response["data"]) {
           let data = Response["data"];
@@ -107,11 +109,12 @@ export class AddcustomerComponent implements OnInit {
           this.cowrate = data.cowrate;
           this.address = data.address;
           this.additionalinfo = data.addinfo;
+          this.ctype = "2";
         }
       });
   }
 
-  updateCustomer() {
+  updateClient() {
     let tmpobj = {
       clientid: this.clientid,
       fname: this.fname,
@@ -123,9 +126,10 @@ export class AddcustomerComponent implements OnInit {
       cno1: this.cno1,
       address: this.address,
       addinfo: this.additionalinfo,
+      ctype: this.ctype,
     };
 
-    this._rest.postData("client.php", "updateCustomer", tmpobj).subscribe(
+    this._rest.postData("client.php", "updateClient", tmpobj).subscribe(
       (Response) => {
         this.msgtext = "Customer" + " updated successfully";
         this.msgclass = "success";

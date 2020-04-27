@@ -18,6 +18,7 @@ import { PaymentbookComponent } from "./paymentbook/paymentbook.component";
 import { ViewpurchpaymentsComponent } from "./viewpurchpayments/viewpurchpayments.component";
 import { ViewsalepaymentsComponent } from "./viewsalepayments/viewsalepayments.component";
 import { AddcustomerComponent } from "./addcustomer/addcustomer.component";
+import { AddsupplierComponent } from "./addsupplier/addsupplier.component";
 
 const routes: Routes = [
   { path: "login", component: LoginComponent },
@@ -37,6 +38,7 @@ const routes: Routes = [
   { path: "viewpurchpay", component: ViewpurchpaymentsComponent },
   { path: "viewsalepay", component: ViewsalepaymentsComponent },
   { path: "addcustomer", component: AddcustomerComponent },
+  { path: "addsupplier", component: AddsupplierComponent },
   { path: "", redirectTo: "/home", pathMatch: "full" },
 ];
 

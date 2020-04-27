@@ -29,6 +29,7 @@ import { ViewallcustomersComponent } from "./viewallcustomers/viewallcustomers.c
 import { ViewpurchpaymentsComponent } from "./viewpurchpayments/viewpurchpayments.component";
 import { ViewsalepaymentsComponent } from "./viewsalepayments/viewsalepayments.component";
 import { AddcustomerComponent } from "./addcustomer/addcustomer.component";
+import { AddsupplierComponent } from './addsupplier/addsupplier.component';
 @NgModule({
   declarations: [
     AppComponent,
@@ -56,6 +57,7 @@ import { AddcustomerComponent } from "./addcustomer/addcustomer.component";
     ViewpurchpaymentsComponent,
     ViewsalepaymentsComponent,
     AddcustomerComponent,
+    AddsupplierComponent,
   ],
   imports: [BrowserModule, AppRoutingModule, FormsModule, HttpClientModule],
   providers: [],
