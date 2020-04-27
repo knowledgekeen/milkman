@@ -96,7 +96,7 @@ export class AddsupplierComponent implements OnInit {
     let urldata = "clientid=" + this.clientid;
 
     this._rest
-      .getData("client.php", "getCustomerDetails", urldata)
+      .getData("client.php", "getClientDetails", urldata)
       .subscribe((Response) => {
         if (Response && Response["data"]) {
           let data = Response["data"];

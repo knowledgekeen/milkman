@@ -37,8 +37,8 @@ const routes: Routes = [
   { path: "salespayment", component: SalespaymentComponent },
   { path: "viewpurchpay", component: ViewpurchpaymentsComponent },
   { path: "viewsalepay", component: ViewsalepaymentsComponent },
-  { path: "addcustomer", component: AddcustomerComponent },
-  { path: "addsupplier", component: AddsupplierComponent },
+  { path: "addcustomer/:clientid", component: AddcustomerComponent },
+  { path: "addsupplier/:clientid", component: AddsupplierComponent },
   { path: "", redirectTo: "/home", pathMatch: "full" },
 ];
 

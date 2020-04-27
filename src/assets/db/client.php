@@ -276,6 +276,7 @@ if($action == "getClientDetails"){
 		$tmp['buffalorate']=$row['buffalorate'];
 		$tmp['cowrate']=$row['cowrate'];
 		$tmp['ctype']=$row['ctype'];
+		
 		$data["status"] = 200;
 		$data["data"] = $tmp;
 		header(' ', true, 200);

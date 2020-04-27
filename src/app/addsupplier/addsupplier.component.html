@@ -110,7 +110,7 @@
             class="btn btn-sm btn-success"
             (click)="addClient()"
             [disabled]="!fname || !cno"
-            *ngIf="clientid != '0'"
+            *ngIf="clientid == '0'"
           >
             Add
           </button>
@@ -119,7 +119,7 @@
             class="btn btn-sm btn-warning"
             (click)="updateClient()"
             [disabled]="!fname || !cno"
-            *ngIf="clientid == '0'"
+            *ngIf="clientid != '0'"
           >
             Update - {{ clientid }}
           </button>
