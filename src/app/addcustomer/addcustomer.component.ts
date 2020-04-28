@@ -131,7 +131,7 @@ export class AddcustomerComponent implements OnInit {
 
     this._rest.postData("client.php", "updateClient", tmpobj).subscribe(
       (Response) => {
-        this.msgtext = "Customer" + " updated successfully";
+        this.msgtext = " Customer " + " updated successfully";
         this.msgclass = "success";
         this.timercnt();
       },

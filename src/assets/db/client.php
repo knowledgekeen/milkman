@@ -86,8 +86,8 @@ if($action == "getAllClients"){
 	}
 	echo json_encode($data);
 }
-*/
-/*if($action == "getClientDetails"){
+
+if($action == "getClientDetails"){
 	$headers = apache_request_headers();
 	authenticate($headers);
 	$clientid = ($_GET["clientid"]);
@@ -303,13 +303,14 @@ if($action == "updateClient"){
 	$routeno=$data->routeno;
 	$buffalorate=$data->buffalorate;
 	$cowrate=$data->cowrate;
+	
 	//$ctype="2";
 	$ctype=$data->ctype;
 	$address = mysqli_real_escape_string($conn,$data->address);
 	$addinfo = mysqli_real_escape_string($conn,$data->addinfo);
 	if($_SERVER['REQUEST_METHOD']=='POST'){
         //Status: 1 == 'active'
-		$sql = "UPDATE `client_master` SET `name`='$fname',`cno`='$cno',`cperson`='$cperson',`cno1`='$cno1',`address`='$address',`addinfo`='$addinfo',`ctype`='$ctype',`routeno`,'$routeno',`buffalorate`,'$buffalorate',`cowrate`,'$cowrate'  WHERE `clientid`=$clientid";
+		$sql = "UPDATE `client_master` SET `name`='$fname',`cno`='$cno',`cperson`='$cperson',`cno1`='$cno1',`address`='$address',`addinfo`='$addinfo',`ctype`='$ctype',`routeno`='$routeno',`buffalorate`='$buffalorate',`cowrate`='$cowrate'  WHERE `clientid`=$clientid ";
         $result = $conn->query($sql);
 	}
     $data1= array();
