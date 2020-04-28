@@ -86,7 +86,12 @@
                     <li>Customer / Supplier</li>
                     <li><a [routerLink]="['/addclient', 0]">Add Client</a></li>
                     <li><a [routerLink]="['/viewclients']">View Client</a></li>
-                    <li><a [routerLink]="['/addcustomer']">Add Customer</a></li>
+                    <li>
+                      <a [routerLink]="['/addcustomer', 0]">Add Customer</a>
+                    </li>
+                    <li>
+                      <a [routerLink]="['/addsupplier', 0]">Add Supplier</a>
+                    </li>
                   </ul>
                   <div class="dropdown-divider"></div>
                   <ul class="py-2 px-4 my-2 list-unstyled menus">

@@ -7,7 +7,7 @@ include 'conn.php';
 include 'jwt_helper.php';
 $action = $_GET['action'];
 
-if($action == "addClient"){
+/*if($action == "addClient"){
 	$headers = apache_request_headers();
 	authenticate($headers);
     $data = json_decode(file_get_contents("php://input"));
@@ -185,9 +185,6 @@ if($action == "getAllClientsByType"){
 			$tmp[$i]['cno1'] = $row['cno1'];
 			$tmp[$i]['addinfo'] = $row['addinfo'];
 			$tmp[$i]['ctype'] = $row['ctype'];
-			$tmp[$i]['routeno'] = $row['routeno'];
-			$tmp[$i]['buffalorate'] = $row['buffalorate'];
-			$tmp[$i]['cowrate'] = $row['cowrate'];
 			$i++;
 		}
 		$data["status"] = 200;
@@ -202,9 +199,9 @@ if($action == "getAllClientsByType"){
 		header(' ', true, 204);
 	}
 	echo json_encode($data);
-}
-//addCustomer code
-if($action == "addCustomer"){
+}*/
+
+if($action == "addClient"){
 	$headers = apache_request_headers();
 	authenticate($headers);
     $data = json_decode(file_get_contents("php://input"));
@@ -217,6 +214,8 @@ if($action == "addCustomer"){
 	$routeno=$data->routeno;
 	$buffalorate=$data->buffalorate;
 	$cowrate=$data->cowrate;
+	$ctype=$data->ctype;
+	//$ctype="2";
 	if($buffalorate==null){
 		$buffalorate="0";
 	}
@@ -225,11 +224,11 @@ if($action == "addCustomer"){
 	}
 	if($routeno==null)
 	{
-		$routeno="Null";
+		$routeno="null";
 	}
     if($_SERVER['REQUEST_METHOD']=='POST'){
         //Status: 1 == 'active'
-		$sql = "INSERT INTO `client_master`(`name`, `cno`, `cperson`, `cno1`, `address`, `addinfo`,`routeno`,`buffalorate`,`cowrate` ) VALUES ('$fname','$cno','$cperson','$cno1','$address','$addinfo','$routeno','$buffalorate','$cowrate')";
+		$sql = "INSERT INTO `client_master`(`name`, `cno`, `cperson`, `cno1`, `address`, `addinfo`,`ctype`,`routeno`,`buffalorate`,`cowrate` ) VALUES ('$fname','$cno','$cperson','$cno1','$address','$addinfo','$ctype','$routeno','$buffalorate','$cowrate')";
         $result = $conn->query($sql);
         $userid = $conn->insert_id;
 	}
@@ -255,7 +254,7 @@ if($action == "addCustomer"){
 	echo json_encode($data1);
 }
 
-if($action == "getCustomerDetails"){
+if($action == "getClientDetails"){
 	$headers = apache_request_headers();
 	authenticate($headers);
 	$clientid = ($_GET["clientid"]);
@@ -273,9 +272,11 @@ if($action == "getCustomerDetails"){
 		$tmp['cperson'] = $row['cperson'];
 		$tmp['cno1'] = $row['cno1'];
 		$tmp['addinfo'] = $row['addinfo'];
-		$data['routeno']=$row['routeno'];
-		$data['buffalorate']=$row['buffalorate'];
-		$data['cowrate']=$row['cowrate'];
+		$tmp['routeno']=$row['routeno'];
+		$tmp['buffalorate']=$row['buffalorate'];
+		$tmp['cowrate']=$row['cowrate'];
+		$tmp['ctype']=$row['ctype'];
+		
 		$data["status"] = 200;
 		$data["data"] = $tmp;
 		header(' ', true, 200);
@@ -290,7 +291,7 @@ if($action == "getCustomerDetails"){
 	echo json_encode($data);
 }
 
-if($action == "updateCustomer"){
+if($action == "updateClient"){
 	$headers = apache_request_headers();
 	authenticate($headers);
     $data = json_decode(file_get_contents("php://input"));
@@ -302,11 +303,14 @@ if($action == "updateCustomer"){
 	$routeno=$data->routeno;
 	$buffalorate=$data->buffalorate;
 	$cowrate=$data->cowrate;
+	
+	//$ctype="2";
+	$ctype=$data->ctype;
 	$address = mysqli_real_escape_string($conn,$data->address);
 	$addinfo = mysqli_real_escape_string($conn,$data->addinfo);
 	if($_SERVER['REQUEST_METHOD']=='POST'){
         //Status: 1 == 'active'
-		$sql = "UPDATE `client_master` SET `name`='$fname',`cno`='$cno',`cperson`='$cperson',`cno1`='$cno1',`address`='$address',`addinfo`='$addinfo',`routeno`,'$routeno',`buffalorate`,'$buffalorate',`cowrate`,'$cowrate'  WHERE `clientid`=$clientid";
+		$sql = "UPDATE `client_master` SET `name`='$fname',`cno`='$cno',`cperson`='$cperson',`cno1`='$cno1',`address`='$address',`addinfo`='$addinfo',`ctype`='$ctype',`routeno`='$routeno',`buffalorate`='$buffalorate',`cowrate`='$cowrate'  WHERE `clientid`=$clientid ";
         $result = $conn->query($sql);
 	}
     $data1= array();
@@ -330,4 +334,95 @@ if($action == "updateCustomer"){
 
 	echo json_encode($data1);
 }
+
+if($action == "getAllClientsByType"){
+	$headers = apache_request_headers();
+	authenticate($headers);
+	$ctype=$_GET["ctype"];
+	
+	$sql = "SELECT * FROM `client_master` WHERE `ctype`=$ctype ORDER BY `name`";
+	$result = $conn->query($sql);
+	while($row = $result->fetch_array())
+	{
+		$rows[] = $row;
+	}
+
+	$tmp = array();
+	$data = array();
+	$i = 0;
+
+	if(count($rows)>0){
+		foreach($rows as $row)
+		{
+			$tmp[$i]['clientid'] = $row['clientid'];
+			$tmp[$i]['name'] = $row['name'];
+			$tmp[$i]['address'] = $row['address'];
+			$tmp[$i]['cno'] = $row['cno'];
+			$tmp[$i]['cperson'] = $row['cperson'];
+			$tmp[$i]['cno1'] = $row['cno1'];
+			$tmp[$i]['addinfo'] = $row['addinfo'];
+			$tmp[$i]['ctype'] = $row['ctype'];
+			$tmp[$i]['routeno']=$row['routeno'];
+			$tmp[$i]['buffalorate']=$row['buffalorate'];
+			$tmp[$i]['cowrate']=$row['cowrate'];
+			$i++;
+		}
+		$data["status"] = 200;
+		$data["data"] = $tmp;
+		header(' ', true, 200);
+	}
+	else{
+		$log  = "File: client.php - Method: getAllClients".PHP_EOL.
+		"Error message: ".$conn->error.PHP_EOL;
+		write_log($log, "error", $conn->error);
+		$data["status"] = 204;
+		header(' ', true, 204);
+	}
+	echo json_encode($data);
+}
+if($action == "getAllClients"){
+	$headers = apache_request_headers();
+	authenticate($headers);
+	$sql = "SELECT * FROM `client_master` ORDER BY `name`";
+	$result = $conn->query($sql);
+	while($row = $result->fetch_array())
+	{
+		$rows[] = $row;
+	}
+
+	$tmp = array();
+	$data = array();
+	$i = 0;
+
+	if(count($rows)>0){
+		foreach($rows as $row)
+		{
+			$tmp[$i]['clientid'] = $row['clientid'];
+			$tmp[$i]['name'] = $row['name'];
+			$tmp[$i]['address'] = $row['address'];
+			$tmp[$i]['cno'] = $row['cno'];
+			$tmp[$i]['cperson'] = $row['cperson'];
+			$tmp[$i]['cno1'] = $row['cno1'];
+			$tmp[$i]['addinfo'] = $row['addinfo'];
+			$tmp[$i]['ctype'] = $row['ctype'];
+			$tmp[$i]['routeno']=$row['routeno'];
+			$tmp[$i]['buffalorate']=$row['buffalorate'];
+			$tmp[$i]['cowrate']=$row['cowrate'];
+			
+			$i++;
+		}
+		$data["status"] = 200;
+		$data["data"] = $tmp;
+		header(' ', true, 200);
+	}
+	else{
+		$log  = "File: client.php - Method: getAllClients".PHP_EOL.
+		"Error message: ".$conn->error.PHP_EOL;
+		write_log($log, "error", $conn->error);
+		$data["status"] = 204;
+		header(' ', true, 204);
+	}
+	echo json_encode($data);
+}
+
 ?>
