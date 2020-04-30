@@ -10,7 +10,7 @@ $action = $_GET['action'];
 if($action == "getAllDistinctRoutes"){
 	$headers = apache_request_headers();
 	authenticate($headers);
-	$sql = "SELECT DISTINCT(`routeno`) FROM `client_master` WHERE `routeno` IS NOT NULL ORDER BY `routeno`";
+	$sql = "SELECT DISTINCT(`routeno`) FROM `client_master` WHERE (`routeno` IS NOT NULL) AND (NOT `routeno` = 0) ORDER BY `routeno`";
 	$result = $conn->query($sql);
 	while($row = $result->fetch_array())
 	{

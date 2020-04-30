@@ -17,7 +17,6 @@ export class AddsupplierComponent implements OnInit {
   msgtext: string = null;
   msgclass: string = null;
   clientid: string = null;
-  routeno: any = null;
   buffalorate: String = "0";
   cowrate: String = "0";
   ctype: string = "1";
@@ -45,8 +44,8 @@ export class AddsupplierComponent implements OnInit {
       cperson: this.cperson,
       cno1: this.cno1,
       address: this.address,
-      routeno: this.routeno,
       buffalorate: this.buffalorate,
+      routeno: null,
       cowrate: this.cowrate,
       addinfo: this.additionalinfo,
       ctype: this.ctype,
@@ -55,13 +54,13 @@ export class AddsupplierComponent implements OnInit {
 
     this._rest.postData("client.php", "addClient", tmpobj).subscribe(
       (Response) => {
-        this.msgtext = " supplier " + " added successfully";
+        this.msgtext = "Supplier " + " Added Successfully";
         this.msgclass = "success";
         this.timercnt();
       },
       (error) => {
         console.log(error);
-        this.msgtext = "supplier" + " addition failed";
+        this.msgtext = "Supplier" + " Addition Failed";
         this.msgclass = "danger";
         this.timercnt();
       }
@@ -86,7 +85,6 @@ export class AddsupplierComponent implements OnInit {
     this.fname = null;
     this.cperson = null;
     this.address = null;
-    this.routeno = null;
     this.buffalorate = "0";
     this.cowrate = "0";
     this.additionalinfo = null;
@@ -104,7 +102,6 @@ export class AddsupplierComponent implements OnInit {
           this.cno1 = data.cno1;
           this.fname = data.name;
           this.cperson = data.cperson;
-          this.routeno = data.routeno;
           this.buffalorate = data.buffalorate;
           this.cowrate = data.cowrate;
           this.address = data.address;
@@ -119,11 +116,11 @@ export class AddsupplierComponent implements OnInit {
       clientid: this.clientid,
       fname: this.fname,
       cno: this.cno,
-      routeno: this.routeno,
       buffalorate: this.buffalorate,
       cowrate: this.cowrate,
       cperson: this.cperson,
       cno1: this.cno1,
+      routeno: null,
       address: this.address,
       addinfo: this.additionalinfo,
       ctype: this.ctype,

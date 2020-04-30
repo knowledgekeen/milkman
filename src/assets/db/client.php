@@ -216,16 +216,16 @@ if($action == "addClient"){
 	$cowrate=$data->cowrate;
 	$ctype=$data->ctype;
 	//$ctype="2";
-	if($buffalorate==null){
-		$buffalorate="0";
-	}
-	if($cowrate==null){
-		$cowrate="0";
-	}
-	if($routeno==null)
-	{
-		$routeno="null";
-	}
+	// if($buffalorate==null){
+	// 	$buffalorate="0";
+	// }
+	// if($cowrate==null){
+	// 	$cowrate="0";
+	// }
+	// if($routeno==null)
+	// {
+	// 	$routeno="null";
+	// }
     if($_SERVER['REQUEST_METHOD']=='POST'){
         //Status: 1 == 'active'
 		$sql = "INSERT INTO `client_master`(`name`, `cno`, `cperson`, `cno1`, `address`, `addinfo`,`ctype`,`routeno`,`buffalorate`,`cowrate` ) VALUES ('$fname','$cno','$cperson','$cno1','$address','$addinfo','$ctype','$routeno','$buffalorate','$cowrate')";

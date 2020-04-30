@@ -58,25 +58,7 @@
             [(ngModel)]="cno1"
           />
         </div>
-        <div class="col-sm-5 col-xs-12 mb-3">
-          <label class="m-0">Additional Information</label>
-          <input
-            type="text"
-            class="form-control"
-            [(ngModel)]="additionalinfo"
-            placeholder="Additional Information"
-          />
-        </div>
-        <div class="col-sm-3 col-xs-12 mb-3">
-          <label class="m-0">Route Number</label>
-          <input
-            type="text"
-            class="form-control"
-            [(ngModel)]="routeno"
-            placeholder="Enter Route Number"
-          />
-        </div>
-        <div class="col-sm-6 col-xs-12 mb-3">
+        <div class="col-sm-8 col-xs-12 mb-3">
           <label class="m-0">Address</label>
           <input
             type="text"
@@ -103,6 +85,15 @@
             placeholder="0"
           />
         </div>
+        <div class="col-sm-6 col-xs-12 mb-3">
+          <label class="m-0">Additional Information</label>
+          <input
+            type="text"
+            class="form-control"
+            [(ngModel)]="additionalinfo"
+            placeholder="Additional Information"
+          />
+        </div>
 
         <div class="col-sm-12 col-xs-12 mb-3">
           <button
@@ -112,7 +103,7 @@
             [disabled]="!fname || !cno"
             *ngIf="clientid == '0'"
           >
-            Add
+            Add Supplier
           </button>
           <button
             type="button"
@@ -121,7 +112,7 @@
             [disabled]="!fname || !cno"
             *ngIf="clientid != '0'"
           >
-            Update - {{ clientid }}
+            Update Supplier
           </button>
         </div>
       </div>
