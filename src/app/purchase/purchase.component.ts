@@ -1,135 +1,114 @@
-import { Component, OnInit, Input } from '@angular/core';
+import { Component, OnInit, Input } from "@angular/core";
 import * as moment from "moment";
-import { RestService } from '../rest.service';
+import { RestService } from "../rest.service";
 
 @Component({
-  selector: 'app-purchase',
-  templateUrl: './purchase.component.html',
-  styleUrls: ['./purchase.component.css']
+  selector: "app-purchase",
+  templateUrl: "./purchase.component.html",
+  styleUrls: ["./purchase.component.css"],
 })
 export class PurchaseComponent implements OnInit {
   msgtext: string = null;
   msgclass: string = null;
-  supplierName: string = null;
   purDate: any = null;
-  purTime: string = null;
-  product: string = null;
-  quantity: string = null;
-  rate: string = null;
-  isEdit: any = false;
-  editId: string = null;
-  tmpdata: any = null;
-  suppdata: any = null;
-  proddata: any = null;
-  @Input() editobj;
-
-  constructor(private _rest: RestService) { }
+  purTime: string = "1";
+  stockbuffaloqty: any = 0;
+  stockcowqty: any = 0;
+  supplierName: string = null;
+  allsuppdata: any = null;
+  constructor(private _rest: RestService) {}
 
   ngOnInit(): void {
     this.resetForm();
-    this.getSuppliers();
-    this.getAllProducts();
-    if (this.editobj) {
-      this.editPurchase(JSON.parse(this.editobj));
-    }
+    //this.getSuppliers();
+    this.getAllClientsByType();
+    this.getAllStocks();
   }
 
-  getSuppliers() {
+  getAllClientsByType() {
     let geturl = "ctype=1";
-    this._rest.getData("client.php", "getAllClientsByType", geturl).subscribe(Response => {
-      if (Response && Response["data"]) {
-        this.suppdata = Response["data"];
-      }
-    })
-  }
-
-  getAllProducts() {
-    this._rest.getData("product.php", "getAllProducts").subscribe(Response => {
-      if (Response && Response["data"]) {
-        this.proddata = Response["data"];
-        this.product = this.proddata[0].prodid;
-      }
+    let _this = this;
+    return new Promise(function (resolve, reject) {
+      _this._rest
+        .getData("client.php", "getAllClientsByType", geturl)
+        .subscribe((Response) => {
+          console.log(Response);
+          if (Response && Response["data"]) {
+            _this.allsuppdata = Response["data"];
+            // This is dynamic qty added to use by later;
+            for (let i in _this.allsuppdata) {
+              _this.allsuppdata[i].buffaloqty = 0;
+              _this.allsuppdata[i].cowqty = 0;
+              _this.allsuppdata[i].amount = 0;
+            }
+            resolve(true);
+          } else {
+            reject(false);
+          }
+          _this = null;
+        });
     });
   }
 
   addPurchase() {
-    let clientid = null;
-    for (let i in this.suppdata) {
-      if (this.supplierName == this.suppdata[i].name) {
-        clientid = this.suppdata[i].clientid;
-        break;
-      }
-    }
     let dt = new Date(this.purDate);
-    dt.setHours(parseInt(this.purTime.split(":")[0]));
-    dt.setMinutes(parseInt(this.purTime.split(":")[1]));
-    console.log(dt.getTime());
-    let obj = {
-      clientid: parseInt(clientid),
-      purchdate: dt.getTime(),
-      prodid: parseInt(this.product),
-      quantity: this.quantity,
-      rate: this.rate
-    };
-    console.log(obj);
-    this._rest.postData("purchase.php", "addPurchase", obj).subscribe(Response => {
-      this.msgtext = "Purchase successful.";
-      this.msgclass = "success";
-      this.timer();
-      this.resetForm();
-    }, err => {
-      this.msgtext = "Purchase Failed.";
+    dt.setHours(0, 0, 0, 1);
+    let totalbuffqty = 0,
+      totalcowqty = 0;
+    for (let i in this.allsuppdata) {
+      totalbuffqty += parseFloat(this.allsuppdata[i].buffaloqty);
+      totalcowqty += parseFloat(this.allsuppdata[i].cowqty);
+    }
+    if (
+      parseFloat(this.stockbuffaloqty) - totalbuffqty < 0 ||
+      parseFloat(this.stockcowqty) - totalcowqty < 0
+    ) {
       this.msgclass = "danger";
+      this.msgtext =
+        "Your total order cannot be greater than available stock...";
       this.timer();
+      return;
+    }
+    let tmpobj = {
+      purchdate: dt.getTime(),
+      suppdata: this.allsuppdata,
+      buffalostkqty: parseFloat(this.stockbuffaloqty) + totalbuffqty,
+      cowstkqty: parseFloat(this.stockcowqty) + totalcowqty,
+    };
+    console.log(this.stockbuffaloqty);
+    console.log(tmpobj);
+    this._rest.postData("purchase.php", "addPurchase", tmpobj).subscribe(
+      (Response) => {
+        console.log(this.stockbuffaloqty);
+        this.msgtext = "Purchase successful.";
+        this.msgclass = "success";
+        this.getAllStocks();
+        this.timer();
+        this.resetForm();
+      },
+      (err) => {
+        this.msgtext = "Purchase Failed.";
+        this.msgclass = "danger";
+        this.timer();
+        this.resetForm();
+      }
+    );
+  }
+
+  getAllStocks() {
+    this._rest.getData("stocks.php", "getAllStocks").subscribe((Response) => {
+      if (Response && Response["data"]) {
+        let data = Response["data"];
+        for (let i in data) {
+          if (data[i].stockid.toString() === "1") {
+            this.stockcowqty = data[i].quantity;
+          }
+          if (data[i].stockid.toString() === "2") {
+            this.stockbuffaloqty = data[i].quantity;
+          }
+        }
+      }
     });
-  }
-
-  editPurchase(data) {
-    this.tmpdata = null;
-    let dt = moment(new Date(parseFloat(data.purchdate)), "YYYY-MM-DD");
-    this.purDate = dt.format("YYYY-MM-DD");
-    this.purTime = dt.format("HH:mm")
-    this.isEdit = true;
-    this.editId = data.purchid;
-    this.supplierName = data.name;
-    this.product = data.prodid;
-    this.quantity = data.quantity;
-    this.rate = data.rate;
-    this.tmpdata = JSON.parse(JSON.stringify(data));
-  }
-
-  updatePurchase() {
-    let clientid = null;
-    for (let i in this.suppdata) {
-      if (this.supplierName == this.suppdata[i].name) {
-        clientid = this.suppdata[i].clientid;
-        break;
-      }
-    }
-    let dt = new Date(this.purDate);
-    dt.setHours(parseInt(this.purTime.split(":")[0]));
-    dt.setMinutes(parseInt(this.purTime.split(":")[1]));
-    console.log(this.tmpdata.quantity);
-    let obj = {
-      purchid: this.editId,
-      clientid: parseInt(clientid),
-      purchdate: dt.getTime(),
-      prodid: parseInt(this.product),
-      quantity: this.quantity,
-      rate: this.rate,
-      prevqty: this.tmpdata.quantity
-    };
-
-    this._rest.postData("purchase.php", "updatePurchase", obj).subscribe(Response => {
-      this.msgtext = "Purchase updated successfully.";
-      this.msgclass = "success";
-      // this.resetForm();
-      this.timer();
-    }, err => {
-      this.msgtext = "Purchase updation failed.";
-      this.msgclass = "danger";
-      this.timer();
-    })
   }
 
   timer() {
@@ -143,13 +122,10 @@ export class PurchaseComponent implements OnInit {
   resetForm() {
     let dt = moment(new Date(), "YYYY-MM-DD");
     this.purDate = dt.format("YYYY-MM-DD");
-    this.purTime = dt.format("HH:mm");
-    this.tmpdata = null;
-    this.isEdit = false;
-    this.editId = null;
-    this.supplierName = "";
-    this.product = "";
-    this.quantity = "";
-    this.rate = "";
+  }
+  calculateAmount(supp, index) {
+    supp.amount =
+      parseFloat(supp.buffaloqty) * parseFloat(supp.buffalorate) +
+      parseFloat(supp.cowqty) * parseFloat(supp.cowrate);
   }
 }
