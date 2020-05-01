@@ -19,7 +19,7 @@ if($action == "addPurchase"){
 	
 	if($_SERVER['REQUEST_METHOD']=='POST'){
 		//Status: 1 == 'active'
-		for($i=0; $i<count($suppdata); $i++) {
+		for($i=0; $i<count($suppdata) ; $i++) {
 			$supp = $suppdata[$i];
 			$sql = "INSERT INTO `purchase_register`( `clientid`, `purchdate`, `purchtime`,`buffaloqty`, `cowqty`,`buffaloinr`,`cowinr`,`amount`) VALUES ( '$supp->clientid', '$purchdate','$purchtime', '$supp->buffaloqty', '$supp->cowqty','$supp->buffalorate','$supp->cowrate','$supp->amount')";
 		    $result = $conn->query($sql);
@@ -52,8 +52,8 @@ if($action == "addPurchase"){
 		header(' ', true, 204);
 	}
 	echo json_encode($data1);
-
-	if($action == "getAllPurchases"){
+}
+	/*if($action == "getAllPurchases"){
 		$headers = apache_request_headers();
 		authenticate($headers);
 		$sql = "SELECT pr.`purchid`,pr.`prodid`,pr.`clientid`,pr.`purchdate`,pr.`quantity`,pr.`rate`,cm.`name`, pm.`prodname` FROM `purchase_register` pr, `client_master` cm, `product_master` pm WHERE pr.`clientid`=cm.`clientid` AND pr.`prodid`=pm.`prodid` ORDER BY `purchid`";
@@ -93,7 +93,7 @@ if($action == "addPurchase"){
 		}
 	
 		echo json_encode($data);
-	}
+	}*/
 	
 /*if($action == "updatePurchase"){
 	$headers = apache_request_headers();

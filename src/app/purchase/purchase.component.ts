@@ -71,6 +71,7 @@ export class PurchaseComponent implements OnInit {
     }
     let tmpobj = {
       purchdate: dt.getTime(),
+      purchtime: this.purTime,
       suppdata: this.allsuppdata,
       buffalostkqty: parseFloat(this.stockbuffaloqty) + totalbuffqty,
       cowstkqty: parseFloat(this.stockcowqty) + totalcowqty,
