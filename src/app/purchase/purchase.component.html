@@ -9,21 +9,6 @@
     <div class="card-body">
       <div class="row">
         <div class="col-sm-12 col-md-4 text-muted">
-          <label for="supplierName" class="label m-0">Supplier Name</label>
-          <input
-            type="text"
-            id="supplierName"
-            class="form-control"
-            [(ngModel)]="supplierName"
-            placeholder="Enter Supplier Name"
-            list="suppliers"
-          />
-          <datalist id="suppliers">
-            <option value="{{ supp.name }}" *ngFor="let supp of suppdata">
-            </option>
-          </datalist>
-        </div>
-        <div class="col-sm-12 col-md-4 text-muted">
           <label for="purDate" class="label m-0">Purchase Date</label>
           <input
             type="date"
@@ -35,77 +20,98 @@
         </div>
         <div class="col-sm-12 col-md-4 text-muted">
           <label for="purTime" class="label m-0">Purchase Time</label>
-          <input
-            type="time"
+          <select
+            name="purTime"
             id="purTime"
             class="form-control"
             [(ngModel)]="purTime"
-            placeholder="Enter Purchase Time"
-          />
+          >
+            <option value="1">Morning</option>
+            <option value="2">Evening</option>
+          </select>
+        </div>
+
+        <div class="col-sm-12 col-md-4 text-muted"></div>
+        <div class="col-sm-12 col-md-12 mt-4 text-muted">
+          <div class="row">
+            <div class="col-md-5">
+              <button
+                class="btn btn-primary"
+                (click)="addPurchase()"
+                title="Add Purchase."
+                [disabled]="!purDate || !purTime"
+              >
+                Purchase
+              </button>
+            </div>
+            <div class="col-md-7 text-primary">
+              <span>
+                Buffalo Milk Stock:
+                <strong class="text-danger">{{ stockbuffaloqty }}</strong>
+              </span>
+              <span class="ml-3">
+                Cow Milk Stock:
+                <strong class="text-danger">{{ stockcowqty }}</strong>
+              </span>
+            </div>
+          </div>
         </div>
       </div>
       <div class="row my-3">
-        <div class="col-sm-12 col-md-4 text-muted">
-          <label for="product" class="label m-0">Product</label>
-          <!-- <input type="text" id="product" class="form-control" [(ngModel)]="product"
-                        placeholder="Enter Product" /> -->
-          <select
-            class="form-control"
-            [(ngModel)]="product"
-            id="product"
-            [disabled]="isEdit"
-          >
-            <option value="{{ prod.prodid }}" *ngFor="let prod of proddata">{{
-              prod.prodname
-            }}</option>
-          </select>
-        </div>
-        <div class="col-sm-12 col-md-4 text-muted">
-          <label for="quantity" class="label m-0">Quantity (Lt)</label>
-          <input
-            type="text"
-            id="quantity"
-            class="form-control"
-            [(ngModel)]="quantity"
-            placeholder="Enter quantity"
-          />
-        </div>
-
-        <div class="col-sm-12 col-md-4 text-muted">
-          <label for="rate" class="label m-0">Rate (INR)</label>
-          <input
-            type="text"
-            id="rate"
-            class="form-control"
-            [(ngModel)]="rate"
-            placeholder="Enter Rate"
-          />
-        </div>
-      </div>
-      <div class="row">
-        <div class="col-sm-12 col-md-6">
-          <button
-            class="btn btn-primary"
-            (click)="addPurchase()"
-            title="Add Purchase."
-            *ngIf="!isEdit"
-            [disabled]="
-              !purDate || !purTime || !supplierName || !quantity || !rate
-            "
-          >
-            Purchase
-          </button>
-          <button
-            class="btn btn-warning"
-            (click)="updatePurchase()"
-            title="Update Purchase."
-            *ngIf="isEdit"
-            [disabled]="
-              !purDate || !purTime || !supplierName || !quantity || !rate
-            "
-          >
-            Update Purchase
-          </button>
+        <div class="col-md-12">
+          <div class="table-responsive">
+            <table class="table table-bordered">
+              <thead>
+                <tr class="bg-info text-white">
+                  <th scope="col">Supplier Name</th>
+                  <th scope="col">Buffalo Milk Qty</th>
+                  <th scope="col">Cow Milk Qty</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr *ngFor="let supp of allsuppdata; let i = index">
+                  <th>
+                    <div class="row">
+                      <div class="col-md-7">
+                        {{ supp.name }}
+                      </div>
+                      <div class="col-md-5">
+                        <small class="text-primary">
+                          Buffalo Milk Rate: <b>{{ supp.buffalorate }}</b>
+                        </small>
+                        <br />
+                        <small class="text-primary">
+                          Cow Milk Rate: <b>{{ supp.cowrate }}</b>
+                        </small>
+                        <br />
+                        <small class="text-primary">
+                          Amount: <b>{{ supp.amount }}</b>
+                        </small>
+                      </div>
+                    </div>
+                  </th>
+                  <td>
+                    <input
+                      type="text"
+                      class="form-control form-control-sm"
+                      placeholder="Enter Buffalo Milk (Mandatory)"
+                      [(ngModel)]="supp.buffaloqty"
+                      (change)="calculateAmount(supp, i)"
+                    />
+                  </td>
+                  <td>
+                    <input
+                      type="text"
+                      class="form-control form-control-sm"
+                      placeholder="Enter Cow Milk (Mandatory)"
+                      [(ngModel)]="supp.cowqty"
+                      (change)="calculateAmount(supp, i)"
+                    />
+                  </td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
         </div>
       </div>
     </div>
