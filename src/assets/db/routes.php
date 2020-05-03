@@ -253,7 +253,7 @@ if($action == "getRoutesOrders"){
 			$tmp[$i]['amount'] = $row['amount'];
 			$i++;
 		}
-		$sqldriverroute = "SELECT * FROM `route_driver_register` WHERE `route`=1 AND `orderdt`=1587925800001";
+		$sqldriverroute = "SELECT * FROM `route_driver_register` WHERE `route`=1 AND `orderdt`=$tomdt";
 		$resultdriverroute = $conn->query($sqldriverroute);
 		$rowdriverroute = $resultdriverroute->fetch_array(MYSQLI_ASSOC);
 		$tmpdriver = array();

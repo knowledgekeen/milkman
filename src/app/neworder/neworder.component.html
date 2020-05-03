@@ -33,6 +33,7 @@
             id="orderdt"
             class="form-control"
             [(ngModel)]="orderdt"
+            (change)="filterCustAsPerRoutes()"
           />
         </div>
         <div class="col-sm-12 col-md-3 text-muted">
@@ -63,15 +64,9 @@
                 (click)="placeOrder()"
                 [disabled]="!drivernm || !vehicleno"
                 title="Place Order"
-                *ngIf="!orderalreadyplaced"
               >
                 Place Order
               </button>
-              <h6 class="text-danger" *ngIf="orderalreadyplaced">
-                <i class="fa fa-exclamation-triangle"></i> The order is already
-                placed for this Route on this date, Kindly select other route
-                for placing order
-              </h6>
             </div>
             <div class="col-md-4 text-primary">
               <span>

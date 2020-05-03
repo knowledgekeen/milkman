@@ -42,7 +42,7 @@ export class NeworderComponent implements OnInit {
       this.msgclass = 'danger';
       this.msgtext = 'Cannot find any customers, Kindly add a customer first';
       this.timer();
-    })
+    });
   }
 
   // This method checks if any data present for this route and date
@@ -63,10 +63,15 @@ export class NeworderComponent implements OnInit {
     this.orderalreadyplaced = true;
     let data = Response["data"];
     let driverdets = Response["driverdets"];
-    for (let i in this.routecusts) {
-      this.routecusts[i].buffaloqty = data[i].buffaloqty;
-      this.routecusts[i].cowqty = data[i].cowqty;
-      this.routecusts[i].amount = data[i].amount;
+    // console.log(data,driverdets)
+    for (let i=0;i<this.routecusts.length;i++) {
+      for(let j in data){
+        if(this.routecusts[i].clientid == data[j].clientid){
+          this.routecusts.splice(i, 1);
+          i--;
+          break;
+        }
+      }
     }
     this.drivernm = driverdets.drivernm;
     this.vehicleno = driverdets.vehicleno;
@@ -81,6 +86,7 @@ export class NeworderComponent implements OnInit {
         this.routecusts.push(tmpcustdata[i]);
       }
     }
+    console.log('Routecusts ',this.routecusts)
     if (this.routecusts.length > 0) {
     } else {
       this.routecusts = []
@@ -155,10 +161,17 @@ export class NeworderComponent implements OnInit {
   }
 
   placeOrder() {
+    let tmpcusts = JSON.parse(JSON.stringify(this.routecusts));   //Deep Copying the object
+    for(let i=0;i<tmpcusts.length;i++){
+      if(parseFloat(tmpcusts[i].buffaloqty) === 0 && parseFloat(tmpcusts[i].cowqty) === 0){
+        tmpcusts.splice(i,1);
+        i--;
+      }
+    }
     let totalbuffqty = 0, totalcowqty = 0;
-    for (let i in this.routecusts) {
-      totalbuffqty += parseFloat(this.routecusts[i].buffaloqty);
-      totalcowqty += parseFloat(this.routecusts[i].cowqty);
+    for (let i in tmpcusts) {
+      totalbuffqty += parseFloat(tmpcusts[i].buffaloqty);
+      totalcowqty += parseFloat(tmpcusts[i].cowqty);
     }
     if ((parseFloat(this.stockbuffaloqty) - totalbuffqty) < 0 || (parseFloat(this.stockcowqty) - totalcowqty) < 0) {
       this.msgclass = "danger";
@@ -173,7 +186,7 @@ export class NeworderComponent implements OnInit {
       routeno: this.routeno,
       drivernm: this.drivernm,
       vehicleno: this.vehicleno,
-      custorders: this.routecusts,
+      custorders: tmpcusts,
       buffalostkqty: (parseFloat(this.stockbuffaloqty) - totalbuffqty),
       cowstkqty: (parseFloat(this.stockcowqty) - totalcowqty),
     };
@@ -183,6 +196,17 @@ export class NeworderComponent implements OnInit {
       this.msgtext = "Order Placed Successfully...";
       this.msgclass = "success";
       this.getAllStocks();
+      this.getAllClientsByType().then(Resp => {
+        this.getAllDistinctRoutes().then(Routes => {
+          this.filterCustAsPerRoutes();
+        }).catch(routeerr => {
+          this.routecusts = [];
+        })
+      }).catch(err => {
+        this.msgclass = 'danger';
+        this.msgtext = 'Cannot find any customers, Kindly add a customer first';
+        this.timer();
+      });
       this.timer();
       this.resetForm();
     }, err => {
@@ -202,4 +226,6 @@ export class NeworderComponent implements OnInit {
   calculateAmount(cust, index) {
     cust.amount = (parseFloat(cust.buffaloqty) * parseFloat(cust.buffalorate)) + (parseFloat(cust.cowqty) * parseFloat(cust.cowrate));
   }
+
+  updateOrder(){}
 }
