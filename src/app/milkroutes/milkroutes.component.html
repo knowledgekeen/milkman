@@ -17,7 +17,7 @@
             class="form-control"
             [(ngModel)]="deldate"
             id="deldate"
-            (change)="getAllDistinctRoutes()"
+            (change)="getAllOrderRoutes()"
           />
         </div>
         <div class="col-sm-12 col-md-3 text-muted">
@@ -35,50 +35,12 @@
             </option>
           </select>
         </div>
-        <div class="col-sm-12 col-md-3 text-muted">
-          <label for="drivernm" class="label m-0">Driver Name</label>
-          <input
-            type="text"
-            class="form-control"
-            [(ngModel)]="drivernm"
-            id="drivernm"
-            placeholder="Enter Driver's Name"
-          />
-        </div>
-        <div class="col-sm-12 col-md-3 text-muted">
-          <label for="vehno" class="label m-0">Vehicle Name</label>
-          <input
-            type="text"
-            class="form-control"
-            [(ngModel)]="vehno"
-            id="vehno"
-            placeholder="Enter Vehicle No."
-          />
-        </div>
-        <div class="col-sm-12 col-md-3 text-muted my-3">
-          <button
-            class="btn btn-sm btn-primary"
-            [disabled]="!deldate || !routeno || !drivernm || !vehno"
-            (click)="addDriver()"
-            *ngIf="!driverdetspresent"
-          >
-            Add Driver
-          </button>
-          <button
-            class="btn btn-sm btn-warning"
-            [disabled]="!deldate || !routeno || !drivernm || !vehno"
-            (click)="updateDriver()"
-            *ngIf="driverdetspresent"
-          >
-            Update Driver
-          </button>
-        </div>
       </div>
 
       <app-viewroutedets
         routeno="{{ routeval }}"
         deldate="{{ deldate }}"
-        *ngIf="routeval"
+        *ngIf="routeval && deldate"
       ></app-viewroutedets>
     </div>
   </div>

@@ -8,27 +8,33 @@ import { RestService } from '../rest.service';
 })
 export class ViewroutedetsComponent implements OnInit {
   private _routeno: string;
-  @Input() deldate;
-  @Input() set routeno(value: string) {
-    this._routeno = value;
-    this.getRouteCustomersOnDate();
- }
-
- get routeno(): string {
-     return this._routeno;
- }
+  private _deldate: string;
   routesdata: any = null;
   totalcowcans: number = 0;
   totalbuffcans: number = 0;
-  isChange: any = false;
   newroute: string = null;
   msgtext: string = null;
   msgclass: string = null;
 
+  @Input() set deldate(value: string){
+    this._deldate = value;
+  }
+
+  @Input() set routeno(value: string) {
+    this._routeno = value;
+    //this.getRouteCustomersOnDate();
+ }
+
+  get routeno(): string {
+      return this._routeno;
+  }
+
+  get deldate(): string {
+      return this._deldate;
+  }
   constructor(private _rest: RestService) { }
 
   ngOnInit(): void {
-    
     this.getRouteCustomersOnDate();
   }
 
@@ -38,7 +44,10 @@ export class ViewroutedetsComponent implements OnInit {
     startdt.setHours(0, 0, 0, 1);
     let enddt = new Date(this.deldate);
     enddt.setHours(23, 59, 59, 999);
-    // console.log(startdt.getTime(), enddt.getTime())
+    //console.log(startdt.getTime(), enddt.getTime())
+    if(isNaN(startdt.getTime()) || isNaN(enddt.getTime())){
+      return;
+    }
     let urldata = "startdt=" + startdt.getTime() + "&enddt=" + enddt.getTime() + "&routeno=" + this.routeno;
     this._rest.getData("routes.php", "getRouteCustomersOnDate", urldata).subscribe(Response => {
       //console.log(Response)
@@ -76,24 +85,25 @@ export class ViewroutedetsComponent implements OnInit {
     }
   }
 
-  openChangeRouteModal(dets) {
-    this.isChange = dets;
-    this.newroute = null;
-  }
-
-  changeRoute() {
-    let urldata = {
-      ordid: this.isChange.ordid,
-      newroute: parseInt(this.newroute)
+  changeRoute(dets){
+    console.log(dets);
+    let obj = {
+      newroute: dets.route,
+      ordid: dets.ordid
     };
-    this._rest.postData('routes.php', "changeRoute", urldata).subscribe(Response => {
-      if (Response) {
-        this.msgtext = "Route Updated successfully";
-        this.msgclass = "success";
-        this.timer();
-        this.isChange = false;
-      }
-    });
+    this._rest.postData("routes.php","changeRoute",obj)
+      .subscribe(Resp=>{
+        if(Resp && Resp["data"]){
+          this.msgclass= 'success';
+          this.msgtext="Route changed successfully";
+          this.timer();
+        }
+        else{
+          this.msgclass= 'danger';
+          this.msgtext="Route cannot be changed now, please try again later.";
+          this.timer();
+        }
+      })
   }
 
   timer(ms: any = 2000) {
