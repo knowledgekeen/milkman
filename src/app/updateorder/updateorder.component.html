@@ -1,0 +1,120 @@
+<div class="container">
+  <h5 class="my-3">All Orders</h5>
+  <app-message
+    msgtext="{{ msgtext }}"
+    msgclass="{{ msgclass }}"
+    *ngIf="msgtext"
+  ></app-message>
+
+  <div class="card">
+    <div class="card-body">
+      <div class="row">
+        <div class="col-sm-12 col-md-3 text-muted">
+          <label for="deldate" class="label m-0">Date</label>
+          <input
+            type="date"
+            class="form-control"
+            [(ngModel)]="deldate"
+            id="deldate"
+            (change)="getAllOrders()"
+          />
+        </div>
+      </div>
+      <div class="row my-3">
+        <div class="col-md-12">
+          <h6 class="text-danger" *ngIf="!ordersdata">
+            <i class="fa fa-exclamation-triangle"></i>
+            <span class="mx-1">
+              There aren't any customers available .
+            </span>
+          </h6>
+          <div class="table-responsive">
+            <table class="table table-bordered">
+              <thead>
+                <tr>
+                  <th scope="col" style="width: 2%;">#</th>
+                  <th scope="col" style="width: 2%;">Customer</th>
+                  <th scope="col" style="width: 4%;">Buffalo Milk</th>
+                  <th scope="col" style="width: 4%;">Cow Milk</th>
+                  <th scope="col" style="width: 3%;">Buffalo Rate</th>
+                  <th scope="col" style="width: 3%;">Cow Rate</th>
+                  <th scope="col" style="width: 3%;">Tatal Amount</th>
+                  <th scope="col" style="width: 4%;">Order Date</th>
+
+                  <!--<th scope="col">Change Route</th>-->
+                </tr>
+              </thead>
+              <tbody>
+                <tr *ngFor="let dets of ordersdata; let i = index">
+                  <th scope="row">{{ i + 1 }}</th>
+                  <td>
+                    <div class="col-md-12">
+                      {{ dets.name }}
+                    </div>
+                  </td>
+                  <td>
+                    <div class="col-md-10">
+                      <input
+                        type="text"
+                        class="form-control form-control-sm"
+                        [(ngModel)]="dets.buffaloqty"
+                      />
+                    </div>
+                  </td>
+                  <td>
+                    <div class="col-md-10">
+                      <input
+                        type="text"
+                        class="form-control form-control-sm"
+                        [(ngModel)]="dets.cowqty"
+                      />
+                    </div>
+                  </td>
+                  <td>
+                    <div class="col-md-10">
+                      <input
+                        type="text"
+                        class="form-control form-control-sm"
+                        [(ngModel)]="dets.buffalorate"
+                      />
+                    </div>
+                  </td>
+                  <td>
+                    <div class="col-md-10">
+                      <input
+                        type="text"
+                        class="form-control form-control-sm"
+                        [(ngModel)]="dets.cowrate"
+                      />
+                    </div>
+                  </td>
+                  <td>
+                    <div class="col-md-10">
+                      {{ dets.amount }}
+                    </div>
+                  </td>
+
+                  <td>
+                    <div class="row">
+                      <div class="col-md-7">
+                        {{ dets.orderdt }}
+                      </div>
+                      <div class="col-md-3">
+                        <button
+                          class="btn btn-sm btn-info"
+                          (click)="updateOrder(dets)"
+                        >
+                          Save
+                        </button>
+                      </div>
+                    </div>
+                  </td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
