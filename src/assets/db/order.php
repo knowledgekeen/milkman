@@ -94,4 +94,94 @@ if($action == "getCustomerLastOrderDets"){
 	}
 	echo json_encode($data);
 }
+if($action == "getAllOrders"){
+	$headers = apache_request_headers();
+	authenticate($headers);
+	$deldate=$_GET['deldate'];
+	 
+	$sql = "SELECT oreg.`ordid`, oreg.`clientid`, oreg.`buffaloqty`, oreg.`cowqty`,oreg.`buffaloinr`,oreg.`cowinr`, oreg.`orderdt`, oreg.`amount`,cm.`name` FROM `order_register` oreg, `client_master` cm WHERE oreg.`clientid`=cm.`clientid` AND `orderdt`='$deldate' ORDER BY oreg.`ordid` ";
+	$result = $conn->query($sql);
+	while($row = $result->fetch_array())
+	{
+		$rows[] = $row;
+		
+	}
+	$tmp = array();
+	$data = array();
+	$i = 0;
+	//$ord=date('m/d/Y',$orderdt);
+	if(count($rows)>0){
+		foreach($rows as $row)
+		{
+			$tmp[$i]['ordid'] = $row['ordid'];
+			$tmp[$i]['clientid'] = $row['clientid'];
+			$tmp[$i]['buffaloqty'] = $row['buffaloqty'];
+			$tmp[$i]['cowqty'] = $row['cowqty'];
+			$tmp[$i]['buffaloqty'] = $row['buffaloqty'];
+			$tmp[$i]['orderdt'] = $row['orderdt'];
+			$tmp[$i]['buffalorate'] = $row['buffaloinr'];
+			$tmp[$i]['cowrate'] = $row['cowinr'];
+			$tmp[$i]['amount'] = $row['amount'];
+			$tmp[$i]['name'] = $row['name'];
+			$i++;
+		}
+		$data["status"] = 200;
+		$data["data"] = $tmp;
+		header(' ', true, 200);
+	}
+	else{
+		$log  = "File: order.php - Method: $action".PHP_EOL.
+		"Error message: ".$conn->error.PHP_EOL;
+		write_log($log, "error", $conn->error);
+		$data["status"] = 204;
+		header(' ', true, 204);
+	}
+
+	echo json_encode($data);
+}
+ 
+if($action == "updateOrder"){
+	$headers = apache_request_headers();
+	authenticate($headers);
+    $data = json_decode(file_get_contents("php://input"));
+	$name = mysqli_real_escape_string($conn,$data->name);
+	$clientid = $data->clientid;
+	$orderdt=$data->orderdt;
+	$buffaloqty=$data->buffaloqty;
+	$cowqty=$data->cowqty;
+	$buffaloinr=$data->buffaloinr;
+	$cowinr=$data->cowinr;
+	$amount=$data->amount;
+	//$ordid=$data->ordid;
+	
+	
+	if($_SERVER['REQUEST_METHOD']=='POST'){
+        
+		//$sql = "UPDATE `order_register` oreg,`client_master` cm  SET cm.`name`='$name',oreg.`buffaloqty`='$buffaloqty'
+		//,oreg.`cowqty`='$cowqty',oreg.`orderdt`='$orderdt'  WHERE oreg.`clientid`=cm.`clientid` AND `ordid`=$oderid  ";
+		$sql="UPDATE `order_register` SET `buffaloqty`='$buffaloqty',`cowqty`='$cowqty',`buffaloinr`='$buffaloinr',`cowinr`='$cowinr',`orderdt`='$orderdt',`amount`='$amount' WHERE 
+		`clientid`='$clientid' ";
+		$result = $conn->query($sql);
+	}
+    $data1= array();
+    if($result){
+		$data1["status"] = 200;
+		$data1["data"] = $clientid;
+		header(' ', true, 200);
+		$log  = "File: order.php - Method: $action".PHP_EOL.
+		"Data: ".json_encode($data).PHP_EOL;
+		write_log($log, "success", NULL);
+	}
+	else{
+		$log  = "File: order.php - Method: $action".PHP_EOL.
+		"Error message: ".$conn->error.PHP_EOL.
+		"Data: ".json_encode($data).PHP_EOL;
+		write_log($log, "error", $conn->error);
+		$data1["status"] = 204;
+		header(' ', true, 204);
+	}
+
+	echo json_encode($data1);
+}
+
 ?>

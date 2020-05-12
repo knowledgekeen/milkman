@@ -19,6 +19,7 @@ import { ViewpurchpaymentsComponent } from "./viewpurchpayments/viewpurchpayment
 import { ViewsalepaymentsComponent } from "./viewsalepayments/viewsalepayments.component";
 import { AddcustomerComponent } from "./addcustomer/addcustomer.component";
 import { AddsupplierComponent } from "./addsupplier/addsupplier.component";
+import { UpdateorderComponent } from "./updateorder/updateorder.component";
 
 const routes: Routes = [
   { path: "login", component: LoginComponent },
@@ -38,6 +39,7 @@ const routes: Routes = [
   { path: "viewpurchpay", component: ViewpurchpaymentsComponent },
   { path: "viewsalepay", component: ViewsalepaymentsComponent },
   { path: "addcustomer/:clientid", component: AddcustomerComponent },
+  { path: "updateorder", component: UpdateorderComponent },
   { path: "addsupplier/:clientid", component: AddsupplierComponent },
   { path: "", redirectTo: "/home", pathMatch: "full" },
 ];
