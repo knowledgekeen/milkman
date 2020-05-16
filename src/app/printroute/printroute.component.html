@@ -1,0 +1,71 @@
+<div class="container">
+  <h5 class="my-3">Print Route Details</h5>
+  <app-message
+    msgtext="{{ msgtext }}"
+    msgclass="{{ msgclass }}"
+    *ngIf="msgtext"
+  ></app-message>
+
+  <div class="card">
+    <div class="card-body">
+      <div class="row">
+        <div class="col-sm-12 col-md-3 text-muted">
+          <label for="deldate" class="label m-0">Delivery Date</label>
+          <input
+            type="date"
+            class="form-control"
+            [(ngModel)]="deldate"
+            id="deldate"
+            (change)="getAllOrderRoutes()"
+          />
+        </div>
+        <div class="col-sm-12 col-md-3 text-muted">
+          <label for="routeno" class="label m-0">Route No.</label>
+          <select
+            name="routeno"
+            id="routeno"
+            class="form-control"
+            [(ngModel)]="routeno"
+            (change)="routeChange()"
+            [disabled]="!routesdata"
+          >
+            <option value="{{ route.route }}" *ngFor="let route of routesdata">
+              {{ route.route }}
+            </option>
+          </select>
+        </div>
+      </div>
+      <div class="my-3">
+        <h6 class="text-danger" *ngIf="!routesdata">
+          <i class="fa fa-exclamation-triangle"></i>
+          <span class="mx-1">
+            There aren't any customers available on this route.
+          </span>
+        </h6>
+
+        <div class="table-responsive">
+          <table class="table table-bordered" *ngIf="routesdata">
+            <thead>
+              <tr>
+                <th>#</th>
+                <th>Customer</th>
+                <th>Buffalo Milk</th>
+                <th>Cow Milk</th>
+                <th>Number Of Cans</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr *ngFor="let rout of routesdata; let i = index">
+                <th scope="row">{{ i + 1 }}</th>
+                <td>{{ rout.name }}</td>
+                <td>{{ rout.buffaloqty }}</td>
+                <td>{{ rout.cowqty }}</td>
+                <td>{{ rout.buffcans }} ({{ rout.cowcans }})</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

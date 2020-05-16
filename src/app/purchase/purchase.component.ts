@@ -16,6 +16,12 @@ export class PurchaseComponent implements OnInit {
   stockcowqty: any = 0;
   supplierName: string = null;
   allsuppdata: any = null;
+  morngbuffaloqty: any = null;
+  evngbuffaloqty: any = null;
+  morngcowqty: any = null;
+  evngcowqty: any = null;
+  clientid: any = null;
+  value: boolean = false;
   constructor(private _rest: RestService) {}
 
   ngOnInit(): void {
@@ -23,6 +29,8 @@ export class PurchaseComponent implements OnInit {
     //this.getSuppliers();
     this.getAllClientsByType();
     this.getAllStocks();
+
+    this.fetchSuppliersDetails();
   }
 
   getAllClientsByType() {
@@ -32,13 +40,15 @@ export class PurchaseComponent implements OnInit {
       _this._rest
         .getData("client.php", "getAllClientsByType", geturl)
         .subscribe((Response) => {
-          console.log(Response);
+          //console.log(Response);
           if (Response && Response["data"]) {
             _this.allsuppdata = Response["data"];
             // This is dynamic qty added to use by later;
             for (let i in _this.allsuppdata) {
-              _this.allsuppdata[i].buffaloqty = 0;
-              _this.allsuppdata[i].cowqty = 0;
+              _this.allsuppdata[i].evngcowqty = 0;
+              _this.allsuppdata[i].morngcowqty = 0;
+              _this.allsuppdata[i].morngbuffaloqty = 0;
+              _this.allsuppdata[i].evngbuffaloqty = 0;
               _this.allsuppdata[i].amount = 0;
             }
             resolve(true);
@@ -55,9 +65,10 @@ export class PurchaseComponent implements OnInit {
     dt.setHours(0, 0, 0, 1);
     let totalbuffqty = 0,
       totalcowqty = 0;
+
     for (let i in this.allsuppdata) {
-      totalbuffqty += parseFloat(this.allsuppdata[i].buffaloqty);
-      totalcowqty += parseFloat(this.allsuppdata[i].cowqty);
+      totalbuffqty += parseFloat(this.allsuppdata[i].morngbuffaloqty);
+      totalcowqty += parseFloat(this.allsuppdata[i].morngcowqty);
     }
     if (
       parseFloat(this.stockbuffaloqty) - totalbuffqty < 0 ||
@@ -76,8 +87,6 @@ export class PurchaseComponent implements OnInit {
       buffalostkqty: parseFloat(this.stockbuffaloqty) + totalbuffqty,
       cowstkqty: parseFloat(this.stockcowqty) + totalcowqty,
     };
-    console.log(this.stockbuffaloqty);
-    console.log(tmpobj);
     this._rest.postData("purchase.php", "addPurchase", tmpobj).subscribe(
       (Response) => {
         console.log(this.stockbuffaloqty);
@@ -126,7 +135,30 @@ export class PurchaseComponent implements OnInit {
   }
   calculateAmount(supp, index) {
     supp.amount =
-      parseFloat(supp.buffaloqty) * parseFloat(supp.buffalorate) +
-      parseFloat(supp.cowqty) * parseFloat(supp.cowrate);
+      parseFloat(supp.morngbuffaloqty) * parseFloat(supp.buffalorate) +
+      parseFloat(supp.morngcowqty) * parseFloat(supp.cowrate);
+  }
+  fetchSuppliersDetails() {
+    let urldata = "clientid" + this.clientid;
+    this._rest
+      .getData("purchase.php", "fetchSuppliersDetails", this.clientid)
+      .subscribe(
+        (Response) => {
+          if (Response && Response["data"]) {
+            let data = Response["data"];
+            this.morngbuffaloqty = data.morngbuffaloqty;
+            this.evngbuffaloqty = data.evngbuffaloqty;
+            this.morngcowqty = data.morngcowqty;
+            this.evngcowqty = data.evngcowqty;
+            this.value = true;
+            console.log(Response);
+          } else {
+            console.log("error occured");
+          }
+        },
+        (err) => {
+          console.log(err);
+        }
+      );
   }
 }

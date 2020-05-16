@@ -31,6 +31,7 @@ import { ViewsalepaymentsComponent } from "./viewsalepayments/viewsalepayments.c
 import { AddcustomerComponent } from "./addcustomer/addcustomer.component";
 import { AddsupplierComponent } from "./addsupplier/addsupplier.component";
 import { UpdateorderComponent } from "./updateorder/updateorder.component";
+import { PrintrouteComponent } from './printroute/printroute.component';
 
 @NgModule({
   declarations: [
@@ -61,6 +62,7 @@ import { UpdateorderComponent } from "./updateorder/updateorder.component";
     AddcustomerComponent,
     AddsupplierComponent,
     UpdateorderComponent,
+    PrintrouteComponent,
   ],
   imports: [BrowserModule, AppRoutingModule, FormsModule, HttpClientModule],
   providers: [],
