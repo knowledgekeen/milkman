@@ -20,6 +20,7 @@ import { ViewsalepaymentsComponent } from "./viewsalepayments/viewsalepayments.c
 import { AddcustomerComponent } from "./addcustomer/addcustomer.component";
 import { AddsupplierComponent } from "./addsupplier/addsupplier.component";
 import { UpdateorderComponent } from "./updateorder/updateorder.component";
+import { PrintrouteComponent } from "./printroute/printroute.component";
 
 const routes: Routes = [
   { path: "login", component: LoginComponent },
@@ -41,6 +42,7 @@ const routes: Routes = [
   { path: "addcustomer/:clientid", component: AddcustomerComponent },
   { path: "updateorder", component: UpdateorderComponent },
   { path: "addsupplier/:clientid", component: AddsupplierComponent },
+  { path: "printroute", component: PrintrouteComponent },
   { path: "", redirectTo: "/home", pathMatch: "full" },
 ];
 

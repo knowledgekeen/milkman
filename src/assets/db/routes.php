@@ -260,6 +260,7 @@ if($action == "changeRoute"){
 if($action == "getRoutesOrders"){
 	$headers = apache_request_headers();
 	authenticate($headers);
+	
 	$routeno = ($_GET["routeno"]);
 	$tomdt = ($_GET["tomdt"]);
 	$sql = "SELECT ord.`ordid`, ord.`clientid`, ord.`orderdt`, ord.`buffaloqty`, ord.`cowqty`, ord.`route`, ord.`buffaloinr`, ord.`cowinr`, ord.`amount` FROM `order_register` ord WHERE ord.`route`=$routeno AND ord.`orderdt`=$tomdt";
@@ -298,6 +299,47 @@ if($action == "getRoutesOrders"){
 		}
 		$data["status"] = 200;
 		$data["driverdets"] = $tmpdriver;
+		$data["data"] = $tmp;
+		header(' ', true, 200);
+	}
+	else{
+		$log  = "File: routes.php - Method: $action".PHP_EOL.
+		"Error message: ".$conn->error.PHP_EOL;
+		write_log($log, "error", $conn->error);
+		$data["status"] = 204;
+		header(' ', true, 204);
+	}
+
+	echo json_encode($data);
+}
+if($action == "getAllRoutesCustomers"){
+	$headers = apache_request_headers();
+	authenticate($headers);
+	$orderdt = ($_GET["orderdt"]);
+    //$routeno = ($_GET["routeno"]);
+	$sql = "SELECT oreg.`ordid`, oreg.`clientid`, oreg.`buffaloqty`, oreg.`route`,oreg.`cowqty`,oreg.`orderdt`,cm.`name` FROM `order_register` oreg, `client_master` cm WHERE oreg.`clientid`=cm.`clientid` AND oreg.`orderdt`='$orderdt'  ORDER BY oreg.`ordid` ";
+	$result = $conn->query($sql);
+	while($row = $result->fetch_array())
+	{
+		$rows[] = $row;
+		
+	}
+	$tmp = array();
+	$data = array();
+	$i = 0;
+	if(count($rows)>0){
+		foreach($rows as $row)
+		{
+			$tmp[$i]['ordid'] = $row['ordid'];
+			$tmp[$i]['clientid'] = $row['clientid'];
+			$tmp[$i]['buffaloqty'] = $row['buffaloqty'];
+			$tmp[$i]['cowqty'] = $row['cowqty'];
+			//$tmp[$i]['orderdt'] = $row['orderdt'];
+			$tmp[$i]['name'] = $row['name'];
+			$tmp[$i]['route'] = $row['route'];
+			$i++;
+		}
+		$data["status"] = 200;
 		$data["data"] = $tmp;
 		header(' ', true, 200);
 	}
