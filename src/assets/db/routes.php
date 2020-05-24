@@ -316,7 +316,9 @@ if($action == "getAllRoutesCustomers"){
 	$headers = apache_request_headers();
 	authenticate($headers);
 	$orderdt = ($_GET["orderdt"]);
-    //$routeno = ($_GET["routeno"]);
+	//$routeno = ($_GET["routeno"]);
+	//$sql = "SELECT oreg.`ordid`, oreg.`clientid`, oreg.`buffaloqty`, oreg.`route`,oreg.`cowqty`,oreg.`orderdt`,cm.`name` FROM `order_register` oreg, `client_master` cm WHERE oreg.`clientid`=cm.`clientid` AND oreg.`orderdt`='$orderdt' AND oreg.`route`='$routeno' ORDER BY oreg.`ordid` ";
+	
 	$sql = "SELECT oreg.`ordid`, oreg.`clientid`, oreg.`buffaloqty`, oreg.`route`,oreg.`cowqty`,oreg.`orderdt`,cm.`name` FROM `order_register` oreg, `client_master` cm WHERE oreg.`clientid`=cm.`clientid` AND oreg.`orderdt`='$orderdt'  ORDER BY oreg.`ordid` ";
 	$result = $conn->query($sql);
 	while($row = $result->fetch_array())
@@ -353,4 +355,48 @@ if($action == "getAllRoutesCustomers"){
 
 	echo json_encode($data);
 }
+if($action == "routChange"){
+	$headers = apache_request_headers();
+	authenticate($headers);
+	$startdt = ($_GET["startdt"]);
+	$enddt = ($_GET["enddt"]);
+	$routeno = ($_GET["routeno"]);
+	$sql = "SELECT oreg.`ordid`, oreg.`clientid`, oreg.`orderdt`, oreg.`buffaloqty`, oreg.`cowqty`, oreg.`route`, cm.`name` FROM `order_register` oreg, `client_master` cm WHERE oreg.`route`='$routeno' AND (oreg.`orderdt` BETWEEN '$startdt' AND '$enddt') AND oreg.`clientid`=cm.`clientid` ORDER BY oreg.`ordid`";
+	$result = $conn->query($sql);
+	while($row = $result->fetch_array())
+	{
+		$rows[] = $row;
+	}
+
+	$tmp = array();
+	$data = array();
+	$i = 0;
+
+	if(count($rows)>0){
+		foreach($rows as $row)
+		{
+			$tmp[$i]['ordid'] = $row['ordid'];
+			$tmp[$i]['clientid'] = $row['clientid'];
+			$tmp[$i]['orderdt'] = $row['orderdt'];
+			$tmp[$i]['buffaloqty'] = $row['buffaloqty'];
+			$tmp[$i]['cowqty'] = $row['cowqty'];
+			$tmp[$i]['route'] = $row['route'];
+			$tmp[$i]['name'] = $row['name'];
+			$i++;
+		}
+		$data["status"] = 200;
+		$data["data"] = $tmp;
+		header(' ', true, 200);
+	}
+	else{
+		$log  = "File: routes.php - Method: $action".PHP_EOL.
+		"Error message: ".$conn->error.PHP_EOL;
+		write_log($log, "error", $conn->error);
+		$data["status"] = 204;
+		header(' ', true, 204);
+	}
+
+	echo json_encode($data);
+}
+
 ?>
