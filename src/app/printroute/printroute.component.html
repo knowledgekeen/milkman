@@ -26,17 +26,17 @@
             id="routeno"
             class="form-control"
             [(ngModel)]="routeno"
-            (change)="routeChange()"
+            (change)="routChange()"
             [disabled]="!routesdata"
           >
-            <option value="{{ route.route }}" *ngFor="let route of routesdata">
+            <option value="{{ route.route }}" *ngFor="let route of routedata">
               {{ route.route }}
             </option>
           </select>
         </div>
       </div>
       <div class="my-3">
-        <h6 class="text-danger" *ngIf="!routesdata">
+        <h6 class="text-danger" *ngIf="!routedata">
           <i class="fa fa-exclamation-triangle"></i>
           <span class="mx-1">
             There aren't any customers available on this route.

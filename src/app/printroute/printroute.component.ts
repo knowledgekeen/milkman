@@ -16,6 +16,7 @@ export class PrintrouteComponent implements OnInit {
   routesdata: any = null;
   totalcowcans: number = 0;
   totalbuffcans: number = 0;
+  routedata: any = null;
 
   constructor(private _rest: RestService) {}
 
@@ -25,25 +26,25 @@ export class PrintrouteComponent implements OnInit {
     tomorrowdt.setDate(tomorrowdt.getDate());
     this.deldate = moment(tomorrowdt, "YYYY-MM-DD").format("YYYY-MM-DD");
     this.getAllOrderRoutes();
-    this.getAllRoutesCustomers();
+    //this.getAllRoutesCustomers();
+    this.routChange();
   }
 
   getAllOrderRoutes() {
-    this.routesdata = null;
+    this.routedata = null;
     this.routeval = null;
     this.routeno = null;
     let orderdt = new Date(this.deldate);
     orderdt.setHours(0, 0, 0, 1);
     let urldata = "orderdt=" + orderdt.getTime();
-    //console.log(orderdt);
     this._rest.getData("routes.php", "getAllOrderRoutes", urldata).subscribe(
       (Response) => {
         if (Response && Response["data"]) {
           this.getAllRoutesCustomers();
-          this.routesdata = Response["data"];
-          this.routeno = this.routesdata[0].route;
-          this.routeval = this.routesdata[0].route;
-          //this.routeChange();
+          this.routedata = Response["data"];
+          console.log(this.routedata);
+          this.routeno = this.routedata[0].route;
+          this.routeval = this.routedata[0].route;
         } else {
           this.routeval = "0";
         }
@@ -52,13 +53,6 @@ export class PrintrouteComponent implements OnInit {
         console.log(err);
       }
     );
-  }
-  routeChange() {
-    this.routeval = null;
-    let _this = this;
-    setTimeout(() => {
-      _this.routeval = _this.routeno;
-    }, 50);
   }
 
   calculateMilkCans() {
@@ -94,16 +88,16 @@ export class PrintrouteComponent implements OnInit {
   }
   getAllRoutesCustomers() {
     this.routesdata = null;
-    this.routeno = null;
     let orderdt = new Date(this.deldate);
     orderdt.setHours(0, 0, 0, 1);
-    let urldata = "orderdt=" + orderdt.getTime() + "&routeno=" + this.routeno;
+    let urldata = "orderdt=" + orderdt.getTime() + "&routeno" + this.routeno;
     console.log(urldata);
     this._rest
       .getData("routes.php", "getAllRoutesCustomers", urldata)
       .subscribe(
         (Response) => {
           if (Response && Response["data"]) {
+            this.routChange();
             this.routesdata = Response["data"];
             this.calculateMilkCans();
           } else {
@@ -115,6 +109,35 @@ export class PrintrouteComponent implements OnInit {
           console.log(err);
         }
       );
+  }
+  routChange() {
+    this.routesdata = null;
+    let startdt = new Date(this.deldate);
+    startdt.setHours(0, 0, 0, 1);
+    let enddt = new Date(this.deldate);
+    enddt.setHours(23, 59, 59, 999);
+
+    if (isNaN(startdt.getTime()) || isNaN(enddt.getTime())) {
+      return;
+    }
+    let urldata =
+      "startdt=" +
+      startdt.getTime() +
+      "&enddt=" +
+      enddt.getTime() +
+      "&routeno=" +
+      this.routeno;
+    this._rest
+      .getData("routes.php", "routChange", urldata)
+      .subscribe((Response) => {
+        console.log("responsr of changeroute is ", Response);
+        if (Response && Response["data"]) {
+          this.routesdata = Response["data"];
+          this.calculateMilkCans();
+        } else {
+          this.routesdata = null;
+        }
+      });
   }
   timer(ms: any = 2000) {
     let _this = this;
