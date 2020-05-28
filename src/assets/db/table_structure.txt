@@ -1,14 +1,13 @@
 -- phpMyAdmin SQL Dump
--- version 4.8.5
+-- version 5.0.2
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: Apr 26, 2020 at 07:02 PM
--- Server version: 10.1.38-MariaDB
--- PHP Version: 7.3.3
+-- Generation Time: May 28, 2020 at 07:32 PM
+-- Server version: 10.4.11-MariaDB
+-- PHP Version: 7.2.29
 
 SET SQL_MODE = "NO_AUTO_VALUE_ON_ZERO";
-SET AUTOCOMMIT = 0;
 START TRANSACTION;
 SET time_zone = "+00:00";
 
@@ -47,25 +46,13 @@ CREATE TABLE `client_master` (
 --
 
 INSERT INTO `client_master` (`clientid`, `name`, `cno`, `cperson`, `cno1`, `address`, `addinfo`, `ctype`, `routeno`, `buffalorate`, `cowrate`) VALUES
-(1, 'Wasim', '1212', 'Abcde', '1234567890', 'Swargate, Pune 001', '', 2, 1, '40', '50'),
-(2, 'Test', '1212', 'aaa', '121', 'aaa', '', 2, 3, '16', '0'),
-(3, 'Aaaa', 'sdlfsd', 'df,gdfn', 'ldfkgdlk', 'sdgd', 'eefds', 1, NULL, '', ''),
-(4, 'sdfg', '4553', 'sdfd', 'dfg', '', '', 1, NULL, '', ''),
-(5, 'LMNOP', '12345678890', 'Soni', '122333444455555', 'AAn', '', 2, 1, '42', '0'),
-(6, 'AABBCC', '11', 'asdasd', '123123', 'assf', '', 2, 2, '0', '76'),
-(7, 'DDEEFF', '1212', '1212', '11222', '', '', 1, NULL, '', ''),
-(8, 'asjfn', 'sdf', 'sdf', 'sdf', 'adv', 'sd', 1, NULL, '', ''),
-(9, 'XYZO', '9898980000', 'XYZO', '9898980000', 'Baramati, Pune', '', 2, 1, '0', '87'),
-(10, 's;lfsd;', ';gdklg', 'sdgm', 'sdglk', '', '', 1, NULL, '', ''),
-(11, 'sdfmds', 'sdg', 'fsfd', 'asdf', '', '', 1, NULL, '', ''),
-(12, 'xdfd', 'sfds', '', '', '', '', 1, NULL, '', ''),
-(13, 'salfn', 'sdfn', 'ad', 'lk', '', '', 1, NULL, '', ''),
-(14, 'sdff', 'dfgd', '', '', '', '', 2, 2, '94', '0'),
-(15, 'sdffsdf', 'sdr243', '', '', '', '', 1, NULL, '', ''),
-(16, 'sdffsdf', 'sdr243', '', '', '', '', 1, NULL, '', ''),
-(17, 'sdgd', 'r5d4', '', '', '', '', 1, NULL, '', ''),
-(18, 'sdfdsgf', '1234234', '', '', '', '', 1, NULL, '', ''),
-(19, 'supp', '1213', 'sddlfm ', 'sdf', 'as', 'sdf', 1, NULL, '', '');
+(36, 'Wasim', '12185666', 'Abcdefgh', '1234567890', 'Swargate, Pune 001', 'hii', 2, 2, '22', '10'),
+(37, 'xy', '7890', '', 'sgs', 'yahii', 'hii', 2, 2, '09', '911'),
+(38, 'suppli', '788', '78f', 'fg', 'hadapsar p', '00t', 1, 1, '01', '09'),
+(39, 'newsuppp', 'na', '', '', '', '', 1, 0, '20', '30'),
+(40, 'xyzx', '90', '', '', '', '', 1, 0, '2', '1'),
+(41, 'fghfgh', '56', '', '', '', '', 2, 1, '2', '2'),
+(42, 'sup', '8', '', '', '', '', 1, 0, '2', '2');
 
 -- --------------------------------------------------------
 
@@ -131,9 +118,11 @@ CREATE TABLE `order_register` (
 --
 
 INSERT INTO `order_register` (`ordid`, `clientid`, `orderdt`, `buffaloqty`, `cowqty`, `route`, `buffaloinr`, `cowinr`, `amount`) VALUES
-(4, 5, '1587925800001', 10, 0, 1, '42', '0', '420'),
-(5, 1, '1587925800001', 15, 10, 1, '40', '50', '1100'),
-(6, 9, '1587925800001', 0, 10, 1, '0', '87', '870');
+(19, 41, '1588962600001', 9, 9, 1, '2', '2', '36'),
+(20, 36, '1588789800001', 3, 0, 1, '0', '10', '0'),
+(21, 37, '1588789800001', 0, 3, 2, '09', '91', '273'),
+(28, 41, '1589567400001', 98, 0, 1, '2', '2', '196'),
+(29, 36, '1589567400001', 1, 1, 2, '22', '10', '32');
 
 -- --------------------------------------------------------
 
@@ -155,7 +144,8 @@ CREATE TABLE `payment_register` (
 --
 
 INSERT INTO `payment_register` (`payid`, `clientid`, `paydt`, `amount`, `particulars`, `paymode`) VALUES
-(1, 7, '1587407400001', '500', 'Cash Payment', 1);
+(1, 7, '1587407400001', '500', 'Cash Payment', 1),
+(2, 42, '1589394600001', '90', '.', 2);
 
 -- --------------------------------------------------------
 
@@ -184,20 +174,28 @@ INSERT INTO `product_master` (`prodid`, `prodname`) VALUES
 
 CREATE TABLE `purchase_register` (
   `purchid` int(50) NOT NULL,
-  `prodid` int(50) NOT NULL,
-  `clientid` int(50) NOT NULL,
+  `clientid` varchar(50) NOT NULL,
   `purchdate` varchar(50) NOT NULL,
-  `quantity` varchar(50) NOT NULL,
-  `rate` varchar(50) NOT NULL
+  `purchtime` varchar(50) NOT NULL,
+  `morngbuffaloqty` varchar(50) NOT NULL,
+  `morngcowqty` varchar(50) NOT NULL,
+  `evngbuffaloqty` varchar(30) NOT NULL,
+  `evngcowqty` varchar(30) NOT NULL,
+  `buffaloinr` varchar(50) NOT NULL,
+  `cowinr` varchar(50) NOT NULL,
+  `amount` varchar(50) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
 --
 -- Dumping data for table `purchase_register`
 --
 
-INSERT INTO `purchase_register` (`purchid`, `prodid`, `clientid`, `purchdate`, `quantity`, `rate`) VALUES
-(1, 4, 19, '1585715400000', '160', '4500'),
-(2, 3, 7, '1585920600000', '100', '6000');
+INSERT INTO `purchase_register` (`purchid`, `clientid`, `purchdate`, `purchtime`, `morngbuffaloqty`, `morngcowqty`, `evngbuffaloqty`, `evngcowqty`, `buffaloinr`, `cowinr`, `amount`) VALUES
+(135, '39', '1590258600001', '1', '01', '0', '', '', '20', '30', '20'),
+(137, '39', '1590258600001', '2', '', '', '03', '03', '20', '30', '150'),
+(138, '42', '1590258600001', '1', '02', '0', '', '', '2', '2', '4'),
+(139, '38', '1590517800001', '1', '02', '01', '', '', '01', '09', '11'),
+(142, '40', '1590517800001', '2', '', '', '04', '09', '2', '1', '9');
 
 -- --------------------------------------------------------
 
@@ -218,7 +216,23 @@ CREATE TABLE `route_driver_register` (
 --
 
 INSERT INTO `route_driver_register` (`routedriverid`, `route`, `drivernm`, `vehicleno`, `orderdt`) VALUES
-(2, 1, 'Rahul', 'MH121212', '1587925800001');
+(2, 1, 'Rahul', 'MH121212', '1587925800001'),
+(7, 1, 'hhh', '9090', '1588271400001'),
+(8, 1, 'gh', '20', '1588444200001'),
+(9, 2, 'hj', '999', '1588444200001'),
+(10, 1, 'hjh', '9999', '1588617000001'),
+(11, 2, 'j', '98998', '1588617000001'),
+(12, 1, 'g', '6', '1588703400001'),
+(13, 1, 'a', 'a', '1588962600001'),
+(14, 2, 'f', 'a', '1588789800001'),
+(15, 1, '7', '7', '1588876200001'),
+(16, 1, 'w', 'w', '1588789800001'),
+(17, 2, 'gh', '5', '1588876200001'),
+(18, 1, 't', 't', '1589481000001'),
+(19, 2, 'a', 'a', '1589481000001'),
+(20, 2, 't', 't', '1589481000001'),
+(21, 1, 'b', 'n', '1589567400001'),
+(22, 2, 'u', 'i', '1589567400001');
 
 -- --------------------------------------------------------
 
@@ -238,8 +252,8 @@ CREATE TABLE `stock_master` (
 --
 
 INSERT INTO `stock_master` (`stockid`, `prodid`, `rawmatid`, `quantity`) VALUES
-(1, 3, NULL, '50'),
-(2, 4, NULL, '80');
+(1, 3, NULL, '461'),
+(2, 4, NULL, '206');
 
 -- --------------------------------------------------------
 
@@ -333,7 +347,7 @@ ALTER TABLE `user_master`
 -- AUTO_INCREMENT for table `client_master`
 --
 ALTER TABLE `client_master`
-  MODIFY `clientid` int(20) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=20;
+  MODIFY `clientid` int(20) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=43;
 
 --
 -- AUTO_INCREMENT for table `inhouse_production_register`
@@ -351,13 +365,13 @@ ALTER TABLE `opening_bal_register`
 -- AUTO_INCREMENT for table `order_register`
 --
 ALTER TABLE `order_register`
-  MODIFY `ordid` int(20) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=7;
+  MODIFY `ordid` int(20) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=30;
 
 --
 -- AUTO_INCREMENT for table `payment_register`
 --
 ALTER TABLE `payment_register`
-  MODIFY `payid` int(50) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
+  MODIFY `payid` int(50) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
 
 --
 -- AUTO_INCREMENT for table `product_master`
@@ -369,13 +383,13 @@ ALTER TABLE `product_master`
 -- AUTO_INCREMENT for table `purchase_register`
 --
 ALTER TABLE `purchase_register`
-  MODIFY `purchid` int(50) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
+  MODIFY `purchid` int(50) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=143;
 
 --
 -- AUTO_INCREMENT for table `route_driver_register`
 --
 ALTER TABLE `route_driver_register`
-  MODIFY `routedriverid` int(50) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
+  MODIFY `routedriverid` int(50) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=23;
 
 --
 -- AUTO_INCREMENT for table `stock_master`
