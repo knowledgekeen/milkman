@@ -76,7 +76,7 @@
                           placeholder="Enter Buffalo Milk (Mandatory)"
                           [(ngModel)]="supp.morngbuffaloqty"
                           (change)="calculateAmount(supp, i)"
-                          [disabled]="!value"
+                          [disabled]="value"
                         />
                       </div>
                       <div class="col-sm-12 col-md-6 text-muted">
@@ -89,6 +89,7 @@
                           placeholder="Enter Buffalo Milk (Mandatory)"
                           [(ngModel)]="supp.evngbuffaloqty"
                           (change)="calculateAmount(supp, i)"
+                          [disabled]="value"
                         />
                       </div>
                     </div>
@@ -105,6 +106,7 @@
                           placeholder="Enter Buffalo Milk (Mandatory)"
                           [(ngModel)]="supp.morngcowqty"
                           (change)="calculateAmount(supp, i)"
+                          [disabled]="value"
                         />
                       </div>
                       <div class="col-sm-12 col-md-6 text-muted">
@@ -117,6 +119,7 @@
                           placeholder="Enter Buffalo Milk (Mandatory)"
                           [(ngModel)]="supp.evngcowqty"
                           (change)="calculateAmount(supp, i)"
+                          [disabled]="value"
                         />
                       </div>
                     </div>

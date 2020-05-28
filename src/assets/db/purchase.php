@@ -25,19 +25,19 @@ if($action == "addPurchase"){
 			{ continue;} 
 			else{
 			$purchtime="1";
-			$sql = "INSERT INTO `purchase_register`( `clientid`, `purchdate`, `purchtime`,`buffaloqty`, `cowqty`,`buffaloinr`,`cowinr`,`amount`) VALUES ( '$supp->clientid', '$purchdate','$purchtime', '$supp->morngbuffaloqty', '$supp->morngcowqty','$supp->buffalorate','$supp->cowrate','$supp->amount')";
+			$sql = "INSERT INTO `purchase_register`( `clientid`, `purchdate`, `purchtime`,`morngbuffaloqty`, `morngcowqty`,`buffaloinr`,`cowinr`,`amount`) VALUES ( '$supp->clientid', '$purchdate','$purchtime', '$supp->morngbuffaloqty', '$supp->morngcowqty','$supp->buffalorate','$supp->cowrate','$supp->amount')";
 		    $result = $conn->query($sql);
             $purchid = $conn->insert_id;
-		}
-		if($supp->evngbuffaloqty==0  &&  $supp->evngcowqty==0  )
+		    }
+		  if($supp->evngbuffaloqty==0  &&  $supp->evngcowqty==0  )
 			{ continue;} 
 			else{
 			$purchtime="2";
-			$sql = "INSERT INTO `purchase_register`( `clientid`, `purchdate`, `purchtime`,`buffaloqty`, `cowqty`,`buffaloinr`,`cowinr`,`amount`) VALUES ( '$supp->clientid', '$purchdate','$purchtime', '$supp->evngbuffaloqty', '$supp->evngcowqty','$supp->buffalorate','$supp->cowrate','$supp->amount')";
+			$sql = "INSERT INTO `purchase_register`( `clientid`, `purchdate`, `purchtime`,`evngbuffaloqty`, `evngcowqty`,`buffaloinr`,`cowinr`,`amount`) VALUES ( '$supp->clientid', '$purchdate','$purchtime', '$supp->evngbuffaloqty', '$supp->evngcowqty','$supp->buffalorate','$supp->cowrate','$supp->amount')";
 		    $result = $conn->query($sql);
             $purchid = $conn->insert_id;
-		}
-	  }
+		  }
+	    }
         // Update buffalo stock quantity in stock
 		$sqlbuffupt = "UPDATE `stock_master` SET `quantity`='$buffalostkqty' WHERE `stockid`=2";
 		$resultbuffupt = $conn->query($sqlbuffupt);
@@ -67,13 +67,11 @@ if($action == "addPurchase"){
 	echo json_encode($data1);
 }
 if($action == "fetchSuppliersDetails"){
-
 	$headers = apache_request_headers();
 	authenticate($headers);
-	//$clientid = ($_GET["clientid"]);
-	$sql = "SELECT * FROM `purchase_register` ORDER BY `purchid`";
+	$sql="SELECT per.`morngbuffaloqty`,per.`morngcowqty`,per.`evngbuffaloqty`,per.`evngcowqty`,cli.`name` from `purchase_register` per,`client_master` cli  where per.`clientid`=cli.`clientid` ";
+	//$sql = "SELECT * FROM `purchase_register` ORDER BY `purchid`";     
 	$result = $conn->query($sql);
-	//$clientid=$_GET['clientid'];
 	while($row = $result->fetch_array())
 	{
 		$rows[] = $row;
@@ -84,22 +82,16 @@ if($action == "fetchSuppliersDetails"){
 	$i=0;
 	if(count($rows)>0){
 		foreach($rows as $row)
-		{
-			$tmp[$i]['purchtime']=$row['purchtime'];
-		if($tmp[$i]['purchtime']=="1"){
-		$tmp[$i]['morngbuffaloqty'] = $row['buffaloqty'];
-		$tmp[$i]['morngcowqty'] = $row['cowqty'];
-		}
-		else {
-			$tmp[$i]['evngbuffaloqty'] = $row['buffaloqty'];
-			$tmp[$i]['evngcowqty'] = $row['cowqty'];
-			}
+		{   $tmp[$i]['name'] = $row['name'];			
+			$tmp[$i]['morngbuffaloqty'] = $row['morngbuffaloqty'];
+		    $tmp[$i]['morngcowqty'] = $row['morngcowqty'];
+			$tmp[$i]['evngbuffaloqty'] = $row['evngbuffaloqty'];
+			$tmp[$i]['evngcowqty'] = $row['evngcowqty'];			
 			$i++;
 		}
 		$data["status"] = 200;
 		$data["data"] = $tmp;
-		header(' ', true, 200);
-			
+		header(' ', true, 200);	
     }
 	else{
 		$log  = "File: purchase.php - Method: $action".PHP_EOL.
@@ -110,5 +102,6 @@ if($action == "fetchSuppliersDetails"){
 	}
 
 	echo json_encode($data);
-}	
+}
+
 ?>

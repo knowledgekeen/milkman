@@ -20,17 +20,16 @@ export class PurchaseComponent implements OnInit {
   evngbuffaloqty: any = null;
   morngcowqty: any = null;
   evngcowqty: any = null;
-  clientid: any = null;
+  //  clientid: any = null;
+  allsupp: any = null;
   value: boolean = false;
   constructor(private _rest: RestService) {}
 
   ngOnInit(): void {
     this.resetForm();
-    //this.getSuppliers();
     this.getAllClientsByType();
-    this.getAllStocks();
-
     this.fetchSuppliersDetails();
+    this.getAllStocks();
   }
 
   getAllClientsByType() {
@@ -40,7 +39,6 @@ export class PurchaseComponent implements OnInit {
       _this._rest
         .getData("client.php", "getAllClientsByType", geturl)
         .subscribe((Response) => {
-          //console.log(Response);
           if (Response && Response["data"]) {
             _this.allsuppdata = Response["data"];
             // This is dynamic qty added to use by later;
@@ -58,6 +56,45 @@ export class PurchaseComponent implements OnInit {
           _this = null;
         });
     });
+  }
+  fetchSuppliersDetails() {
+    this._rest.getData("purchase.php", "fetchSuppliersDetails").subscribe(
+      (Response) => {
+        if (Response && Response["data"]) {
+          this.allsupp = Response["data"];
+          for (let x in this.allsuppdata) {
+            for (let y in this.allsupp) {
+              if (this.allsuppdata[x].name == this.allsupp[y].name) {
+                if (this.allsupp[y].morngbuffaloqty) {
+                  this.allsuppdata[x].morngbuffaloqty = this.allsupp[
+                    y
+                  ].morngbuffaloqty;
+                }
+                if (this.allsupp[y].morngcowqty) {
+                  this.allsuppdata[x].morngbuffaloqty = this.allsupp[
+                    y
+                  ].morngbuffaloqty;
+                }
+                if (this.allsupp[y].evngbuffaloqty) {
+                  this.allsuppdata[x].evngbuffaloqty = this.allsupp[
+                    y
+                  ].evngbuffaloqty;
+                }
+                if (this.allsupp[y].evngcowoqty) {
+                  this.allsuppdata[x].evngcowoqty = this.allsupp[y].evngcowoqty;
+                }
+              }
+            }
+          }
+          //console.log(this.allsupp);
+        } else {
+          console.log("error occured");
+        }
+      },
+      (err) => {
+        console.log(err);
+      }
+    );
   }
 
   addPurchase() {
@@ -89,7 +126,6 @@ export class PurchaseComponent implements OnInit {
     };
     this._rest.postData("purchase.php", "addPurchase", tmpobj).subscribe(
       (Response) => {
-        console.log(this.stockbuffaloqty);
         this.msgtext = "Purchase successful.";
         this.msgclass = "success";
         this.getAllStocks();
@@ -105,6 +141,11 @@ export class PurchaseComponent implements OnInit {
     );
   }
 
+  calculateAmount(supp, index) {
+    supp.amount =
+      parseFloat(supp.morngbuffaloqty) * parseFloat(supp.buffalorate) +
+      parseFloat(supp.morngcowqty) * parseFloat(supp.cowrate);
+  }
   getAllStocks() {
     this._rest.getData("stocks.php", "getAllStocks").subscribe((Response) => {
       if (Response && Response["data"]) {
@@ -121,44 +162,15 @@ export class PurchaseComponent implements OnInit {
     });
   }
 
+  resetForm() {
+    let dt = moment(new Date(), "YYYY-MM-DD");
+    this.purDate = dt.format("YYYY-MM-DD");
+  }
   timer() {
     let _this = this;
     setTimeout(() => {
       _this.msgclass = null;
       _this.msgtext = null;
     }, 2000);
-  }
-
-  resetForm() {
-    let dt = moment(new Date(), "YYYY-MM-DD");
-    this.purDate = dt.format("YYYY-MM-DD");
-  }
-  calculateAmount(supp, index) {
-    supp.amount =
-      parseFloat(supp.morngbuffaloqty) * parseFloat(supp.buffalorate) +
-      parseFloat(supp.morngcowqty) * parseFloat(supp.cowrate);
-  }
-  fetchSuppliersDetails() {
-    let urldata = "clientid" + this.clientid;
-    this._rest
-      .getData("purchase.php", "fetchSuppliersDetails", this.clientid)
-      .subscribe(
-        (Response) => {
-          if (Response && Response["data"]) {
-            let data = Response["data"];
-            this.morngbuffaloqty = data.morngbuffaloqty;
-            this.evngbuffaloqty = data.evngbuffaloqty;
-            this.morngcowqty = data.morngcowqty;
-            this.evngcowqty = data.evngcowqty;
-            this.value = true;
-            console.log(Response);
-          } else {
-            console.log("error occured");
-          }
-        },
-        (err) => {
-          console.log(err);
-        }
-      );
   }
 }
