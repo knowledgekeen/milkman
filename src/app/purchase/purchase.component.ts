@@ -27,8 +27,7 @@ export class PurchaseComponent implements OnInit {
 
   ngOnInit(): void {
     this.resetForm();
-    this.getAllClientsByType();
-    this.fetchSuppliersDetails();
+    this.getPurchaseDetailsForDate();
     this.getAllStocks();
   }
 
@@ -43,10 +42,14 @@ export class PurchaseComponent implements OnInit {
             _this.allsuppdata = Response["data"];
             // This is dynamic qty added to use by later;
             for (let i in _this.allsuppdata) {
-              _this.allsuppdata[i].evngcowqty = 0;
               _this.allsuppdata[i].morngcowqty = 0;
+              _this.allsuppdata[i].morngcowdisabled = false;
+              _this.allsuppdata[i].evngcowqty = 0;
+              _this.allsuppdata[i].evngcowdisabled = false;
               _this.allsuppdata[i].morngbuffaloqty = 0;
+              _this.allsuppdata[i].morngbuffalodisabled = false;
               _this.allsuppdata[i].evngbuffaloqty = 0;
+              _this.allsuppdata[i].evngbuffalodisabled = false; 
               _this.allsuppdata[i].amount = 0;
             }
             resolve(true);
@@ -57,31 +60,34 @@ export class PurchaseComponent implements OnInit {
         });
     });
   }
+
   fetchSuppliersDetails() {
-    this._rest.getData("purchase.php", "fetchSuppliersDetails").subscribe(
+    let dt = new Date(this.purDate);
+    dt.setHours(0, 0, 0, 1);
+    const urldata="purdate="+ dt.getTime();
+    this._rest.getData("purchase.php", "fetchSuppliersDetails", urldata).subscribe(
       (Response) => {
         if (Response && Response["data"]) {
           this.allsupp = Response["data"];
+          console.log(this.allsupp, this.allsuppdata)
           for (let x in this.allsuppdata) {
             for (let y in this.allsupp) {
-              if (this.allsuppdata[x].name == this.allsupp[y].name) {
-                if (this.allsupp[y].morngbuffaloqty) {
-                  this.allsuppdata[x].morngbuffaloqty = this.allsupp[
-                    y
-                  ].morngbuffaloqty;
+              if (this.allsuppdata[x].clientid == this.allsupp[y].clientid) {
+                if (parseFloat(this.allsupp[y].morngbuffaloqty)) {
+                  this.allsuppdata[x].morngbuffaloqty = this.allsupp[y].morngbuffaloqty;
+                  this.allsuppdata[x].morngbuffalodisabled = true;
                 }
-                if (this.allsupp[y].morngcowqty) {
-                  this.allsuppdata[x].morngbuffaloqty = this.allsupp[
-                    y
-                  ].morngbuffaloqty;
+                if (parseFloat(this.allsupp[y].morngcowqty)) {
+                  this.allsuppdata[x].morngcowqty = this.allsupp[y].morngcowqty;
+                  this.allsuppdata[x].morngcowdisabled = true;
                 }
-                if (this.allsupp[y].evngbuffaloqty) {
-                  this.allsuppdata[x].evngbuffaloqty = this.allsupp[
-                    y
-                  ].evngbuffaloqty;
+                if (parseFloat(this.allsupp[y].evngbuffaloqty)) {
+                  this.allsuppdata[x].evngbuffaloqty = this.allsupp[y].evngbuffaloqty;
+                  this.allsuppdata[x].evngbuffalodisabled = true;
                 }
-                if (this.allsupp[y].evngcowoqty) {
-                  this.allsuppdata[x].evngcowoqty = this.allsupp[y].evngcowoqty;
+                if (parseFloat(this.allsupp[y].evngcowqty)) {
+                  this.allsuppdata[x].evngcowqty = this.allsupp[y].evngcowqty;
+                  this.allsuppdata[x].evngcowdisabled = true;
                 }
               }
             }
@@ -103,10 +109,12 @@ export class PurchaseComponent implements OnInit {
     let totalbuffqty = 0,
       totalcowqty = 0;
 
-    for (let i in this.allsuppdata) {
-      totalbuffqty += parseFloat(this.allsuppdata[i].morngbuffaloqty);
-      totalcowqty += parseFloat(this.allsuppdata[i].morngcowqty);
-    }
+    this.allsuppdata.map(resp=>{
+      console.log(resp)
+      totalbuffqty += (parseFloat(resp.morngbuffaloqty)+parseFloat(resp.evngbuffaloqty));
+      totalcowqty += (parseFloat(resp.morngcowqty)+parseFloat(resp.evngcowqty));
+    });
+
     if (
       parseFloat(this.stockbuffaloqty) - totalbuffqty < 0 ||
       parseFloat(this.stockcowqty) - totalcowqty < 0
@@ -128,6 +136,7 @@ export class PurchaseComponent implements OnInit {
       (Response) => {
         this.msgtext = "Purchase successful.";
         this.msgclass = "success";
+        this.getPurchaseDetailsForDate();
         this.getAllStocks();
         this.timer();
         this.resetForm();
@@ -146,6 +155,7 @@ export class PurchaseComponent implements OnInit {
       parseFloat(supp.morngbuffaloqty) * parseFloat(supp.buffalorate) +
       parseFloat(supp.morngcowqty) * parseFloat(supp.cowrate);
   }
+
   getAllStocks() {
     this._rest.getData("stocks.php", "getAllStocks").subscribe((Response) => {
       if (Response && Response["data"]) {
@@ -166,6 +176,17 @@ export class PurchaseComponent implements OnInit {
     let dt = moment(new Date(), "YYYY-MM-DD");
     this.purDate = dt.format("YYYY-MM-DD");
   }
+
+  changeDate(){
+    this.getPurchaseDetailsForDate();
+  }
+
+  getPurchaseDetailsForDate(){
+    this.getAllClientsByType().then(resp=>{
+      this.fetchSuppliersDetails();
+    });
+  }
+
   timer() {
     let _this = this;
     setTimeout(() => {

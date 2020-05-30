@@ -15,6 +15,7 @@
             id="purDate"
             class="form-control"
             [(ngModel)]="purDate"
+            (change)="changeDate()"
             placeholder="Enter Purchase Date"
           />
         </div>
@@ -31,7 +32,7 @@
                 Purchase
               </button>
             </div>
-            <div class="col-md-7 text-primary">
+            <div class="col-md-7 text-primary text-right">
               <span>
                 Buffalo Milk Stock:
                 <strong class="text-danger">{{ stockbuffaloqty }}</strong>
@@ -76,7 +77,7 @@
                           placeholder="Enter Buffalo Milk (Mandatory)"
                           [(ngModel)]="supp.morngbuffaloqty"
                           (change)="calculateAmount(supp, i)"
-                          [disabled]="value"
+                          [disabled]="supp.morngbuffalodisabled"
                         />
                       </div>
                       <div class="col-sm-12 col-md-6 text-muted">
@@ -89,7 +90,7 @@
                           placeholder="Enter Buffalo Milk (Mandatory)"
                           [(ngModel)]="supp.evngbuffaloqty"
                           (change)="calculateAmount(supp, i)"
-                          [disabled]="value"
+                          [disabled]="supp.evngbuffalodisabled"
                         />
                       </div>
                     </div>
@@ -106,20 +107,20 @@
                           placeholder="Enter Buffalo Milk (Mandatory)"
                           [(ngModel)]="supp.morngcowqty"
                           (change)="calculateAmount(supp, i)"
-                          [disabled]="value"
+                          [disabled]="supp.morngcowdisabled"
                         />
                       </div>
                       <div class="col-sm-12 col-md-6 text-muted">
-                        <label for="evngcowqty" class="label m-0"
-                          >Evening Qty</label
-                        >
+                        <label for="evngcowqty" class="label m-0">
+                          Evening Qty
+                          </label>
                         <input
                           type="text"
                           class="form-control"
                           placeholder="Enter Buffalo Milk (Mandatory)"
                           [(ngModel)]="supp.evngcowqty"
                           (change)="calculateAmount(supp, i)"
-                          [disabled]="value"
+                          [disabled]="supp.evngcowdisabled"
                         />
                       </div>
                     </div>
