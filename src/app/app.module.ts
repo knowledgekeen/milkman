@@ -31,7 +31,8 @@ import { ViewsalepaymentsComponent } from "./viewsalepayments/viewsalepayments.c
 import { AddcustomerComponent } from "./addcustomer/addcustomer.component";
 import { AddsupplierComponent } from "./addsupplier/addsupplier.component";
 import { UpdateorderComponent } from "./updateorder/updateorder.component";
-import { PrintrouteComponent } from './printroute/printroute.component';
+import { PrintrouteComponent } from "./printroute/printroute.component";
+import { WastagemilkComponent } from "./wastagemilk/wastagemilk.component";
 
 @NgModule({
   declarations: [
@@ -63,6 +64,7 @@ import { PrintrouteComponent } from './printroute/printroute.component';
     AddsupplierComponent,
     UpdateorderComponent,
     PrintrouteComponent,
+    WastagemilkComponent,
   ],
   imports: [BrowserModule, AppRoutingModule, FormsModule, HttpClientModule],
   providers: [],

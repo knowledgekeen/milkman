@@ -111,4 +111,48 @@ if($action == "updateProduct"){
 
 	echo json_encode($data1);
 }
+if($action == "addWastageMilk"){
+	$headers = apache_request_headers();
+	authenticate($headers);
+    $data = json_decode(file_get_contents("php://input"));
+	$todate = $data->todate;
+	$buffalowastage = $data->buffalowastage;
+	$cowastage = $data->cowastage;
+
+    if($_SERVER['REQUEST_METHOD']=='POST'){
+        //Status: 1 == 'active'
+		$sql = "INSERT INTO `wastagemilk_register`(`date`,`buffalowastage`,`cowastage`) VALUES('$todate','$buffalowastage','$cowastage')";
+		$result = $conn->query($sql);
+		$wastage_id = $conn->insert_id;
+		/*  // Update buffalo stock quantity in stock
+		 $sqlbuffupt = "UPDATE `stock_master` SET `quantity`='$buffalostkqty' WHERE `stockid`=2";
+		 $resultbuffupt = $conn->query($sqlbuffupt);
+		 
+		 // Update cow stock quantity in stock
+		 $sqlcowupt = "UPDATE `stock_master` SET `quantity`='$cowstkqty' WHERE `stockid`=1";
+		 $resultcowupt = $conn->query($sqlcowupt);
+	 */
+	}
+    $data1= array();
+    if($result){
+		$data1["status"] = 200;
+		$data1["data"] = $wastage_id;
+		header(' ', true, 200);
+		//Logging
+		$log  = "File: product.php - Method: $action".PHP_EOL.
+		"Data: ".json_encode($data).PHP_EOL;
+		write_log($log, "success", NULL);
+	}
+	else{
+		$log  = "File: product.php - Method: $action".PHP_EOL.
+		"Error message: ".$conn->error.PHP_EOL.
+		"Data: ".json_encode($data).PHP_EOL;
+		write_log($log, "error", $conn->error);
+		$data1["status"] = 204;
+		header(' ', true, 204);
+	}
+
+	echo json_encode($data1);
+}
+
 ?>

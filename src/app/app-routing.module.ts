@@ -19,11 +19,13 @@ import { ViewpurchpaymentsComponent } from "./viewpurchpayments/viewpurchpayment
 import { ViewsalepaymentsComponent } from "./viewsalepayments/viewsalepayments.component";
 import { AddcustomerComponent } from "./addcustomer/addcustomer.component";
 import { AddsupplierComponent } from "./addsupplier/addsupplier.component";
+import { WastagemilkComponent } from "./wastagemilk/wastagemilk.component";
 import { UpdateorderComponent } from "./updateorder/updateorder.component";
 import { PrintrouteComponent } from "./printroute/printroute.component";
 
 const routes: Routes = [
   { path: "login", component: LoginComponent },
+  { path: "wastagemilk ", component: WastagemilkComponent },
   { path: "home", component: HomeComponent },
   { path: "addclient/:clientid", component: AddclientComponent },
   { path: "viewclients", component: ViewclientComponent },
