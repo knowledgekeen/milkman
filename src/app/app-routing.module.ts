@@ -25,7 +25,7 @@ import { PrintrouteComponent } from "./printroute/printroute.component";
 
 const routes: Routes = [
   { path: "login", component: LoginComponent },
-  { path: "wastagemilk ", component: WastagemilkComponent },
+  { path: "wastagemilk", component: WastagemilkComponent },
   { path: "home", component: HomeComponent },
   { path: "addclient/:clientid", component: AddclientComponent },
   { path: "viewclients", component: ViewclientComponent },
