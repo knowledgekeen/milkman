@@ -51,6 +51,8 @@
                 <th>Customer</th>
                 <th>Buffalo Milk</th>
                 <th>Cow Milk</th>
+                <th>Driver Name</th>
+                <th>Vehicle No</th>
                 <th>Number Of Cans</th>
               </tr>
             </thead>
@@ -60,6 +62,8 @@
                 <td>{{ rout.name }}</td>
                 <td>{{ rout.buffaloqty }}</td>
                 <td>{{ rout.cowqty }}</td>
+                <td *ngFor="let ro of routedetails">{{ ro.drivernm }}</td>
+                <td *ngFor="let ro of routedetails">{{ ro.vehicleno }}</td>
                 <td>{{ rout.buffcans }} ({{ rout.cowcans }})</td>
               </tr>
             </tbody>

@@ -19,22 +19,27 @@
             id="todate"
           />
         </div>
-        <label class="m-0">Buffalo Milk Wastage</label>
-        <input
-          type="text"
-          class="form-control"
-          placeholder="Enter Cow Milk Wastage"
-          [(ngModel)]="buffalowastage"
-        />
       </div>
-      <div class="col-sm-3 col-xs-12 mb-3">
-        <label class="m-0">Cow Milk Wastage </label>
-        <input
-          type="text"
-          class="form-control"
-          placeholder="Enter Cow Milk Wastage"
-          [(ngModel)]="cowastage"
-        />
+      <div class="row">
+        <div class="col-sm-6 md-12">
+          <label>Buffalo Milk Wastage</label>
+          <input
+            type="text"
+            class="form-control"
+            placeholder="Enter Cow Milk Wastage"
+            [(ngModel)]="buffalowastage"
+          />
+        </div>
+
+        <div class="col-sm-6 md-12">
+          <label>Cow Milk Wastage </label>
+          <input
+            type="text"
+            class="form-control"
+            placeholder="Enter Cow Milk Wastage"
+            [(ngModel)]="cowastage"
+          />
+        </div>
       </div>
       <div class="my-3">
         <button class="btn btn-sm btn-info" (click)="addWastageMilk()">

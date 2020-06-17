@@ -33,6 +33,7 @@ import { AddsupplierComponent } from "./addsupplier/addsupplier.component";
 import { UpdateorderComponent } from "./updateorder/updateorder.component";
 import { PrintrouteComponent } from "./printroute/printroute.component";
 import { WastagemilkComponent } from "./wastagemilk/wastagemilk.component";
+import { CustomertypeComponent } from './customertype/customertype.component';
 
 @NgModule({
   declarations: [
@@ -65,6 +66,7 @@ import { WastagemilkComponent } from "./wastagemilk/wastagemilk.component";
     UpdateorderComponent,
     PrintrouteComponent,
     WastagemilkComponent,
+    CustomertypeComponent,
   ],
   imports: [BrowserModule, AppRoutingModule, FormsModule, HttpClientModule],
   providers: [],

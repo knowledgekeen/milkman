@@ -179,4 +179,39 @@ if($action == "fetchSuppliersDetails"){
 	echo json_encode($data);
 }
 
+  if($action=="allMilkOnDate"){
+	$headers = apache_request_headers();
+	authenticate($headers);
+	$purdate = $_GET['purdate'];
+	$sql="SELECT `buffalowastage`,`cowastage`,`date` from `wastagemilk_register`  where `date`='$purdate';";
+	//$sql = "SELECT * FROM `purchase_register` ORDER BY `purchid`";     
+	$result = $conn->query($sql);
+	while($row = $result->fetch_array())
+	{
+		$rows[] = $row;
+		
+	}
+	$tmp = array();
+	$data = array();
+	$i=0;
+	if(count($rows)>0){
+		foreach($rows as $row)
+		{   $tmp[$i]['buffalowastage'] = $row['buffalowastage'];
+		    $tmp[$i]['cowastage'] = $row['cowastage'];
+			//$tmp[$i]['morngbuffaloqty'] = $row['morngbuffaloqty'];
+		   $i++;
+		}
+		$data["status"] = 200;
+		$data["data"] = $tmp;
+		header(' ', true, 200);	
+    }
+	else{
+		$log  = "File: purchase.php - Method: $action".PHP_EOL.
+		"Error message: ".$conn->error.PHP_EOL;
+		write_log($log, "error", $conn->error);
+		$data["status"] = 204;
+		header(' ', true, 204);
+	}
+	echo json_encode($data);
+  }
 ?>

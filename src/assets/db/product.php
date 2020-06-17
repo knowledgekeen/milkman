@@ -118,20 +118,22 @@ if($action == "addWastageMilk"){
 	$todate = $data->todate;
 	$buffalowastage = $data->buffalowastage;
 	$cowastage = $data->cowastage;
+	$buffalostkqty=$data->buffalostkqty;
+	$cowstkqty=$data->cowstkqty;
 
     if($_SERVER['REQUEST_METHOD']=='POST'){
         //Status: 1 == 'active'
 		$sql = "INSERT INTO `wastagemilk_register`(`date`,`buffalowastage`,`cowastage`) VALUES('$todate','$buffalowastage','$cowastage')";
 		$result = $conn->query($sql);
 		$wastage_id = $conn->insert_id;
-		/*  // Update buffalo stock quantity in stock
+		 // Update buffalo stock quantity in stock
 		 $sqlbuffupt = "UPDATE `stock_master` SET `quantity`='$buffalostkqty' WHERE `stockid`=2";
 		 $resultbuffupt = $conn->query($sqlbuffupt);
 		 
 		 // Update cow stock quantity in stock
 		 $sqlcowupt = "UPDATE `stock_master` SET `quantity`='$cowstkqty' WHERE `stockid`=1";
 		 $resultcowupt = $conn->query($sqlcowupt);
-	 */
+	 
 	}
     $data1= array();
     if($result){

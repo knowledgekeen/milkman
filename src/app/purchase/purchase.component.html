@@ -19,6 +19,27 @@
             placeholder="Enter Purchase Date"
           />
         </div>
+        <div class="col-md-8 text-primary text-right">
+          <span>
+            Old Buffalo Milk Stock:
+            <strong class="text-danger">{{ oldbuffaloqty }}</strong>
+          </span>
+          <span class="ml-3">
+            Old Cow Milk Stock:
+            <strong class="text-danger">{{ oldcowqty }}</strong>
+          </span>
+        </div>
+
+        <div class="col-md-12 text-primary text-right">
+          <span>
+            Wastage Buffalo Milk Stock:
+            <strong class="text-danger">{{ wastebuffalomilk }}</strong>
+          </span>
+          <span class="ml-3">
+            Wastage Cow Milk Stock:
+            <strong class="text-danger">{{ wastecowmilk }}</strong>
+          </span>
+        </div>
 
         <div class="col-sm-12 col-md-12 mt-4 text-muted">
           <div class="row">
@@ -34,11 +55,11 @@
             </div>
             <div class="col-md-7 text-primary text-right">
               <span>
-                Buffalo Milk Stock:
+                New Buffalo Milk Stock:
                 <strong class="text-danger">{{ stockbuffaloqty }}</strong>
               </span>
               <span class="ml-3">
-                Cow Milk Stock:
+                New Cow Milk Stock:
                 <strong class="text-danger">{{ stockcowqty }}</strong>
               </span>
             </div>
@@ -113,7 +134,7 @@
                       <div class="col-sm-12 col-md-6 text-muted">
                         <label for="evngcowqty" class="label m-0">
                           Evening Qty
-                          </label>
+                        </label>
                         <input
                           type="text"
                           class="form-control"
