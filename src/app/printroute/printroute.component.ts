@@ -1,4 +1,4 @@
-import { Component, OnInit } from "@angular/core";
+import { Component, OnInit, Input } from "@angular/core";
 import * as moment from "moment";
 import { RestService } from "../rest.service";
 
@@ -15,8 +15,32 @@ export class PrintrouteComponent implements OnInit {
   routeval: any = null;
   routesdata: any = null;
   totalcowcans: number = 0;
+  drivernm: any = null;
+  vehicleno: any = null;
   totalbuffcans: number = 0;
   routedata: any = null;
+  routedetails: any = null;
+  routdetails: any = null;
+  // private _routeno: string;
+  // private _deldate: string;
+
+  /*@Input() set deldate(value: string) {
+  this._deldate = value;
+}
+
+@Input() set routeno(value: string) {
+  this._routeno = value;
+  //this.getRouteCustomersOnDate();
+}
+
+get routeno(): string {
+  return this._routeno;
+}
+
+get deldate(): string {
+  return this._deldate;
+}
+*/
 
   constructor(private _rest: RestService) {}
 
@@ -26,8 +50,8 @@ export class PrintrouteComponent implements OnInit {
     tomorrowdt.setDate(tomorrowdt.getDate());
     this.deldate = moment(tomorrowdt, "YYYY-MM-DD").format("YYYY-MM-DD");
     this.getAllOrderRoutes();
-    //this.getAllRoutesCustomers();
     this.routChange();
+    this.routeDetails();
   }
 
   getAllOrderRoutes() {
@@ -100,6 +124,7 @@ export class PrintrouteComponent implements OnInit {
             this.routChange();
             this.routesdata = Response["data"];
             this.calculateMilkCans();
+            //this.routeDetails();
           } else {
             console.log("error occured");
             this.routesdata = null;
@@ -130,15 +155,52 @@ export class PrintrouteComponent implements OnInit {
     this._rest
       .getData("routes.php", "routChange", urldata)
       .subscribe((Response) => {
-        console.log("responsr of changeroute is ", Response);
         if (Response && Response["data"]) {
           this.routesdata = Response["data"];
+          this.changedRouteDetails();
           this.calculateMilkCans();
         } else {
           this.routesdata = null;
         }
       });
   }
+  routeDetails() {
+    this.routedetails = null;
+    let orderdt = new Date(this.deldate);
+    orderdt.setHours(0, 0, 0, 1);
+    let urldata = "orderdt=" + orderdt.getTime();
+
+    this._rest.getData("routes.php", "routeDetails", urldata).subscribe(
+      (Response) => {
+        if (Response && Response["data"]) {
+          this.routedetails = Response["data"];
+          console.log(this.routedetails);
+        }
+      },
+      (err) => {
+        console.log(err);
+      }
+    );
+  }
+  changedRouteDetails() {
+    this.routdetails = null;
+    let orderdt = new Date(this.deldate);
+    orderdt.setHours(0, 0, 0, 1);
+    let urldata = "orderdt=" + orderdt.getTime() + "&routeno=" + this.routeno;
+
+    this._rest.getData("routes.php", "changedRouteDetails", urldata).subscribe(
+      (Response) => {
+        if (Response && Response["data"]) {
+          this.routedetails = Response["data"];
+          console.log(this.routedetails);
+        }
+      },
+      (err) => {
+        console.log(err);
+      }
+    );
+  }
+
   timer(ms: any = 2000) {
     let _this = this;
     setTimeout(() => {

@@ -315,10 +315,7 @@ if($action == "getRoutesOrders"){
 if($action == "getAllRoutesCustomers"){
 	$headers = apache_request_headers();
 	authenticate($headers);
-	$orderdt = ($_GET["orderdt"]);
-	//$routeno = ($_GET["routeno"]);
-	//$sql = "SELECT oreg.`ordid`, oreg.`clientid`, oreg.`buffaloqty`, oreg.`route`,oreg.`cowqty`,oreg.`orderdt`,cm.`name` FROM `order_register` oreg, `client_master` cm WHERE oreg.`clientid`=cm.`clientid` AND oreg.`orderdt`='$orderdt' AND oreg.`route`='$routeno' ORDER BY oreg.`ordid` ";
-	
+	$orderdt = ($_GET["orderdt"]);	
 	$sql = "SELECT oreg.`ordid`, oreg.`clientid`, oreg.`buffaloqty`, oreg.`route`,oreg.`cowqty`,oreg.`orderdt`,cm.`name` FROM `order_register` oreg, `client_master` cm WHERE oreg.`clientid`=cm.`clientid` AND oreg.`orderdt`='$orderdt'  ORDER BY oreg.`ordid` ";
 	$result = $conn->query($sql);
 	while($row = $result->fetch_array())
@@ -338,7 +335,7 @@ if($action == "getAllRoutesCustomers"){
 			$tmp[$i]['cowqty'] = $row['cowqty'];
 			//$tmp[$i]['orderdt'] = $row['orderdt'];
 			$tmp[$i]['name'] = $row['name'];
-			$tmp[$i]['route'] = $row['route'];
+			//$tmp[$i]['route'] = $row['route'];
 			$i++;
 		}
 		$data["status"] = 200;
@@ -398,5 +395,110 @@ if($action == "routChange"){
 
 	echo json_encode($data);
 }
+if($action == "routeDetails"){
+	$headers = apache_request_headers();
+	authenticate($headers);
+	$orderdt = ($_GET["orderdt"]);
+	$sql = "SELECT `drivernm`,`vehicleno` FROM `route_driver_register` WHERE  `orderdt`='$orderdt'  ";	
+	$result = $conn->query($sql);
+	while($row = $result->fetch_array())
+	{
+		$rows[] = $row;
+		
+	}
+	$tmp = array();
+	$data = array();
+	$i = 0;
+	if(count($rows)>0){
+		foreach($rows as $row)
+		{
+			$tmp[$i]['drivernm'] = $row['drivernm'];
+			$tmp[$i]['vehicleno'] = $row['vehicleno'];
+			$i++;
+		}
+		$data["status"] = 200;
+		$data["data"] = $tmp;
+		header(' ', true, 200);
+	}
+	else{
+		$log  = "File: routes.php - Method: $action".PHP_EOL.
+		"Error message: ".$conn->error.PHP_EOL;
+		write_log($log, "error", $conn->error);
+		$data["status"] = 204;
+		header(' ', true, 204);
+	}
 
+	echo json_encode($data);
+}
+if($action == "changedRouteDetails"){
+	$headers = apache_request_headers();
+	authenticate($headers);
+	$orderdt = ($_GET["orderdt"]);
+	$routeno = ($_GET["routeno"]);
+	$sql = "SELECT `drivernm`,`vehicleno` FROM `route_driver_register` WHERE  `orderdt`='$orderdt' AND `route`='$routeno' ";	
+	$result = $conn->query($sql);
+	while($row = $result->fetch_array())
+	{
+		$rows[] = $row;
+		
+	}
+	$tmp = array();
+	$data = array();
+	$i = 0;
+	if(count($rows)>0){
+		foreach($rows as $row)
+		{
+			$tmp[$i]['drivernm'] = $row['drivernm'];
+			$tmp[$i]['vehicleno'] = $row['vehicleno'];
+			$i++;
+		}
+		$data["status"] = 200;
+		$data["data"] = $tmp;
+		header(' ', true, 200);
+	}
+	else{
+		$log  = "File: routes.php - Method: $action".PHP_EOL.
+		"Error message: ".$conn->error.PHP_EOL;
+		write_log($log, "error", $conn->error);
+		$data["status"] = 204;
+		header(' ', true, 204);
+	}
+
+	echo json_encode($data);
+}
+if($action=="getAllCustomerTypeDetails"){
+	$headers = apache_request_headers();
+	authenticate($headers);
+	$sql ="SELECT * from `customertype_register` order by `customertype_id` "; 
+	$result = $conn->query($sql);
+	while($row = $result->fetch_array())
+	{
+		$rows[] = $row;
+		
+	}
+	$tmp = array();
+	$data = array();
+	$i = 0;
+	if(count($rows)>0){
+		foreach($rows as $row)
+		{
+			$tmp[$i]['customertypename'] = $row['customertypename'];
+			$tmp[$i]['customertype'] = $row['customertype'];
+			
+			$i++;
+		}
+		$data["status"] = 200;
+		$data["data"] = $tmp;
+		header(' ', true, 200);
+	}
+	else{
+		$log  = "File: routes.php - Method: $action".PHP_EOL.
+		"Error message: ".$conn->error.PHP_EOL;
+		write_log($log, "error", $conn->error);
+		$data["status"] = 204;
+		header(' ', true, 204);
+	}
+
+	echo json_encode($data);
+}
 ?>

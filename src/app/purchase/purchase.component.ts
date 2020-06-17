@@ -11,24 +11,31 @@ export class PurchaseComponent implements OnInit {
   msgtext: string = null;
   msgclass: string = null;
   purDate: any = null;
+  allmilkdata: any = null;
   purTime: string = "1";
   stockbuffaloqty: any = 0;
   stockcowqty: any = 0;
+  newbuffaloqty: any = null;
+  newcowqty: any = null;
   supplierName: string = null;
   allsuppdata: any = null;
   morngbuffaloqty: any = null;
   evngbuffaloqty: any = null;
   morngcowqty: any = null;
   evngcowqty: any = null;
-  //  clientid: any = null;
   allsupp: any = null;
+  oldbuffaloqty: any = null;
+  oldcowqty: any = null;
   value: boolean = false;
+  wastebuffalomilk: any = null;
+  wastecowmilk: any = null;
   constructor(private _rest: RestService) {}
 
   ngOnInit(): void {
     this.resetForm();
     this.getPurchaseDetailsForDate();
     this.getAllStocks();
+    this.allMilkOnDate();
   }
 
   getAllClientsByType() {
@@ -49,7 +56,7 @@ export class PurchaseComponent implements OnInit {
               _this.allsuppdata[i].morngbuffaloqty = 0;
               _this.allsuppdata[i].morngbuffalodisabled = false;
               _this.allsuppdata[i].evngbuffaloqty = 0;
-              _this.allsuppdata[i].evngbuffalodisabled = false; 
+              _this.allsuppdata[i].evngbuffalodisabled = false;
               _this.allsuppdata[i].amount = 0;
             }
             resolve(true);
@@ -64,43 +71,51 @@ export class PurchaseComponent implements OnInit {
   fetchSuppliersDetails() {
     let dt = new Date(this.purDate);
     dt.setHours(0, 0, 0, 1);
-    const urldata="purdate="+ dt.getTime();
-    this._rest.getData("purchase.php", "fetchSuppliersDetails", urldata).subscribe(
-      (Response) => {
-        if (Response && Response["data"]) {
-          this.allsupp = Response["data"];
-          console.log(this.allsupp, this.allsuppdata)
-          for (let x in this.allsuppdata) {
-            for (let y in this.allsupp) {
-              if (this.allsuppdata[x].clientid == this.allsupp[y].clientid) {
-                if (parseFloat(this.allsupp[y].morngbuffaloqty)) {
-                  this.allsuppdata[x].morngbuffaloqty = this.allsupp[y].morngbuffaloqty;
-                  this.allsuppdata[x].morngbuffalodisabled = true;
-                }
-                if (parseFloat(this.allsupp[y].morngcowqty)) {
-                  this.allsuppdata[x].morngcowqty = this.allsupp[y].morngcowqty;
-                  this.allsuppdata[x].morngcowdisabled = true;
-                }
-                if (parseFloat(this.allsupp[y].evngbuffaloqty)) {
-                  this.allsuppdata[x].evngbuffaloqty = this.allsupp[y].evngbuffaloqty;
-                  this.allsuppdata[x].evngbuffalodisabled = true;
-                }
-                if (parseFloat(this.allsupp[y].evngcowqty)) {
-                  this.allsuppdata[x].evngcowqty = this.allsupp[y].evngcowqty;
-                  this.allsuppdata[x].evngcowdisabled = true;
+    const urldata = "purdate=" + dt.getTime();
+    this._rest
+      .getData("purchase.php", "fetchSuppliersDetails", urldata)
+      .subscribe(
+        (Response) => {
+          if (Response && Response["data"]) {
+            this.allsupp = Response["data"];
+            console.log(this.allsupp, this.allsuppdata);
+            for (let x in this.allsuppdata) {
+              for (let y in this.allsupp) {
+                if (this.allsuppdata[x].clientid == this.allsupp[y].clientid) {
+                  if (parseFloat(this.allsupp[y].morngbuffaloqty)) {
+                    this.allsuppdata[x].morngbuffaloqty = this.allsupp[
+                      y
+                    ].morngbuffaloqty;
+                    this.allsuppdata[x].morngbuffalodisabled = true;
+                  }
+                  if (parseFloat(this.allsupp[y].morngcowqty)) {
+                    this.allsuppdata[x].morngcowqty = this.allsupp[
+                      y
+                    ].morngcowqty;
+                    this.allsuppdata[x].morngcowdisabled = true;
+                  }
+                  if (parseFloat(this.allsupp[y].evngbuffaloqty)) {
+                    this.allsuppdata[x].evngbuffaloqty = this.allsupp[
+                      y
+                    ].evngbuffaloqty;
+                    this.allsuppdata[x].evngbuffalodisabled = true;
+                  }
+                  if (parseFloat(this.allsupp[y].evngcowqty)) {
+                    this.allsuppdata[x].evngcowqty = this.allsupp[y].evngcowqty;
+                    this.allsuppdata[x].evngcowdisabled = true;
+                  }
                 }
               }
             }
+            //console.log(this.allsupp);
+          } else {
+            console.log("error occured");
           }
-          //console.log(this.allsupp);
-        } else {
-          console.log("error occured");
+        },
+        (err) => {
+          console.log(err);
         }
-      },
-      (err) => {
-        console.log(err);
-      }
-    );
+      );
   }
 
   addPurchase() {
@@ -109,10 +124,11 @@ export class PurchaseComponent implements OnInit {
     let totalbuffqty = 0,
       totalcowqty = 0;
 
-    this.allsuppdata.map(resp=>{
-      console.log(resp)
-      totalbuffqty += (parseFloat(resp.morngbuffaloqty)+parseFloat(resp.evngbuffaloqty));
-      totalcowqty += (parseFloat(resp.morngcowqty)+parseFloat(resp.evngcowqty));
+    this.allsuppdata.map((resp) => {
+      console.log(resp);
+      totalbuffqty +=
+        parseFloat(resp.morngbuffaloqty) + parseFloat(resp.evngbuffaloqty);
+      totalcowqty += parseFloat(resp.morngcowqty) + parseFloat(resp.evngcowqty);
     });
 
     if (
@@ -171,18 +187,38 @@ export class PurchaseComponent implements OnInit {
       }
     });
   }
+  allMilkOnDate() {
+    let dt = new Date(this.purDate);
+    dt.setHours(0, 0, 0, 1);
+    const urldata = "purdate=" + dt.getTime();
+    this._rest
+      .getData("purchase.php", "allMilkOnDate", urldata)
+      .subscribe((Response) => {
+        if (Response && Response["data"]) {
+          this.allmilkdata = Response["data"];
+          this.wastebuffalomilk = this.allmilkdata[0].buffalowastage;
+          this.wastecowmilk = this.allmilkdata[0].cowastage;
+          this.oldbuffaloqty =
+            parseFloat(this.stockbuffaloqty) +
+            parseFloat(this.wastebuffalomilk);
+          console.log(this.oldbuffaloqty);
+          this.oldcowqty =
+            parseFloat(this.stockcowqty) + parseFloat(this.wastecowmilk);
+        }
+      });
+  }
 
   resetForm() {
     let dt = moment(new Date(), "YYYY-MM-DD");
     this.purDate = dt.format("YYYY-MM-DD");
   }
 
-  changeDate(){
+  changeDate() {
     this.getPurchaseDetailsForDate();
   }
 
-  getPurchaseDetailsForDate(){
-    this.getAllClientsByType().then(resp=>{
+  getPurchaseDetailsForDate() {
+    this.getAllClientsByType().then((resp) => {
       this.fetchSuppliersDetails();
     });
   }

@@ -17,7 +17,10 @@ export class AddcustomerComponent implements OnInit {
   msgtext: string = null;
   msgclass: string = null;
   clientid: string = null;
+  customertypedata: any = null;
+  customertype_id: any = null;
   routeno: any = null;
+  customertype: any = null;
   buffalorate: String = "0";
   cowrate: String = "0";
   ctype: string = "2";
@@ -29,13 +32,40 @@ export class AddcustomerComponent implements OnInit {
   ) {}
 
   ngOnInit(): void {
+    this.getAllCustomerTypeDetails();
     this._route.params.subscribe((parm) => {
       this.clientid = parm.clientid;
       if (parm.clientid.toString() != "0") {
-        //Fetch Client Details
         this.fetchClientDetails();
       }
     });
+  }
+  getAllCustomerTypeDetails() {
+    this.customertypedata = null;
+    this._rest.getData("routes.php", "getAllCustomerTypeDetails").subscribe(
+      (Response) => {
+        if (Response && Response["data"]) {
+          this.customertypedata = Response["data"];
+          console.log(this.customertypedata);
+        } else {
+          console.log("error occured");
+        }
+      },
+      (err) => {
+        console.log(err);
+      }
+    );
+  }
+  getCustomerTypeId() {
+    this.customertype_id = null;
+    for (let i in this.customertypedata) {
+      if (this.customertype == this.customertypedata[i].customertypename) {
+        this.customertype_id = this.customertypedata[i].customertype_id;
+        break;
+      } else {
+        console.log("cannot find customer type name");
+      }
+    }
   }
 
   addClient() {
@@ -48,11 +78,13 @@ export class AddcustomerComponent implements OnInit {
       routeno: this.routeno,
       buffalorate: this.buffalorate,
       cowrate: this.cowrate,
+      customertype_id: this.customertype_id,
       addinfo: this.additionalinfo,
       ctype: this.ctype,
     };
     console.log(tmpobj);
-
+    let urldata = "customertype_id" + this.customertype_id;
+    console.log(urldata);
     this._rest.postData("client.php", "addClient", tmpobj).subscribe(
       (Response) => {
         this.msgtext = " Customer " + " added successfully";
@@ -68,33 +100,8 @@ export class AddcustomerComponent implements OnInit {
     );
   }
 
-  timercnt() {
-    let _this = this;
-    this.resetForm();
-    setTimeout(function () {
-      _this.msgtext = null;
-      _this.msgclass = null;
-      if (_this.clientid != "0") {
-        _this._router.navigate(["viewclients"]);
-      }
-    }, 2000);
-  }
-
-  resetForm() {
-    this.cno = null;
-    this.cno1 = null;
-    this.fname = null;
-    this.cperson = null;
-    this.address = null;
-    this.routeno = null;
-    this.buffalorate = "0";
-    this.cowrate = "0";
-    this.additionalinfo = null;
-  }
-
   fetchClientDetails() {
     let urldata = "clientid=" + this.clientid;
-
     this._rest
       .getData("client.php", "getClientDetails", urldata)
       .subscribe((Response) => {
@@ -142,5 +149,28 @@ export class AddcustomerComponent implements OnInit {
         this.timercnt();
       }
     );
+  }
+  timercnt() {
+    let _this = this;
+    this.resetForm();
+    setTimeout(function () {
+      _this.msgtext = null;
+      _this.msgclass = null;
+      if (_this.clientid != "0") {
+        _this._router.navigate(["viewclients"]);
+      }
+    }, 2000);
+  }
+
+  resetForm() {
+    this.cno = null;
+    this.cno1 = null;
+    this.fname = null;
+    this.cperson = null;
+    this.address = null;
+    this.routeno = null;
+    this.buffalorate = "0";
+    this.cowrate = "0";
+    this.additionalinfo = null;
   }
 }

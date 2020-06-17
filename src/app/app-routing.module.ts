@@ -21,6 +21,7 @@ import { AddcustomerComponent } from "./addcustomer/addcustomer.component";
 import { AddsupplierComponent } from "./addsupplier/addsupplier.component";
 import { WastagemilkComponent } from "./wastagemilk/wastagemilk.component";
 import { UpdateorderComponent } from "./updateorder/updateorder.component";
+import { CustomertypeComponent } from "./customertype/customertype.component";
 import { PrintrouteComponent } from "./printroute/printroute.component";
 
 const routes: Routes = [
@@ -35,6 +36,7 @@ const routes: Routes = [
   { path: "neworder", component: NeworderComponent },
   { path: "routes", component: MilkroutesComponent },
   { path: "inhouseprod", component: InhouseprodComponent },
+  { path: "customertype", component: CustomertypeComponent },
   { path: "supplieropeningbal", component: SupplieropeningbalComponent },
   { path: "purchasepayment", component: PurchasepaymentComponent },
   { path: "customeropeningbal", component: CustomeropeningbalComponent },

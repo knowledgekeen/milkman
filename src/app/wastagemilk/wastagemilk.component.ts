@@ -13,18 +13,28 @@ export class WastagemilkComponent implements OnInit {
   msgtext: any = null;
   msgclass: any = null;
   todate: any = null;
+  stockcowqty: any = null;
+  stockbuffaloqty: any = null;
+
   constructor(private _rest: RestService) {}
   ngOnInit(): void {
+    this.resetForm();
     let todate = new Date();
     todate.setHours(0, 0, 0, 1);
     todate.setDate(todate.getDate());
     this.todate = moment(todate, "YYYY-MM-DD").format("YYYY-MM-DD");
+    this.getAllStocks();
   }
   addWastageMilk() {
+    let dt = new Date(this.todate);
+    dt.setHours(0, 0, 0, 1);
     let tmpobj = {
-      todate: this.todate,
+      todate: dt.getTime(),
       buffalowastage: this.buffalowastage,
       cowastage: this.cowastage,
+      buffalostkqty:
+        parseFloat(this.stockbuffaloqty) - parseFloat(this.buffalowastage),
+      cowstkqty: parseFloat(this.stockcowqty) - parseFloat(this.cowastage),
     };
     console.log(tmpobj);
 
@@ -42,6 +52,22 @@ export class WastagemilkComponent implements OnInit {
       }
     );
   }
+  getAllStocks() {
+    this._rest.getData("stocks.php", "getAllStocks").subscribe((Response) => {
+      if (Response && Response["data"]) {
+        let data = Response["data"];
+        for (let i in data) {
+          if (data[i].stockid.toString() === "1") {
+            this.stockcowqty = data[i].quantity;
+          }
+          if (data[i].stockid.toString() === "2") {
+            this.stockbuffaloqty = data[i].quantity;
+          }
+        }
+      }
+    });
+  }
+
   timercnt() {
     let _this = this;
     this.resetForm();
@@ -52,7 +78,6 @@ export class WastagemilkComponent implements OnInit {
   }
 
   resetForm() {
-    this.todate = null;
     this.buffalowastage = null;
     this.cowastage = null;
   }

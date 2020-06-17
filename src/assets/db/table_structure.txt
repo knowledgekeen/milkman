@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: May 28, 2020 at 07:32 PM
+-- Generation Time: Jun 17, 2020 at 10:52 AM
 -- Server version: 10.4.11-MariaDB
 -- PHP Version: 7.2.29
 
@@ -29,6 +29,7 @@ SET time_zone = "+00:00";
 
 CREATE TABLE `client_master` (
   `clientid` int(20) NOT NULL,
+  `customertype_id` int(50) NOT NULL,
   `name` varchar(500) NOT NULL,
   `cno` varchar(50) NOT NULL,
   `cperson` varchar(200) DEFAULT NULL,
@@ -45,14 +46,32 @@ CREATE TABLE `client_master` (
 -- Dumping data for table `client_master`
 --
 
-INSERT INTO `client_master` (`clientid`, `name`, `cno`, `cperson`, `cno1`, `address`, `addinfo`, `ctype`, `routeno`, `buffalorate`, `cowrate`) VALUES
-(36, 'Wasim', '12185666', 'Abcdefgh', '1234567890', 'Swargate, Pune 001', 'hii', 2, 2, '22', '10'),
-(37, 'xy', '7890', '', 'sgs', 'yahii', 'hii', 2, 2, '09', '911'),
-(38, 'suppli', '788', '78f', 'fg', 'hadapsar p', '00t', 1, 1, '01', '09'),
-(39, 'newsuppp', 'na', '', '', '', '', 1, 0, '20', '30'),
-(40, 'xyzx', '90', '', '', '', '', 1, 0, '2', '1'),
-(41, 'fghfgh', '56', '', '', '', '', 2, 1, '2', '2'),
-(42, 'sup', '8', '', '', '', '', 1, 0, '2', '2');
+INSERT INTO `client_master` (`clientid`, `customertype_id`, `name`, `cno`, `cperson`, `cno1`, `address`, `addinfo`, `ctype`, `routeno`, `buffalorate`, `cowrate`) VALUES
+(36, 1, 'Wasim', '12185666', 'Abcdefgh', '1234567890', 'Swargate, Pune 001', 'hii', 2, 2, '22', '10'),
+(38, 1, 'suppli', '788', '78f', 'fg', 'hadapsar p', '00t', 1, 1, '01', '09'),
+(39, 1, 'newsuppp', 'na', '', '', '', '', 1, 0, '20', '30'),
+(41, 1, 'fghfgh', '56', '', '', '', '', 2, 1, '2', '2');
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `customertype_register`
+--
+
+CREATE TABLE `customertype_register` (
+  `customertype_id` int(50) NOT NULL,
+  `customertypename` varchar(50) NOT NULL,
+  `customertype` varchar(50) NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+
+--
+-- Dumping data for table `customertype_register`
+--
+
+INSERT INTO `customertype_register` (`customertype_id`, `customertypename`, `customertype`) VALUES
+(3, 'Dairy', 'Regular'),
+(4, 'caterer', 'Regular'),
+(5, 'sweet shop', 'Regular');
 
 -- --------------------------------------------------------
 
@@ -118,11 +137,16 @@ CREATE TABLE `order_register` (
 --
 
 INSERT INTO `order_register` (`ordid`, `clientid`, `orderdt`, `buffaloqty`, `cowqty`, `route`, `buffaloinr`, `cowinr`, `amount`) VALUES
+(4, 5, '1587925800001', 10, 0, 1, '42', '0', '420'),
+(5, 1, '1587925800001', 15, 10, 1, '40', '50', '1100'),
+(6, 9, '1587925800001', 0, 10, 1, '0', '87', '870'),
 (19, 41, '1588962600001', 9, 9, 1, '2', '2', '36'),
 (20, 36, '1588789800001', 3, 0, 1, '0', '10', '0'),
 (21, 37, '1588789800001', 0, 3, 2, '09', '91', '273'),
 (28, 41, '1589567400001', 98, 0, 1, '2', '2', '196'),
-(29, 36, '1589567400001', 1, 1, 2, '22', '10', '32');
+(29, 36, '1589567400001', 1, 1, 2, '22', '10', '32'),
+(30, 36, '1591986600001', 2, 2, 2, '22', '10', '64'),
+(31, 41, '1591986600001', 1, 1, 1, '2', '2', '4');
 
 -- --------------------------------------------------------
 
@@ -232,7 +256,9 @@ INSERT INTO `route_driver_register` (`routedriverid`, `route`, `drivernm`, `vehi
 (19, 2, 'a', 'a', '1589481000001'),
 (20, 2, 't', 't', '1589481000001'),
 (21, 1, 'b', 'n', '1589567400001'),
-(22, 2, 'u', 'i', '1589567400001');
+(22, 2, 'u', 'i', '1589567400001'),
+(23, 2, 'driver1', 'mh1234', '1591986600001'),
+(24, 1, 'q', 'q', '1591986600001');
 
 -- --------------------------------------------------------
 
@@ -252,8 +278,8 @@ CREATE TABLE `stock_master` (
 --
 
 INSERT INTO `stock_master` (`stockid`, `prodid`, `rawmatid`, `quantity`) VALUES
-(1, 3, NULL, '461'),
-(2, 4, NULL, '206');
+(1, 3, NULL, '433'),
+(2, 4, NULL, '188');
 
 -- --------------------------------------------------------
 
@@ -275,6 +301,28 @@ CREATE TABLE `user_master` (
 INSERT INTO `user_master` (`userid`, `username`, `password`, `fullname`) VALUES
 (1, 'admin', '15b58dc9465b768e848cb7584191aa8f', 'Assasa Tech');
 
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `wastagemilk_register`
+--
+
+CREATE TABLE `wastagemilk_register` (
+  `wastage_id` int(50) NOT NULL,
+  `date` varchar(50) NOT NULL,
+  `buffalowastage` varchar(30) NOT NULL,
+  `cowastage` varchar(30) NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+
+--
+-- Dumping data for table `wastagemilk_register`
+--
+
+INSERT INTO `wastagemilk_register` (`wastage_id`, `date`, `buffalowastage`, `cowastage`) VALUES
+(5, '1591900200001', '1', '1'),
+(6, '1591727400001', '2', '2'),
+(7, '1592332200001', '10', '20');
+
 --
 -- Indexes for dumped tables
 --
@@ -283,7 +331,14 @@ INSERT INTO `user_master` (`userid`, `username`, `password`, `fullname`) VALUES
 -- Indexes for table `client_master`
 --
 ALTER TABLE `client_master`
-  ADD PRIMARY KEY (`clientid`);
+  ADD PRIMARY KEY (`clientid`),
+  ADD KEY `customertype_id` (`customertype_id`);
+
+--
+-- Indexes for table `customertype_register`
+--
+ALTER TABLE `customertype_register`
+  ADD PRIMARY KEY (`customertype_id`);
 
 --
 -- Indexes for table `inhouse_production_register`
@@ -340,6 +395,12 @@ ALTER TABLE `user_master`
   ADD PRIMARY KEY (`userid`);
 
 --
+-- Indexes for table `wastagemilk_register`
+--
+ALTER TABLE `wastagemilk_register`
+  ADD PRIMARY KEY (`wastage_id`);
+
+--
 -- AUTO_INCREMENT for dumped tables
 --
 
@@ -347,7 +408,13 @@ ALTER TABLE `user_master`
 -- AUTO_INCREMENT for table `client_master`
 --
 ALTER TABLE `client_master`
-  MODIFY `clientid` int(20) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=43;
+  MODIFY `clientid` int(20) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=86;
+
+--
+-- AUTO_INCREMENT for table `customertype_register`
+--
+ALTER TABLE `customertype_register`
+  MODIFY `customertype_id` int(50) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=6;
 
 --
 -- AUTO_INCREMENT for table `inhouse_production_register`
@@ -365,7 +432,7 @@ ALTER TABLE `opening_bal_register`
 -- AUTO_INCREMENT for table `order_register`
 --
 ALTER TABLE `order_register`
-  MODIFY `ordid` int(20) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=30;
+  MODIFY `ordid` int(20) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=32;
 
 --
 -- AUTO_INCREMENT for table `payment_register`
@@ -389,7 +456,7 @@ ALTER TABLE `purchase_register`
 -- AUTO_INCREMENT for table `route_driver_register`
 --
 ALTER TABLE `route_driver_register`
-  MODIFY `routedriverid` int(50) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=23;
+  MODIFY `routedriverid` int(50) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=25;
 
 --
 -- AUTO_INCREMENT for table `stock_master`
@@ -402,6 +469,22 @@ ALTER TABLE `stock_master`
 --
 ALTER TABLE `user_master`
   MODIFY `userid` int(10) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
+
+--
+-- AUTO_INCREMENT for table `wastagemilk_register`
+--
+ALTER TABLE `wastagemilk_register`
+  MODIFY `wastage_id` int(50) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=8;
+
+--
+-- Constraints for dumped tables
+--
+
+--
+-- Constraints for table `client_master`
+--
+ALTER TABLE `client_master`
+  ADD CONSTRAINT `client_master_ibfk_1` FOREIGN KEY (`customertype_id`) REFERENCES `customertype_register` (`customertype_id`);
 COMMIT;
 
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
