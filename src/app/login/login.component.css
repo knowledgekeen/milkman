@@ -7,6 +7,30 @@
   user-select: none;
 }
 
+.milkman-login-card{
+  border: 11px;
+  box-shadow: 0 20px 31px 11px rgba(0, 0, 0, 0.1);
+}
+
+.milkman-login-button{
+  border-radius: 100px !important;
+  box-shadow: 3px 7px 4px 0px #cdd0d4;
+}
+
+.milkman-login-card-title{
+  font-family: Poppins-Bold;
+  font-size: 32px;
+  margin-top: 32px;
+}
+
+.milkman-login-user-icon{
+  font-size: 64px;
+ }
+
+ .milkman-login-error{
+   margin-top: 18px !important;
+ }
+
 .form-signin {
   width: 100%;
   max-width: 330px;
@@ -22,11 +46,14 @@
   height: auto;
   padding: 10px;
   font-size: 16px;
+  border-radius: 0px;
+  border-bottom: 1px black;
+  border-style: none none solid none;
 }
 .form-signin .form-control:focus {
   z-index: 2;
 }
-.form-signin input[type="email"] {
+ .form-signin input[type="email"] {
   margin-bottom: -1px;
   border-bottom-right-radius: 0;
   border-bottom-left-radius: 0;
@@ -35,7 +62,7 @@
   margin-bottom: 10px;
   border-top-left-radius: 0;
   border-top-right-radius: 0;
-}
+} 
 
 @media (min-width: 768px) {
   .bd-placeholder-img-lg {

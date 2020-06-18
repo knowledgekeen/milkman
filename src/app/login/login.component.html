@@ -1,21 +1,42 @@
-<div class="container py-5">
-    <form class="form-signin my-5">
-        <h1 class="h3 mb-3 font-weight-normal"><i class="fa fa-user"></i> Please sign in</h1>
-        <p class="text-danger m-0" *ngIf="errormsg"> <i class="fa fa-exclamation-triangle"></i> {{errormsg}}</p>
-        <label for="inputEmail" class="sr-only">Username</label>
-        <input type="text" id="inputEmail" class="form-control" placeholder="Username" name="username"
-            [(ngModel)]="username" required autofocus />
-        <label for="inputPassword" class="sr-only">Password</label>
-        <input type="password" id="inputPassword" class="form-control" placeholder="Password" name="password"
-            [(ngModel)]="password" required (keyup)="Login($event)" />
-        <div class="checkbox mb-3">
-            <label>
-                <input type="checkbox" value="remember-me"> Remember me
-            </label>
+<div class="container">
+    <div class="row">
+        <div class="col-sm-9 col-md-7 col-lg-5 mx-auto">
+            <div class="card card-body alert alert-danger text-center milkman-login-error" *ngIf="errormsg">
+                {{errormsg}}
+            </div>
+            <div class="card my-5 milkman-login-card">
+                <div class="card-body">
+                    <div class="card-title d-flex justify-content-center milkman-login-card-title">
+                        <h1>LOGIN</h1>
+                    </div>
+                    <div class="d-flex justify-content-center">
+                        <i class="fa fa-user-circle-o milkman-login-user-icon"></i>
+                    </div>
+                    <form class="form-signin">
+                        <div class="form-group">
+                            <label for="inputEmail" class="sr-only">Username</label>
+                            <input type="text" id="inputEmail" class="form-control" placeholder="Username"
+                                name="username" [(ngModel)]="username" required autofocus />
+                        </div>
+                        <div class="form-group">
+                            <label for="inputPassword" class="sr-only">Password</label>
+                            <input type="password" id="inputPassword" class="form-control" placeholder="Password"
+                                name="password" [(ngModel)]="password" required (keyup)="Login($event)" />
+                        </div>
+                        <div class="checkbox mb-3">
+                            <label>
+                                <input type="checkbox" value="remember-me"> Remember me
+                            </label>
+                        </div>
+                        <div class="form-group">
+                            <button class="btn btn-lg btn-info btn-block milkman-login-button" type="button"
+                                (click)="Login($event)" [disabled]="!username || !password">
+                                Login
+                            </button>
+                        </div>
+                    </form>
+                </div>
+            </div>
         </div>
-        <button class="btn btn-lg btn-primary btn-block" type="button" (click)="Login($event)"
-            [disabled]="!username || !password">
-            Login
-        </button>
-    </form>
+    </div>
 </div>
