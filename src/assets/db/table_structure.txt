@@ -59,16 +59,16 @@ INSERT INTO `client_master` (`clientid`, `customertype_id`, `name`, `cno`, `cper
 --
 
 CREATE TABLE `customertype_register` (
-  `customertype_id` int(50) NOT NULL,
-  `customertypename` varchar(50) NOT NULL,
-  `customertype` varchar(50) NOT NULL
+  `ctype_id` int(50) NOT NULL,
+  `ctypename` varchar(50) NOT NULL,
+  `ctype` varchar(50) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
 --
 -- Dumping data for table `customertype_register`
 --
 
-INSERT INTO `customertype_register` (`customertype_id`, `customertypename`, `customertype`) VALUES
+INSERT INTO `customertype_register` (`ctype_id`, `ctypename`, ctype`) VALUES
 (3, 'Dairy', 'Regular'),
 (4, 'caterer', 'Regular'),
 (5, 'sweet shop', 'Regular');

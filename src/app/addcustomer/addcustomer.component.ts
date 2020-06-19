@@ -42,7 +42,7 @@ export class AddcustomerComponent implements OnInit {
   }
   getAllCustomerTypeDetails() {
     this.customertypedata = null;
-    this._rest.getData("routes.php", "getAllCustomerTypeDetails").subscribe(
+    this._rest.getData("customertypes.php", "getAllCustomerTypeDetails").subscribe(
       (Response) => {
         if (Response && Response["data"]) {
           this.customertypedata = Response["data"];
