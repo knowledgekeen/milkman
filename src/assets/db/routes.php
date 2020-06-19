@@ -466,39 +466,4 @@ if($action == "changedRouteDetails"){
 
 	echo json_encode($data);
 }
-if($action=="getAllCustomerTypeDetails"){
-	$headers = apache_request_headers();
-	authenticate($headers);
-	$sql ="SELECT * from `customertype_register` order by `customertype_id` "; 
-	$result = $conn->query($sql);
-	while($row = $result->fetch_array())
-	{
-		$rows[] = $row;
-		
-	}
-	$tmp = array();
-	$data = array();
-	$i = 0;
-	if(count($rows)>0){
-		foreach($rows as $row)
-		{
-			$tmp[$i]['customertypename'] = $row['customertypename'];
-			$tmp[$i]['customertype'] = $row['customertype'];
-			
-			$i++;
-		}
-		$data["status"] = 200;
-		$data["data"] = $tmp;
-		header(' ', true, 200);
-	}
-	else{
-		$log  = "File: routes.php - Method: $action".PHP_EOL.
-		"Error message: ".$conn->error.PHP_EOL;
-		write_log($log, "error", $conn->error);
-		$data["status"] = 204;
-		header(' ', true, 204);
-	}
-
-	echo json_encode($data);
-}
 ?>
