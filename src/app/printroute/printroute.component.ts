@@ -10,8 +10,6 @@ import { RestService } from "../rest.service";
 export class PrintrouteComponent implements OnInit {
   msgtext: string = null;
   msgclass: string = null;
-  deldate: any = null;
-  routeno: any = null;
   routeval: any = null;
   routesdata: any = null;
   totalcowcans: number = 0;
@@ -21,11 +19,11 @@ export class PrintrouteComponent implements OnInit {
   routedata: any = null;
   routedetails: any = null;
   routdetails: any = null;
-  // private _routeno: string;
-  // private _deldate: string;
+  private _routeno: string;
+  private _orderdt: string;
 
-  /*@Input() set deldate(value: string) {
-  this._deldate = value;
+  @Input() set orderdt(value: string) {
+  this._orderdt = value;
 }
 
 @Input() set routeno(value: string) {
@@ -37,18 +35,19 @@ get routeno(): string {
   return this._routeno;
 }
 
-get deldate(): string {
-  return this._deldate;
+get orderdt(): string {
+  return this._orderdt;
 }
-*/
+
 
   constructor(private _rest: RestService) {}
 
   ngOnInit(): void {
+    console.log("onInit")
     let tomorrowdt = new Date();
     tomorrowdt.setHours(0, 0, 0, 1);
     tomorrowdt.setDate(tomorrowdt.getDate());
-    this.deldate = moment(tomorrowdt, "YYYY-MM-DD").format("YYYY-MM-DD");
+    this._orderdt = moment(tomorrowdt, "YYYY-MM-DD").format("YYYY-MM-DD");
     this.getAllOrderRoutes();
     this.routChange();
     this.routeDetails();
@@ -58,7 +57,7 @@ get deldate(): string {
     this.routedata = null;
     this.routeval = null;
     this.routeno = null;
-    let orderdt = new Date(this.deldate);
+    let orderdt = new Date(this._orderdt);
     orderdt.setHours(0, 0, 0, 1);
     let urldata = "orderdt=" + orderdt.getTime();
     this._rest.getData("routes.php", "getAllOrderRoutes", urldata).subscribe(
@@ -112,7 +111,7 @@ get deldate(): string {
   }
   getAllRoutesCustomers() {
     this.routesdata = null;
-    let orderdt = new Date(this.deldate);
+    let orderdt = new Date(this._orderdt);
     orderdt.setHours(0, 0, 0, 1);
     let urldata = "orderdt=" + orderdt.getTime() + "&routeno" + this.routeno;
     console.log(urldata);
@@ -137,9 +136,9 @@ get deldate(): string {
   }
   routChange() {
     this.routesdata = null;
-    let startdt = new Date(this.deldate);
+    let startdt = new Date(this._orderdt);
     startdt.setHours(0, 0, 0, 1);
-    let enddt = new Date(this.deldate);
+    let enddt = new Date(this._orderdt);
     enddt.setHours(23, 59, 59, 999);
 
     if (isNaN(startdt.getTime()) || isNaN(enddt.getTime())) {
@@ -166,7 +165,7 @@ get deldate(): string {
   }
   routeDetails() {
     this.routedetails = null;
-    let orderdt = new Date(this.deldate);
+    let orderdt = new Date(this._orderdt);
     orderdt.setHours(0, 0, 0, 1);
     let urldata = "orderdt=" + orderdt.getTime();
 
@@ -184,7 +183,7 @@ get deldate(): string {
   }
   changedRouteDetails() {
     this.routdetails = null;
-    let orderdt = new Date(this.deldate);
+    let orderdt = new Date(this._orderdt);
     orderdt.setHours(0, 0, 0, 1);
     let urldata = "orderdt=" + orderdt.getTime() + "&routeno=" + this.routeno;
 
