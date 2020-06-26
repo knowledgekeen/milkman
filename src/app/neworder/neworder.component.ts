@@ -58,6 +58,11 @@ export class NeworderComponent implements OnInit {
       });
   }
 
+
+  printOrder(){
+    window.print();
+  }
+
   // This method is only called if there is some data present for this route and on this date, AND sets the data back
   setRouteOrdersData(Response) {
     this.orderalreadyplaced = true;
@@ -83,7 +88,7 @@ export class NeworderComponent implements OnInit {
 
     for (let i in tmpcustdata) {
       if (this.routeno === tmpcustdata[i].routeno) {
-        this.routecusts.push(tmpcustdata[i]);
+          this.routecusts.push(tmpcustdata[i]);
       }
     }
     console.log('Routecusts ',this.routecusts)

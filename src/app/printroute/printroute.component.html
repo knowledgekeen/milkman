@@ -1,5 +1,5 @@
 <div class="container">
-  <h5 class="my-3">Print Route Details</h5>
+  <h5 class="my-3 noPrint">Print Route Details</h5>
   <app-message
     msgtext="{{ msgtext }}"
     msgclass="{{ msgclass }}"
@@ -36,7 +36,7 @@
         </div>
       </div> -->
       <div class="my-3">
-        <h6 class="text-danger" *ngIf="!routedata">
+        <h6 class="text-danger noPrint" *ngIf="!routedata">
           <i class="fa fa-exclamation-triangle"></i>
           <span class="mx-1">
             There aren't any customers available on this route.
@@ -51,9 +51,9 @@
                 <th>Customer</th>
                 <th>Buffalo Milk</th>
                 <th>Cow Milk</th>
+                <th>Number Of Cans</th>
                 <th>Driver Name</th>
                 <th>Vehicle No</th>
-                <th>Number Of Cans</th>
               </tr>
             </thead>
             <tbody>
@@ -62,9 +62,10 @@
                 <td>{{ rout.name }}</td>
                 <td>{{ rout.buffaloqty }}</td>
                 <td>{{ rout.cowqty }}</td>
+                 <!-- <td *ngFor="let ro of routedetails">{{ ro.vehicleno }}</td> -->
+                <td>{{ rout.buffcans }} ({{ rout.cowcans }})</td>
                 <td *ngFor="let ro of routedetails">{{ ro.drivernm }}</td>
                 <td *ngFor="let ro of routedetails">{{ ro.vehicleno }}</td>
-                <td>{{ rout.buffcans }} ({{ rout.cowcans }})</td>
               </tr>
             </tbody>
           </table>

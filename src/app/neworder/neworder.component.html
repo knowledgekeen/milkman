@@ -1,12 +1,12 @@
 <div class="container">
-  <h5 class="my-2">Place Order</h5>
-  <app-message
+  <h5 class="my-2 noPrint">Place Order</h5>
+  <app-message class="noPrint"
     msgtext="{{ msgtext }}"
     msgclass="{{ msgclass }}"
     *ngIf="msgtext"
   ></app-message>
 
-  <div class="card">
+  <div class="card noPrint">
     <div class="card-body">
       <div class="row">
         <div class="col-sm-12 col-md-3 text-muted">
@@ -59,13 +59,12 @@
         <div class="col-sm-12 col-md-12 mt-3 text-muted">
           <div class="row">
             <div class="col-md-8">
-              <button
-                class="btn btn-primary"
-                (click)="placeOrder()"
-                [disabled]="!drivernm || !vehicleno"
-                title="Place Order"
-              >
+              <button class="btn btn-success" (click)="placeOrder()" [disabled]="!drivernm || !vehicleno" title="Place Order">
                 Place Order
+              </button>
+              &nbsp; &nbsp;
+              <button class="btn btn-primary" (click)="printOrder()" title="Place Order">
+                Print Order
               </button>
             </div>
             <div class="col-md-4 text-primary">
@@ -131,7 +130,7 @@
       </div>
     </div>
   </div>
-  <app-printroute routeno={{routeno}} orderdt={{orderdt}}></app-printroute>
+  <app-printroute routeno={{routeno}} orderdt={{orderdt}} class="noScreen"></app-printroute>
 </div>
 
 <!-- routeno="{{ routeno }}"
