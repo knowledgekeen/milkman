@@ -23,21 +23,23 @@ export class PrintrouteComponent implements OnInit {
   private _orderdt: string;
 
   @Input() set orderdt(value: string) {
-  this._orderdt = value;
-}
+    this._orderdt = value;
+    console.log(this._orderdt);
+    this.getAllRoutesCustomers();
+  }
 
-@Input() set routeno(value: string) {
-  this._routeno = value;
-  //this.getRouteCustomersOnDate();
-}
+  @Input() set routeno(value: string) {
+    this._routeno = value;
+    //this.getRouteCustomersOnDate();
+  }
 
-get routeno(): string {
-  return this._routeno;
-}
+  get routeno(): string {
+    return this._routeno;
+  }
 
-get orderdt(): string {
-  return this._orderdt;
-}
+  get orderdt(): string {
+    return this._orderdt;
+  }
 
 
   constructor(private _rest: RestService) {}
@@ -109,21 +111,22 @@ get orderdt(): string {
       this.totalbuffcans += buffcans;
     }
   }
+
   getAllRoutesCustomers() {
     this.routesdata = null;
     let orderdt = new Date(this._orderdt);
     orderdt.setHours(0, 0, 0, 1);
-    let urldata = "orderdt=" + orderdt.getTime() + "&routeno" + this.routeno;
+    let urldata = "orderdt=" + orderdt.getTime() + "&routeno=" + this._routeno;
     console.log(urldata);
     this._rest
       .getData("routes.php", "getAllRoutesCustomers", urldata)
       .subscribe(
         (Response) => {
           if (Response && Response["data"]) {
-            this.routChange();
             this.routesdata = Response["data"];
             this.calculateMilkCans();
-            //this.routeDetails();
+            this.routeDetails();
+            console.log(this.routesdata);
           } else {
             console.log("error occured");
             this.routesdata = null;

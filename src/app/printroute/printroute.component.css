@@ -3,6 +3,10 @@
     size: auto;
     margin: 0;
   }
+
+  .noPrint{
+    display: none;
+   }
 }
 #printroute * {
   visibility: visible;
