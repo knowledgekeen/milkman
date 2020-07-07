@@ -22,7 +22,7 @@ if($action == "addClient"){
 	$buffalorate=$data->buffalorate;
 	$cowrate=$data->cowrate;
 	$ctype=$data->ctype;
-	//$custypedata=$data->customertypedata;
+	
 	if($_SERVER['REQUEST_METHOD']=='POST'){
 		//Status: 1 == 'active'
 		

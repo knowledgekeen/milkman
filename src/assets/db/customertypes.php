@@ -10,7 +10,7 @@ $action = $_GET['action'];
 if($action=="getAllCustomerTypeDetails"){
 	$headers = apache_request_headers();
 	authenticate($headers);
-	$sql ="SELECT * from `customertype_register` order by `ctypename` "; 
+	$sql ="SELECT * from `customertype_register` order by `customertypename` "; 
 	$result = $conn->query($sql);
 	while($row = $result->fetch_array())
 	{
@@ -23,9 +23,9 @@ if($action=="getAllCustomerTypeDetails"){
 	if(count($rows)>0){
 		foreach($rows as $row)
 		{
-			$tmp[$i]['ctype_id'] = $row['ctype_id'];
-			$tmp[$i]['ctypename'] = $row['ctypename'];
-			$tmp[$i]['ctype'] = $row['ctype'];
+			$tmp[$i]['customertype_id'] = $row['customertype_id'];
+			$tmp[$i]['customertypename'] = $row['customertypename'];
+			$tmp[$i]['customertype'] = $row['customertype'];
 			
 			$i++;
 		}
@@ -34,7 +34,7 @@ if($action=="getAllCustomerTypeDetails"){
 		header(' ', true, 200);
 	}
 	else{
-		$log  = "File: routes.php - Method: $action".PHP_EOL.
+		$log  = "File: customertypes.php - Method: $action".PHP_EOL.
 		"Error message: ".$conn->error.PHP_EOL;
 		write_log($log, "error", $conn->error);
 		$data["status"] = 204;

@@ -20,7 +20,6 @@ export class AddsupplierComponent implements OnInit {
   buffalorate: String = "0";
   cowrate: String = "0";
   ctype: string = "1";
-  customertype_id: string = "0";
 
   constructor(
     private _rest: RestService,
@@ -45,10 +44,10 @@ export class AddsupplierComponent implements OnInit {
       cperson: this.cperson,
       cno1: this.cno1,
       address: this.address,
-      customertype_id: this.customertype_id,
-      buffalorate: this.buffalorate,
       routeno: null,
+      buffalorate: this.buffalorate,
       cowrate: this.cowrate,
+      customertype_id: null,
       addinfo: this.additionalinfo,
       ctype: this.ctype,
     };
