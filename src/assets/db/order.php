@@ -168,6 +168,40 @@ if($action == "updateOrder"){
 		$data1["status"] = 200;
 		$data1["data"] = $clientid;
 		header(' ', true, 200);
+		$sql1 = "SELECT * FROM `stock_master` WHERE `stockid`=2";
+	    $result1 = $conn->query($sql1);
+	    $row1 = $result1->fetch_array(MYSQLI_ASSOC);
+		
+		if($result1){
+			$tmp1 = $row1['quantity'];
+			if($tmp1 == $buffaloqty){
+				$resultant = $buffaloqty;
+			} else {
+				$totalIncrementInQuantity = $buffaloqty + $tmp1;
+				$resultant = $tmp1 + $totalIncrementInQuantity;
+			}
+			$sqlbuffupt = "UPDATE `stock_master` SET `quantity`='$resultant' WHERE `stockid`=2";
+			$resultbuffupt = $conn->query($sqlbuffupt);
+			header(' ', true, 200);
+		}
+
+		$sql2 = "SELECT * FROM `stock_master` WHERE `stockid`=1";
+	    $result2 = $conn->query($sql2);
+	    $row2 = $result1->fetch_array(MYSQLI_ASSOC);
+		
+		if($result2){
+			$tmp2 = $row1['quantity'];
+			if($tmp2 == $cowqty){
+				$resultant1 = $cowqty;
+			} else {
+				$totalIncrementInQuantity1 = $cowqty - $tmp2;
+				$resultant1 = $tmp2 + $totalIncrementInQuantity1;
+			}
+			$sqlbuffupt = "UPDATE `stock_master` SET `quantity`='$resultant1' WHERE `stockid`=1";
+			$resultbuffupt = $conn->query($sqlbuffupt);
+			header(' ', true, 200);
+		}
+		
 		$log  = "File: order.php - Method: $action".PHP_EOL.
 		"Data: ".json_encode($data).PHP_EOL;
 		write_log($log, "success", NULL);
