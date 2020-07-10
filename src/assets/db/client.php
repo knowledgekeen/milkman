@@ -26,7 +26,7 @@ if($action == "addClient"){
 	if($_SERVER['REQUEST_METHOD']=='POST'){
 		//Status: 1 == 'active'
 		
-		$sql = "INSERT INTO `client_master`(`customertype_id`,`name`, `cno`, `cperson`, `cno1`, `address`, `addinfo`,`ctype`,`routeno`,`buffalorate`,`cowrate` ) VALUES ('$customertype_id','$fname','$cno','$cperson','$cno1','$address','$addinfo','$ctype','$routeno','$buffalorate','$cowrate')";
+		$sql = "INSERT INTO `client_master`(`ctype_id`,`name`, `cno`, `cperson`, `cno1`, `address`, `addinfo`,`ctype`,`routeno`,`buffalorate`,`cowrate` ) VALUES ('$customertype_id','$fname','$cno','$cperson','$cno1','$address','$addinfo','$ctype','$routeno','$buffalorate','$cowrate')";
         $result = $conn->query($sql);
         $userid = $conn->insert_id;
 	}
