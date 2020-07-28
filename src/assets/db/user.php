@@ -2,6 +2,7 @@
 header('Access-Control-Allow-Headers: Origin, X-Requested-With, Content-Type, Accept');
 header('Access-Control-Allow-Headers: Authorization, X-Requested-With, Content-Type, Accept');
 
+// This is a test comment
 include 'conn.php';
 include 'jwt_helper.php';
 $action = $_GET['action'];
